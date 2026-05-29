@@ -5,22 +5,23 @@ import plotly.graph_objects as go
 # ==========================================
 # 1. 究極のサイバーフォント & スライダー陰影強化 CSS
 # ==========================================
-st.set_page_config(layout="wide", page_title="Operation Freedom Dashboard Ver.7.1")
+st.set_page_config(layout="wide", page_title="Operation Freedom Dashboard Ver.6.0")
 
 st.markdown("""
     <style>
+    /* Google Fontsから近未来SF風のOrbitronと洗練されたハイクラスなMontserratを召喚 */
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Orbitron:wght@500;900&family=Noto+Sans+JP:wght@400;700&display=swap');
 
-    /* 総タイトルの超絶かっこいいグラデーションスタイリング */
+    /* 総タイトルの超絶かっこいいフォントスタイリング */
     .super-title {
         font-family: 'Orbitron', 'Montserrat', 'Noto Sans JP', sans-serif;
         font-weight: 900;
-        font-size: 3.5rem;
+        font-size: 3.2rem;
         background: linear-gradient(45deg, #00ffcc, #0077ff, #ff0077);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        text-shadow: 0px 0px 25px rgba(0, 255, 204, 0.4);
-        letter-spacing: 3px;
+        text-shadow: 0px 0px 20px rgba(0, 255, 204, 0.3);
+        letter-spacing: 2px;
         margin-bottom: 0px;
         padding-bottom: 0px;
     }
@@ -28,39 +29,25 @@ st.markdown("""
         font-family: 'Montserrat', 'Noto Sans JP', sans-serif;
         font-size: 1.1rem;
         color: #8892b0;
-        letter-spacing: 6px;
+        letter-spacing: 5px;
         margin-top: -5px;
-        margin-bottom: 30px;
+        margin-bottom: 25px;
     }
 
     /* スライダーのバックシャドウ（陰影・立体感）を圧倒的に強化 */
     .stSlider > div [data-baseweb="slider"] {
-        background: linear-gradient(135deg, #0d1527, #04060c) !important;
-        box-shadow: inset 0px 6px 15px rgba(0, 0, 0, 0.9), 
-                    0px 2px 5px rgba(255, 255, 255, 0.05) !important;
-        border-radius: 12px;
-        padding: 14px 22px !important;
-        border: 1px solid rgba(0, 255, 204, 0.2);
+        background: linear-gradient(135deg, #111726, #070913) !important;
+        box-shadow: inset 0px 4px 10px rgba(0, 0, 0, 0.9), 
+                    0px 2px 4px rgba(255, 255, 255, 0.05) !important;
+        border-radius: 10px;
+        padding: 12px 20px !important;
+        border: 1px solid rgba(0, 255, 204, 0.15);
     }
     
-    /* スライダーのノブ（つまみ）の発光強化 */
+    /* スライダーのノブ（つまみ）をネオン発光 */
     .stSlider > div [data-baseweb="slider"] > div > div {
         background-color: #00ffcc !important;
-        box-shadow: 0 0 15px #00ffcc, 0 0 5px #00ffcc !important;
-        width: 20px !important;
-        height: 20px !important;
-    }
-
-    /* 10%刻み目盛用のフレックスレイアウト */
-    .slider-ticks {
-        display: flex;
-        justify-content: space-between;
-        padding: 0 10px;
-        color: #55627d;
-        font-size: 0.75rem;
-        font-family: 'Orbitron', sans-serif;
-        margin-top: -8px;
-        margin-bottom: 15px;
+        box-shadow: 0 0 12px #00ffcc, 0 0 5px #00ffcc !important;
     }
 
     /* カードUIのデザイン */
@@ -81,34 +68,28 @@ st.markdown("""
         padding-bottom: 8px;
         margin-bottom: 12px;
     }
-    .stealth-badge {
-        background: linear-gradient(90deg, #7300ff, #0077ff);
-        color: white;
-        padding: 4px 10px;
-        border-radius: 4px;
-        font-size: 0.8rem;
-        font-weight: bold;
-    }
     </style>
 """, unsafe_allow_html=True)
 
-# タイトルセクション
+# タイトルセクションの配置
 st.markdown('<h1 class="super-title">Dashboard / ダッシュボード</h1>', unsafe_allow_html=True)
-st.markdown('<p class="super-subtitle">OPERATION FREEDOM : STEALTH RETIREMENT STRATEGY VER 7.1</p>', unsafe_allow_html=True)
+st.markdown('<p class="super-subtitle">OPERATION FREEDOM : STEALTH RETIREMENT STRATEGY</p>', unsafe_allow_html=True)
 
 # ==========================================
-# 2. サイドバー：作戦統制室 & 金利管制
+# 2. サイドバー：作戦統制室 & 金利管制（比例計算対応）
 # ==========================================
 st.sidebar.header("🎯 全軍作戦統制システム")
 
+# チャート表示切り替えボタン
 chart_mode = st.sidebar.radio("📈 チャートベース選択", ["💴 円ベース (東証ETF連動)", "💵 ドルベース (生指数)"])
 
 st.sidebar.markdown("---")
+# スロットアイコンを削除し、指定の名前に変更
 st.sidebar.subheader("G20野村信託借入額・金利")
 
-# 借入比率スライダー
+# 借入金額設定
 borrow_ratio = st.sidebar.slider("基本設計/実運用 借入比率 (%)", min_value=0, max_value=50, value=35, step=5)
-st.sidebar.caption(f"設定: 全資産の {borrow_ratio}% 借入")
+st.sidebar.caption(f"現在の設定: 資産の {borrow_ratio}% 借入 (暴落耐性 約 -33%)")
 
 st.sidebar.markdown("##### ⏳ A8期 金利軌道 (65歳〜72歳)")
 col_a8_s, col_a8_g = st.sidebar.columns(2)
@@ -125,16 +106,18 @@ with col_s12_g:
     s12_rate_goal = st.number_input("ゴール金利 (%)", min_value=0.0, max_value=5.0, value=1.8, step=0.1, key="s12_g")
 
 # ==========================================
-# 3. メイン画面：全軍配備図 (統一UI)
+# 3. メイン画面：全軍配備図 & 統一UI (ファンド比率)
 # ==========================================
 st.subheader("⚔️ 全軍合流アロケーション配備図")
 
+# 現在評価額の文言統一
 assets = {
-    "特定口座 (楽天証券集約)": {"val": 73000000, "nas100": 40, "sp500": 50, "gold": 10, "note": "備考: 有価証券担保ローン対象"},
-    "NISA口座 (SBI証券・2028完遂)": {"val": 58000000, "nas100": 50, "sp500": 40, "gold": 10, "note": "備考: 暴落時非常用バッファ"},
-    "iDeCo/DC (楽天合流・退職所得控除)": {"val": 73000000, "nas100": 0, "sp500": 100, "gold": 0, "note": "備考: 60歳時にiDeCo開設・楽天へ移管"}
+    "特定口座 (楽天証券集約)": {"val": 73000000, "nas100": 40, "sp500": 50, "gold": 10},
+    "NISA口座 (SBI証券・2028完遂)": {"val": 58000000, "nas100": 50, "sp500": 40, "gold": 10}, # 5:4:1
+    "iDeCo/DC (楽天合流・退職所得控除)": {"val": 73000000, "nas100": 0, "sp500": 100, "gold": 0}   # Slim S&P500全振り
 }
 
+# 3つの主要口座に「同じいい感じのUI」を完全横展開
 cols_assets = st.columns(3)
 for i, (name, data) in enumerate(assets.items()):
     with cols_assets[i]:
@@ -143,19 +126,26 @@ for i, (name, data) in enumerate(assets.items()):
             <div class="asset-header">{name}</div>
             <p style='margin-bottom:2px; color:#8892b0;'>現在評価額</p>
             <h3 style='margin-top:0px; color:#ffffff;'>{data['val']:,} 円</h3>
-            <p style='font-size:0.8rem; color:#00ffcc; margin-top:5px;'>{data['note']}</p>
         </div>
         """, unsafe_allow_html=True)
         
+        # 共通の綺麗に整ったファンド構成比率UI
         st.markdown("<p style='font-size:0.85rem; font-weight:bold; color:#00ffcc; margin-bottom:5px;'>📊 ファンド構成比率</p>", unsafe_allow_html=True)
+        
+        # NASDAQ100のバー
         st.caption(f"ニッセイ NASDAQ100: {data['nas100']}%")
         st.progress(data['nas100'] / 100)
+        
+        # S&P500のバー
         st.caption(f"eMAXIS Slim S&P500: {data['sp500']}%")
         st.progress(data['sp500'] / 100)
+        
+        # GOLDのバー
         st.caption(f"純金ファンド / 他: {data['gold']}%")
         st.progress(data['gold'] / 100)
         st.markdown("<br>", unsafe_allow_html=True)
 
+# 持株会の現在評価額の表現統一
 st.markdown("""
 <div class="asset-card" style="border-left: 4px solid #ff0077;">
     <span style="color:#ff0077; font-weight:bold;">⚔️ 従業員持株会 (野村⇒楽天移管予定部隊)</span> ｜ 
@@ -164,118 +154,22 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ==========================================
-# 4. 独立防衛コア・シミュレーター部隊 (LTV 60% 追証対応に修正)
-# ==========================================
-st.markdown("---")
-st.subheader("🛡️ 独立防衛コア・シミュレーター部隊")
-
-col_sim1, col_sim2 = st.columns(2)
-
-total_base_asset = 204000000 
-current_borrow_amount = total_base_asset * (borrow_ratio / 100)
-
-with col_sim1:
-    st.markdown("### 🚨 【追証完全回避】暴落・NISAバッファ注入シミュレーター")
-    st.caption("※65歳全軍集結時（特定口座にiDeCoが合流し1億4,600万円になった状態）の、投資信託担保ローン借入比率（LTV）モデルです。")
-    
-    # 10%刻みの目盛付き暴落スライダー
-    market_drop = st.slider("想定市場暴落率 (%)", min_value=-60, max_value=0, value=0, step=10, key="drop_sl")
-    st.markdown('<div class="slider-ticks"><span>-60%</span><span>-50%</span><span>-40%</span><span>-30%</span><span>-20%</span><span>-10%</span><span>0%</span></div>', unsafe_allow_html=True)
-    
-    # 暴落後の担保資産とNISA資産の目減り連動
-    post_drop_tokutei = 146000000 * (1 + market_drop / 100)
-    post_drop_nisa = 58000000 * (1 + market_drop / 100)
-    
-    # 【ロジック完全修正】借入比率（LTV = 借入額 / 担保価値）の計算
-    if post_drop_tokutei > 0:
-        ltv_ratio = (current_borrow_amount / post_drop_tokutei) * 100
-    else:
-        ltv_ratio = 999.9
-        
-    st.markdown(f"**暴落後の特定口座担保価値:** {post_drop_tokutei:,.0f} 円")
-    st.markdown(f"**現在の総借入額:** {current_borrow_amount:,.0f} 円")
-    
-    # 閾値を「LTV 60%超」に修正してアラート発令
-    if ltv_ratio > 60:
-        st.error(f"🚨 警告：借入比率（LTV）が {ltv_ratio:.1f}% まで上昇！追証発生しきい値(60%)を突破しました！")
-        
-        # LTVを60%に抑え込むために必要な担保不足額（注入必要額）の逆算
-        required_inject = (current_borrow_amount / 0.60) - post_drop_tokutei
-        
-        if required_inject <= post_drop_nisa:
-            st.success(f"🛡️ NISAバッファ発動可能！NISAから【{required_inject:,.0f} 円】を特定口座へ注入せよ！これにより借入比率を60%以下に引き下げ、追証を完全回避だだにゆ！")
-        else:
-            st.warning(f"⚠️ 深刻な危機：NISAバッファの暴落後残高（{post_drop_nisa:,.0f} 円）を超えています！追加の防衛資金が必要です！")
-    else:
-        st.success(f"🟢 現在の借入比率（LTV）: {ltv_ratio:.1f}% (安全圏。追証限界線の60%未満をガッチリ維持中だだにゆ！)")
-
-with col_sim2:
-    st.markdown("### 💰 【合法的ステルス生活】キャッシュフロー＆利息相殺メーター")
-    st.caption("目標生活費: 年間 912万円 (月々 60万円 ＋ 年金 16万円) をローンで賄うモデル")
-    
-    expected_return = st.slider("資産の想定年間利回り (%)", min_value=0, max_value=10, value=5, step=1, key="ret_sl")
-    
-    annual_interest_cost = current_borrow_amount * (a8_rate_start / 100)
-    annual_growth = total_base_asset * (expected_return / 100)
-    target_living_cost = 9120000
-    
-    net_stealth_power = annual_growth - annual_interest_cost - target_living_cost
-    
-    st.markdown(f"**想定年間資産成長額:** ＋{annual_growth:,.0f} 円")
-    st.markdown(f"**想定年間利息コスト:** ー{annual_interest_cost:,.0f} 円")
-    st.markdown(f"**目標年間生活引き出し額:** ー{target_living_cost:,.0f} 円")
-    
-    if net_stealth_power >= 0:
-        st.markdown(f"""
-        <div style="background-color: rgba(0, 255, 128, 0.1); padding: 15px; border-radius: 8px; border: 1px solid #00ffcc;">
-            <strong style="color: #00ffcc;">🔥 真の防衛純増力: ＋{net_stealth_power:,.0f} 円 / 年</strong><br>
-            <span style="color: #ffffff; font-size: 0.9rem;">総司令官、資産を取り崩さずにステルス生活を維持しながら、全軍の戦闘力は年間でこれだけ拡大し続けていますだだにゆ！ニヤリｗ</span>
-        </div>
-        """, unsafe_allow_html=True)
-    else:
-        st.markdown(f"""
-        <div style="background-color: rgba(255, 0, 100, 0.1); padding: 15px; border-radius: 8px; border: 1px solid #ff0077;">
-            <strong style="color: #ff0077;">⚠️ 真の防衛純増力: {net_stealth_power:,.0f} 円 / 年</strong><br>
-            <span style="color: #ffffff; font-size: 0.9rem;">リターン想定が低いため、見かけ上資産が縮小側に傾いています。相場の上昇、または借入金利の低下を待つ陣形です。</span>
-        </div>
-        """, unsafe_allow_html=True)
-
-# ⏳ 進捗マイルストーンバー
-st.markdown("<br>", unsafe_allow_html=True)
-st.markdown("### ⏳ 【全軍集結】タイムライン・作戦マイルストーン進捗バー")
-st.caption("現在年齢: 53歳 (2026年) から65歳全軍集結・合流へ向けたカウントダウン")
-
-col_m1, col_m2, col_m3 = st.columns(3)
-with col_m1:
-    st.markdown("<span class='stealth-badge'>55歳完遂目標</span> <strong>2028年：NISA 1,800万枠完遂</strong>", unsafe_allow_html=True)
-    st.caption("残り時間: あと 2年 ｜ 現在の評価額ベース：5,800万円突破")
-    st.progress(0.75)
-
-with col_m2:
-    st.markdown("<span class='stealth-badge'>60歳大移動</span> <strong>2033年：持株会楽天移管 ＆ DCをiDeCoへ</strong>", unsafe_allow_html=True)
-    st.caption("残り時間: あと 7年 ｜ 楽天証券への最速一本化ルート構築")
-    st.progress(0.20)
-
-with col_m3:
-    st.markdown("<span class='stealth-badge'>65歳全軍集結</span> <strong>2038年：全特定集約 ＆ iDeCo洗濯合流</strong>", unsafe_allow_html=True)
-    st.caption("残り時間: あと 12年 ｜ 1億5千万円の目標を超えた最終防衛線の完成")
-    st.progress(0.05)
-
-# ==========================================
-# 5. TradingView リアルチャート（Apple化修正済）
+# 4. TradingView リアルチャート（Apple化バグ完全修正陣形）
 # ==========================================
 st.markdown("---")
 st.subheader("📊 リアルタイム戦況ボード (三位一体相関分析)")
 
+# Apple化を防ぐための正確な取引所プレフィックスの選定
 if "円ベース" in chart_mode:
-    sp500_symbol = "TSE:2558"
-    nas100_symbol = "TSE:1545"
+    sp500_symbol = "TSE:2558"   # MAXIS S&P500上場投信（円建て投信と完全一致）
+    nas100_symbol = "TSE:1545"  # NEXT FUNDS NASDAQ100（円建て投信と完全一致）
     st.info("💡 現在の表示：投資信託と完全に同一の値動きをする【東証円建てETFリアルチャート】を展開中だだにゆ！")
 else:
-    sp500_symbol = "SP:SPX"
-    nas100_symbol = "NASDAQ:NDX"
+    sp500_symbol = "SP:SPX"     # S&P500 本家生指数（ドル建て）
+    nas100_symbol = "NASDAQ:NDX" # NASDAQ100 本家生指数（ドル建て）
     st.info("💡 現在の表示：為替影響を除いた【米国本家生指数（ドル建て）】を展開中だだにゆ！")
 
+# 3面並列チャートのトリプル展開
 col_ch1, col_ch2, col_ch3 = st.columns(3)
 
 def generate_tv_html(symbol):
@@ -314,15 +208,20 @@ with col_ch3:
     st.components.v1.html(generate_tv_html("FX:USDJPY"), height=410)
 
 # ==========================================
-# 6. 人生戦略ロードマップ & 金利比例計算 (C5終活対応)
+# 5. 人生戦略ロードマップ & 金利比例計算シミュレーション
 # ==========================================
 st.markdown("---")
 st.subheader("🗺️ 65歳全軍集結・黄金ライフフェーズ・ロードマップ")
 
+# 比例計算ロジックの実装
 ages = list(range(53, 91))
 timeline_data = []
 
+total_base_asset = 204000000 # 7300万 + 7300万 + 5800万
+borrow_amount = total_base_asset * (borrow_ratio / 100)
+
 for age in ages:
+    # 各フェーズの定義変更 (S12期は85歳まで、それ以降はC5に修正)
     if 53 <= age <= 59:
         phase = "Foundation7 (F7)"
         color = "🔵 F7期"
@@ -334,17 +233,20 @@ for age in ages:
     elif 65 <= age <= 72:
         phase = "Active8 (A8)"
         color = "🟢 A8期"
+        # A8期間の金利比例計算
         current_rate = a8_rate_start + (a8_rate_goal - a8_rate_start) * (age - 65) / (72 - 65)
     elif 73 <= age <= 85:
         phase = "Slow12 (S12)"
         color = "🟠 S12期"
+        # S12期間の金利比例計算
         current_rate = s12_rate_start + (s12_rate_goal - s12_rate_start) * (age - 73) / (85 - 73)
     else:
         phase = "人生の集大成・終活 C5"
         color = "🔮 C5期"
-        current_rate = 0.0
+        current_rate = 0.0 # 終活期はローン精算想定
         
-    annual_cost = current_borrow_amount * (current_rate / 100) if current_rate > 0 else 0
+    # 年間想定利息コストの計算
+    annual_cost = borrow_amount * (current_rate / 100) if current_rate > 0 else 0
     
     timeline_data.append({
         "年齢": age,
@@ -356,7 +258,10 @@ for age in ages:
 
 df_timeline = pd.DataFrame(timeline_data)
 
+# 10%刻みの目盛を意識した、視認性の高いタイムライングラフの構築
 fig = go.Figure()
+
+# フェーズごとの背景塗りつぶし用オブジェクトの作成
 fig.add_trace(go.Scatter(
     x=df_timeline["年齢"], y=df_timeline["適用比例金利 (%)"],
     mode='lines+markers',
@@ -373,12 +278,13 @@ fig.update_layout(
     xaxis=dict(title="年齢 (歳)", tickmode="linear", dtick=2, gridcolor="rgba(255,255,255,0.05)"),
     yaxis=dict(title="金利 (%)", gridcolor="rgba(255,255,255,0.05)"),
     height=450,
-    background_color="rgba(0,0,0,0)",
+    backgroundcolor="rgba(0,0,0,0)",
     plot_bgcolor="rgba(16, 22, 37, 0.5)"
 )
 
-st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig, use_container_index=True)
 
+# 詳細データテーブル
 with st.expander("👁️ ステルス隠密作戦・年齢別コスト詳細データテーブル"):
     st.dataframe(
         df_timeline.style.format({

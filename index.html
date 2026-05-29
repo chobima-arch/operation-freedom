@@ -427,9 +427,11 @@ function updateTradingViewCharts(base) {
     lastTheme = theme;
     lastBase = base;
     
-    // 円ベース時は東証上場の大代表インデックスETF（2558/1545）を追尾
-    let spSymbol = (base === 'USD') ? 'INDEX:SPX' : 'TSE:2558';
-    let nasSymbol = (base === 'USD') ? 'INDEX:NDX' : 'TSE:1545';
+    // 【ピンポイント修正箇所】
+    // 円ベース時に東証上場ETFコード(TSE:2558/1545)を指定すると、TradingViewウィジェット側の制限でApple(AAPL)に化けるため、
+    // 確実に対応しており値動きが同一の米国メジャーインデックスETF（SPY/QQQ）へ差し替えて完全回避します。
+    let spSymbol = (base === 'USD') ? 'INDEX:SPX' : 'AMEX:SPY';
+    let nasSymbol = (base === 'USD') ? 'INDEX:NDX' : 'NASDAQ:QQQ';
     
     renderIframeWidget('tv_chart_sp', spSymbol, theme);
     renderIframeWidget('tv_chart_nas', nasSymbol, theme);

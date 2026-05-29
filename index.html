@@ -7,7 +7,22 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist@2.24.1/plotly.min.js"></script>
     <style>
+        /* 💡 Ver.6.1：デフォルトをライトモードに変更 */
         :root {
+            --bg-color: #f7fafc;
+            --card-bg: #ffffff;
+            --text-color: #1a202c;
+            --border-color: #cbd5e0;
+            --form-bg: #ffffff;
+            --form-text: #1a202c;
+            --form-border: #cbd5e0;
+            --advice-bg: #edf2f7;
+            --advice-text: #2d3748;
+            --advice-border: #cbd5e0;
+            --slider-track: #e2e8f0;
+            --slider-track-border: #cbd5e0;
+        }
+        [data-theme="dark"] {
             --bg-color: #0f111a;
             --card-bg: #161925;
             --text-color: #e2e8f0;
@@ -18,18 +33,8 @@
             --advice-bg: #1a1e30;
             --advice-text: #f0f4f8;
             --advice-border: #2f3552;
-        }
-        [data-theme="light"] {
-            --bg-color: #f7fafc;
-            --card-bg: #ffffff;
-            --text-color: #1a202c;
-            --border-color: #e2e8f0;
-            --form-bg: #ffffff;
-            --form-text: #1a202c;
-            --form-border: #cbd5e0;
-            --advice-bg: #edf2f7;
-            --advice-text: #2d3748;
-            --advice-border: #cbd5e0;
+            --slider-track: #24293e;
+            --slider-track-border: #3b4261;
         }
 
         body { background-color: var(--bg-color); color: var(--text-color); font-family: 'Helvetica Neue', Arial, sans-serif; transition: background 0.3s, color 0.3s; }
@@ -37,45 +42,57 @@
         .form-label { color: var(--text-color); opacity: 0.9; font-weight: bold; font-size: 0.85rem; margin-bottom: 3px; }
         .form-control { background-color: var(--form-bg); border: 1px solid var(--form-border); color: var(--form-text); font-size: 0.9rem; padding: 5px 10px; }
         
-        .icon-5x { font-size: 3.5rem; display: block; text-align: center; margin-bottom: 8px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); }
+        .icon-5x { font-size: 3.5rem; display: block; text-align: center; margin-bottom: 8px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15)); }
         .box-title { font-size: 1.1rem; font-weight: bold; border-bottom: 2px solid var(--border-color); padding-bottom: 6px; margin-bottom: 12px; text-align: center; }
         
-        .metric-card { border-top: 4px solid #0d6efd !important; padding: 12px; text-align: center; }
+        .metric-card { border-top: 4px solid #0d6efd !important; padding: 12px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
         .metric-title { font-size: 0.85rem; font-weight: bold; opacity: 0.8; height: 35px; display: flex; align-items: center; justify-content: center; }
         .metric-value { font-size: 1.4rem; font-weight: bold; margin: 5px 0; }
         .metric-sub { font-size: 0.75rem; opacity: 0.6; }
         
-        /* スライダーパネルの陰影とデザインを大幅強化 */
         .slider-panel { 
-            background: rgba(13, 110, 253, 0.08); 
+            background: rgba(13, 110, 253, 0.05); 
             border: 2px solid #0d6efd; 
             border-radius: 10px; 
             padding: 15px; 
             margin-bottom: 20px; 
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), inset 0 1px 2px rgba(255,255,255,0.1);
+            box-shadow: 0 8px 20px rgba(13, 110, 253, 0.12), inset 0 1px 2px rgba(255,255,255,0.5);
         }
-        [data-theme="light"] .slider-panel {
-            box-shadow: 0 8px 20px rgba(13, 110, 253, 0.15);
+
+        /* 🎛️ スライダーの背景バー（レール）のコントラストと存在感を圧倒的に強化 */
+        .form-range::-webkit-slider-runnable-track {
+            background: var(--slider-track);
+            border: 1px solid var(--slider-track-border);
+            height: 10px;
+            border-radius: 5px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.15);
         }
+        .form-range::-moz-range-track {
+            background: var(--slider-track);
+            border: 1px solid var(--slider-track-border);
+            height: 10px;
+            border-radius: 5px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.15);
+        }
+        
         .advice-box { background-color: var(--advice-bg); border: 1px solid var(--advice-border); color: var(--advice-text); padding: 15px; border-radius: 8px; font-size: 0.9rem; }
         .phase-badge { padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; }
+        .pct-dots { font-size: 0.65rem; opacity: 0.5; margin-top: -3px; font-weight: bold; letter-spacing: 1.5px; }
     </style>
 </head>
-<body>
-
-<div class="container-fluid px-4 my-4">
+<body data-theme="light"> <div class="container-fluid px-4 my-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <div>
             <h1 class="h2 mb-0 fw-bold">🏯 Operation Freedom Dashboard</h1>
-            <p class="small mb-0" style="color: var(--text-color) !important; opacity: 0.6;">総司令官専用・7大指標年齢同期型リアルタイムシミュレーター（Ver.6.0）</p>
+            <p class="small mb-0" style="color: var(--text-color) !important; opacity: 0.6;">総司令官専用・7大指標年齢同期型リアルタイムシミュレーター（Ver.6.1）</p>
         </div>
         <div class="form-check form-switch bg-body-secondary p-2 rounded shadow-sm border" style="padding-left: 2.5em !important; cursor: pointer;">
             <input class="form-check-input" type="checkbox" id="themeToggle" style="cursor: pointer;" onchange="toggleTheme()">
-            <label class="form-check-label fw-bold small text-nowrap" for="themeToggle" id="themeLabel" style="cursor: pointer; margin-right: 5px;">🌙 ダークモード</label>
+            <label class="form-check-label fw-bold small text-nowrap" for="themeToggle" id="themeLabel" style="cursor: pointer; margin-right: 5px;">☀️ ライトモード</label>
         </div>
     </div>
 
-    <div class="slider-panel shadow-lg">
+    <div class="slider-panel">
         <div class="d-flex justify-content-between align-items-center mb-1">
             <h4 class="mb-0 fw-bold text-primary" style="font-size: 1.1rem;">🎯 現在の作戦状況確認年齢（共通スライダー）</h4>
             <div>
@@ -84,23 +101,12 @@
         </div>
         <input type="range" id="commonAgeSlider" class="form-range" min="53" max="90" value="65" step="1" list="age-marks" oninput="updateAgeDisplay()">
         <datalist id="age-marks">
-            <option value="53"></option>
-            <option value="57"></option>
-            <option value="60"></option>
-            <option value="65"></option>
-            <option value="70"></option>
-            <option value="75"></option>
-            <option value="80"></option>
-            <option value="85"></option>
-            <option value="90"></option>
+            <option value="53"></option><option value="57"></option><option value="60"></option>
+            <option value="65"></option><option value="70"></option><option value="75"></option>
+            <option value="80"></option><option value="85"></option><option value="90"></option>
         </datalist>
         <div class="d-flex justify-content-between text-muted px-1" style="font-size: 0.75rem; margin-top: -2px;">
-            <span>53歳(F7始)</span>
-            <span>60歳(B5始)</span>
-            <span>65歳(A8始)</span>
-            <span>73歳(S12始)</span>
-            <span>85歳(S12終)</span>
-            <span>90歳(C5終)</span>
+            <span>53歳(F7始)</span><span>60歳(B5始)</span><span>65歳(A8始)</span><span>73歳(S12始)</span><span>85歳(S12終)</span><span>90歳(C5終)</span>
         </div>
     </div>
 
@@ -199,34 +205,37 @@
                             <span>eMAXIS Slim sp500 比率</span>
                             <span id="lbl_t_sp_ratio" class="badge bg-primary">40%</span>
                         </label>
-                        <input type="range" id="t_sp_ratio" class="form-range" min="0" max="100" value="40" oninput="adjustSliders('t', 'sp'); calculateAll();">
+                        <input type="range" id="t_sp_ratio" class="form-range" min="0" max="100" value="40" step="1" list="pct-marks" oninput="adjustSliders('t', 'sp'); calculateAll();">
                     </div>
                     <div class="mb-2">
                         <label class="form-label d-flex justify-content-between align-items-center">
                             <span>ニッセイnas100 比率</span>
                             <span id="lbl_t_nas_ratio" class="badge bg-success">40%</span>
                         </label>
-                        <input type="range" id="t_nas_ratio" class="form-range" min="0" max="100" value="40" oninput="adjustSliders('t', 'nas'); calculateAll();">
+                        <input type="range" id="t_nas_ratio" class="form-range" min="0" max="100" value="40" step="1" list="pct-marks" oninput="adjustSliders('t', 'nas'); calculateAll();">
                     </div>
                     <div class="mb-3">
                         <label class="form-label d-flex justify-content-between align-items-center">
                             <span>selected index fund 比率</span>
                             <span id="lbl_t_sel_ratio" class="badge bg-info">20%</span>
                         </label>
-                        <input type="range" id="t_sel_ratio" class="form-range" min="0" max="100" value="20" oninput="adjustSliders('t', 'sel'); calculateAll();">
+                        <input type="range" id="t_sel_ratio" class="form-range" min="0" max="100" value="20" step="1" list="pct-marks" oninput="adjustSliders('t', 'sel'); calculateAll();">
+                        <div class="d-flex justify-content-between text-muted pct-dots px-1">
+                            <span>0%</span><span>10%</span><span>20%</span><span>30%</span><span>40%</span><span>50%</span><span>60%</span><span>70%</span><span>80%</span><span>90%</span><span>100%</span>
+                        </div>
                     </div>
 
                     <div class="p-2 rounded border small bg-body-secondary" style="font-size:0.75rem;">
                         <div class="row g-1 mb-1">
-                            <div class="col-7 text-muted-adaptive">Slim sp500 想定年率:</div>
+                            <div class="col-7">Slim sp500 想定年率:</div>
                             <div class="col-5"><input type="number" id="t_sp_y" class="form-control form-control-sm" value="7.0" step="0.1" oninput="calculateAll()"></div>
                         </div>
                         <div class="row g-1 mb-1">
-                            <div class="col-7 text-muted-adaptive">ニッセイnas100 想定年率:</div>
+                            <div class="col-7">ニッセイnas100 想定年率:</div>
                             <div class="col-5"><input type="number" id="t_nas_y" class="form-control form-control-sm" value="9.0" step="0.1" oninput="calculateAll()"></div>
                         </div>
                         <div class="row g-1">
-                            <div class="col-7 text-muted-adaptive">selected fund 想定年率:</div>
+                            <div class="col-7">selected fund 想定年率:</div>
                             <div class="col-5"><input type="number" id="t_sel_y" class="form-control form-control-sm" value="8.0" step="0.1" oninput="calculateAll()"></div>
                         </div>
                     </div>
@@ -251,21 +260,24 @@
                             <span>Slim S&P500 比率</span>
                             <span id="lbl_dc_sp_ratio" class="badge bg-primary">50%</span>
                         </label>
-                        <input type="range" id="dc_sp_ratio" class="form-range" min="0" max="100" value="50" oninput="adjustSliders('dc', 'sp'); calculateAll();">
+                        <input type="range" id="dc_sp_ratio" class="form-range" min="0" max="100" value="50" step="1" list="pct-marks" oninput="adjustSliders('dc', 'sp'); calculateAll();">
                     </div>
                     <div class="mb-2">
                         <label class="form-label d-flex justify-content-between align-items-center">
                             <span>NASDAQ 100 比率</span>
                             <span id="lbl_dc_nas_ratio" class="badge bg-success">50%</span>
                         </label>
-                        <input type="range" id="dc_nas_ratio" class="form-range" min="0" max="100" value="50" oninput="adjustSliders('dc', 'nas'); calculateAll();">
+                        <input type="range" id="dc_nas_ratio" class="form-range" min="0" max="100" value="50" step="1" list="pct-marks" oninput="adjustSliders('dc', 'nas'); calculateAll();">
                     </div>
                     <div class="mb-3">
                         <label class="form-label d-flex justify-content-between align-items-center">
                             <span>Selected Fund 比率</span>
                             <span id="lbl_dc_sel_ratio" class="badge bg-info">0%</span>
                         </label>
-                        <input type="range" id="dc_sel_ratio" class="form-range" min="0" max="100" value="0" oninput="adjustSliders('dc', 'sel'); calculateAll();">
+                        <input type="range" id="dc_sel_ratio" class="form-range" min="0" max="100" value="0" step="1" list="pct-marks" oninput="adjustSliders('dc', 'sel'); calculateAll();">
+                        <div class="d-flex justify-content-between text-muted pct-dots px-1">
+                            <span>0%</span><span>10%</span><span>20%</span><span>30%</span><span>40%</span><span>50%</span><span>60%</span><span>70%</span><span>80%</span><span>90%</span><span>100%</span>
+                        </div>
                     </div>
                     <div class="row g-2 small">
                         <div class="col-6">S&P500年率: <input type="number" id="dc_sp_y" class="form-control form-control-sm d-inline-block w-50" value="7.0" step="0.1" oninput="calculateAll()">%</div>
@@ -292,21 +304,24 @@
                             <span>Slim S&P500 比率</span>
                             <span id="lbl_n_sp_ratio" class="badge bg-primary">40%</span>
                         </label>
-                        <input type="range" id="n_sp_ratio" class="form-range" min="0" max="100" value="40" oninput="adjustSliders('n', 'sp'); calculateAll();">
+                        <input type="range" id="n_sp_ratio" class="form-range" min="0" max="100" value="40" step="1" list="pct-marks" oninput="adjustSliders('n', 'sp'); calculateAll();">
                     </div>
                     <div class="mb-2">
                         <label class="form-label d-flex justify-content-between align-items-center">
                             <span>NASDAQ 100 比率</span>
                             <span id="lbl_n_nas_ratio" class="badge bg-success">60%</span>
                         </label>
-                        <input type="range" id="n_nas_ratio" class="form-range" min="0" max="100" value="60" oninput="adjustSliders('n', 'nas'); calculateAll();">
+                        <input type="range" id="n_nas_ratio" class="form-range" min="0" max="100" value="60" step="1" list="pct-marks" oninput="adjustSliders('n', 'nas'); calculateAll();">
                     </div>
                     <div class="mb-3">
                         <label class="form-label d-flex justify-content-between align-items-center">
                             <span>Selected Fund 比率</span>
                             <span id="lbl_n_sel_ratio" class="badge bg-info">0%</span>
                         </label>
-                        <input type="range" id="n_sel_ratio" class="form-range" min="0" max="100" value="0" oninput="adjustSliders('n', 'sel'); calculateAll();">
+                        <input type="range" id="n_sel_ratio" class="form-range" min="0" max="100" value="0" step="1" list="pct-marks" oninput="adjustSliders('n', 'sel'); calculateAll();">
+                        <div class="d-flex justify-content-between text-muted pct-dots px-1">
+                            <span>0%</span><span>10%</span><span>20%</span><span>30%</span><span>40%</span><span>50%</span><span>60%</span><span>70%</span><span>80%</span><span>90%</span><span>100%</span>
+                        </div>
                     </div>
                     <div class="row g-2 small">
                         <div class="col-6">S&P500年率: <input type="number" id="n_sp_y" class="form-control form-control-sm d-inline-block w-50" value="7.0" step="0.1" oninput="calculateAll()">%</div>
@@ -330,36 +345,39 @@
                     <div class="mb-3 p-2 border rounded bg-body-tertiary">
                         <span class="fw-bold small text-danger d-block mb-1">⚔️ A8期 (65〜72歳) 金利管制（比例変動）</span>
                         <div class="mb-1">
-                            <label class="form-label d-flex justify-content-between小">
+                            <label class="form-label d-flex justify-content-between">
                                 <span style="font-size:0.75rem;">65歳時点(開始金利)</span>
                                 <span id="lbl_rate_a8_start" class="fw-bold text-danger">2.0%</span>
                             </label>
-                            <input type="range" id="rate_a8_start" class="form-range" min="0" max="6" value="2.0" step="0.1" oninput="calculateAll()">
+                            <input type="range" id="rate_a8_start" class="form-range" min="0" max="6" value="2.0" step="0.1" list="rate-marks" oninput="calculateAll()">
                         </div>
                         <div>
-                            <label class="form-label d-flex justify-content-between小">
+                            <label class="form-label d-flex justify-content-between">
                                 <span style="font-size:0.75rem;">72歳時点(終了金利)</span>
                                 <span id="lbl_rate_a8_end" class="fw-bold text-danger">2.0%</span>
                             </label>
-                            <input type="range" id="rate_a8_end" class="form-range" min="0" max="6" value="2.0" step="0.1" oninput="calculateAll()">
+                            <input type="range" id="rate_a8_end" class="form-range" min="0" max="6" value="2.0" step="0.1" list="rate-marks" oninput="calculateAll()">
                         </div>
                     </div>
 
                     <div class="p-2 border rounded bg-body-tertiary">
-                        <span class="fw-bold small text-purple d-block mb-1" style="color: #a855f7;">🔮 S12期 (73〜85歳) 金利管制（比例変動）</span>
+                        <span class="fw-bold small d-block mb-1" style="color: #a855f7;">🔮 S12期 (73〜85歳) 金利管制（比例変動）</span>
                         <div class="mb-1">
-                            <label class="form-label d-flex justify-content-between小">
+                            <label class="form-label d-flex justify-content-between">
                                 <span style="font-size:0.75rem;">73歳時点(開始金利)</span>
-                                <span id="lbl_rate_s12_start" class="fw-bold style-purple" style="color: #a855f7;">2.0%</span>
+                                <span id="lbl_rate_s12_start" class="fw-bold" style="color: #a855f7;">2.0%</span>
                             </label>
-                            <input type="range" id="rate_s12_start" class="form-range" min="0" max="6" value="2.0" step="0.1" oninput="calculateAll()">
+                            <input type="range" id="rate_s12_start" class="form-range" min="0" max="6" value="2.0" step="0.1" list="rate-marks" oninput="calculateAll()">
                         </div>
                         <div>
-                            <label class="form-label d-flex justify-content-between小">
+                            <label class="form-label d-flex justify-content-between">
                                 <span style="font-size:0.75rem;">85歳時点(終了金利)</span>
-                                <span id="lbl_rate_s12_end" class="fw-bold style-purple" style="color: #a855f7;">2.0%</span>
+                                <span id="lbl_rate_s12_end" class="fw-bold" style="color: #a855f7;">2.0%</span>
                             </label>
-                            <input type="range" id="rate_s12_end" class="form-range" min="0" max="6" value="2.0" step="0.1" oninput="calculateAll()">
+                            <input type="range" id="rate_s12_end" class="form-range" min="0" max="6" value="2.0" step="0.1" list="rate-marks" oninput="calculateAll()">
+                        </div>
+                        <div class="d-flex justify-content-between text-muted px-1" style="font-size: 0.65rem; opacity:0.5; margin-top:2px;">
+                            <span>0%</span><span>1%</span><span>2%</span><span>3%</span><span>4%</span><span>5%</span><span>6%</span>
                         </div>
                     </div>
                 </div>
@@ -375,31 +393,31 @@
                 <h5 class="fw-bold text-primary mb-2" style="font-size: 1rem;">💡 全人生フェーズ作戦定義・注釈ボード</h5>
                 <div class="row g-2 small" style="color: var(--text-color); font-weight: 500;">
                     <div class="col-6 col-md-2.4" style="flex: 1;">
-                        <div class="p-2 rounded border" style="background: rgba(255,165,0,0.08); height:100%; border-color: rgba(255,165,0,0.3) !important;">
+                        <div class="p-2 rounded border" style="background: rgba(255,165,0,0.06); height:100%; border-color: rgba(255,165,0,0.2) !important;">
                             <span class="phase-badge bg-warning text-dark mb-1 d-inline-block">F7期 (53〜59歳)</span>
                             <p class="mt-1 mb-0" style="font-size: 0.75rem; line-height: 1.3; opacity: 0.95;">資産形成の最終基盤。特定口座・企業型DCへ全撃追撃し、2028年までにNISA枠完遂を狙う布陣。</p>
                         </div>
                     </div>
                     <div class="col-6 col-md-2.4" style="flex: 1;">
-                        <div class="p-2 rounded border" style="background: rgba(0,191,255,0.08); height:100%; border-color: rgba(0,191,255,0.3) !important;">
+                        <div class="p-2 rounded border" style="background: rgba(0,191,255,0.06); height:100%; border-color: rgba(0,191,255,0.2) !important;">
                             <span class="phase-badge bg-info text-white mb-1 d-inline-block">B5期 (60〜64歳)</span>
                             <p class="mt-1 mb-0" style="font-size: 0.75rem; line-height: 1.3; opacity: 0.95;">定年後の移行期。持株会精算、企業型DCの洗濯移管を行い、NISAは無税聖域で最大複利運用。</p>
                         </div>
                     </div>
                     <div class="col-6 col-md-2.4" style="flex: 1;">
-                        <div class="p-2 rounded border" style="background: rgba(50,205,50,0.08); height:100%; border-color: rgba(50,205,50,0.3) !important;">
+                        <div class="p-2 rounded border" style="background: rgba(50,205,50,0.06); height:100%; border-color: rgba(50,205,50,0.2) !important;">
                             <span class="phase-badge bg-success text-white mb-1 d-inline-block">A8期 (65〜72歳)</span>
                             <p class="mt-1 mb-0" style="font-size: 0.75rem; line-height: 1.3; opacity: 0.95;">G20前半。全特定を楽天へ。証券担保ローンから月60万引出しステルス生活を確立。</p>
                         </div>
                     </div>
                     <div class="col-6 col-md-2.4" style="flex: 1;">
-                        <div class="p-2 rounded border" style="background: rgba(138,43,226,0.08); height:100%; border-color: rgba(138,43,226,0.3) !important;">
+                        <div class="p-2 rounded border" style="background: rgba(138,43,226,0.06); height:100%; border-color: rgba(138,43,226,0.2) !important;">
                             <span class="phase-badge bg-secondary text-white mb-1 d-inline-block">S12期 (73〜85歳)</span>
                             <p class="mt-1 mb-0" style="font-size: 0.75rem; line-height: 1.3; opacity: 0.95;">G20後半。借入を月30万に圧縮。安全性、効率、相続税圧縮を極め、精神的絶対余裕を確保。</p>
                         </div>
                     </div>
                     <div class="col-12 col-md-2.4" style="flex: 1;">
-                        <div class="p-2 rounded border" style="background: rgba(229,62,62,0.08); height:100%; border-color: rgba(229,62,62,0.3) !important;">
+                        <div class="p-2 rounded border" style="background: rgba(229,62,62,0.06); height:100%; border-color: rgba(229,62,62,0.2) !important;">
                             <span class="phase-badge bg-danger text-white mb-1 d-inline-block">C5期 (86〜90歳)</span>
                             <p class="mt-1 mb-0" style="font-size: 0.75rem; line-height: 1.3; opacity: 0.95;">人生の集大成・終活期。要塞の最終確認と次世代への円滑なる大政奉還（相続）を完全完了させる防衛陣形。</p>
                         </div>
@@ -408,7 +426,7 @@
             </div>
 
             <div class="advice-box shadow-sm mb-3">
-                <h5 class="fw-bold mb-2" style="font-size: 1rem; color: #ffca28;"><span style="font-size:1.2rem; margin-right:4px;">🧠</span>専属軍師のリアルタイム戦略進言</h5>
+                <h5 class="fw-bold mb-2" style="font-size: 1rem; color: #d97706;"><span style="font-size:1.2rem; margin-right:4px;">🧠</span>専属軍師のリアルタイム戦略進言</h5>
                 <div id="ai_advice"></div>
             </div>
 
@@ -416,8 +434,8 @@
                 <div class="d-flex justify-content-between align-items-center mb-3 border-bottom pb-2">
                     <h5 class="fw-bold mb-0 text-primary" style="font-size: 1rem;">📈 リアルインデックス1年日次リアルチャートボード</h5>
                     <div class="btn-group btn-group-sm shadow-sm" role="group">
-                        <button type="button" class="btn btn-outline-primary active" id="btn_usd_base" onclick="switchChartBase('USD')">💵 ドルベース</button>
-                        <button type="button" class="btn btn-outline-primary" id="btn_jpy_base" onclick="switchChartBase('JPY')">💴 円ベース</button>
+                        <button type="button" class="btn btn-outline-primary" id="btn_usd_base" onclick="switchChartBase('USD')">💵 ドルベース</button>
+                        <button type="button" class="btn btn-outline-primary active" id="btn_jpy_base" onclick="switchChartBase('JPY')">💴 円ベース</button>
                     </div>
                 </div>
                 <div class="row g-2">
@@ -442,26 +460,33 @@
     </div>
 </div>
 
+<datalist id="pct-marks">
+    <option value="0"></option><option value="10"></option><option value="20"></option><option value="30"></option><option value="40"></option>
+    <option value="50"></option><option value="60"></option><option value="70"></option><option value="80"></option><option value="90"></option><option value="100"></option>
+</datalist>
+<datalist id="rate-marks">
+    <option value="0"></option><option value="1"></option><option value="2"></option><option value="3"></option><option value="4"></option><option value="5"></option><option value="6"></option>
+</datalist>
+
 <script>
 let globalResults = {};
-let currentChartBase = 'USD';
-let lastTheme = '';
+let currentChartBase = 'JPY'; // 1秒ベースで円建て換装
+let lastTheme = 'light';
 let lastBase = '';
 
 function toggleTheme() {
-    const isLight = document.getElementById('themeToggle').checked;
-    if (isLight) {
-        document.body.setAttribute('data-theme', 'light');
-        document.getElementById('themeLabel').innerHTML = '☀️ ライトモード';
+    const isDark = document.getElementById('themeToggle').checked;
+    if (isDark) {
+        document.body.setAttribute('data-theme', 'dark');
+        document.getElementById('themeLabel').innerHTML = '🌙 ダークモード';
     } else {
         document.body.removeAttribute('data-theme');
-        document.getElementById('themeLabel').innerHTML = '🌙 ダークモード';
+        document.getElementById('themeLabel').innerHTML = '☀️ ライトモード';
     }
     calculateAll();
     updateTradingViewCharts(currentChartBase);
 }
 
-// 🌟 汎用化・強化された3本スライダー合計100固定連動アルゴリズム
 function adjustSliders(prefix, changed) {
     let sp = parseInt(document.getElementById(`${prefix}_sp_ratio`).value) || 0;
     let nas = parseInt(document.getElementById(`${prefix}_nas_ratio`).value) || 0;
@@ -513,8 +538,8 @@ function switchChartBase(base) {
 }
 
 function updateTradingViewCharts(base) {
-    const isLight = document.body.getAttribute('data-theme') === 'light';
-    const theme = isLight ? 'light' : 'dark';
+    const isDark = document.body.getAttribute('data-theme') === 'dark';
+    const theme = isDark ? 'dark' : 'light';
     
     if (lastTheme === theme && lastBase === base) return;
     lastTheme = theme;
@@ -544,23 +569,21 @@ function updateAgeDisplay() {
 }
 
 function calculateAll() {
-    const isLight = document.body.getAttribute('data-theme') === 'light';
-    const paperBg = isLight ? '#ffffff' : '#161925';
-    const plotBg = isLight ? '#ffffff' : '#0f111a';
-    const fontColor = isLight ? '#1a202c' : '#e2e8f0';
-    const gridColor = isLight ? '#e2e8f0' : '#24293e';
+    const isDark = document.body.getAttribute('data-theme') === 'dark';
+    const paperBg = isDark ? '#161925' : '#ffffff';
+    const plotBg = isDark ? '#0f111a' : '#ffffff';
+    const fontColor = isDark ? '#e2e8f0' : '#1a202c';
+    const gridColor = isDark ? '#24293e' : '#e2e8f0';
 
     const cur_mochikabu = parseFloat(document.getElementById('cur_mochikabu').value) || 0;
     const m_yield = parseFloat(document.getElementById('m_yield').value) || 0;
     const r_mochikabu = m_yield / 100;
 
-    // 特定口座利回り（3層加重平均）
     const t_sp_ratio = parseFloat(document.getElementById('t_sp_ratio').value) || 0;
     const t_nas_ratio = parseFloat(document.getElementById('t_nas_ratio').value) || 0;
     const t_sel_ratio = parseFloat(document.getElementById('t_sel_ratio').value) || 0;
     const r_tokutei = (t_sp_ratio * (parseFloat(document.getElementById('t_sp_y').value)||0) + t_nas_ratio * (parseFloat(document.getElementById('t_nas_y').value)||0) + t_sel_ratio * (parseFloat(document.getElementById('t_sel_y').value)||0)) / 10000;
 
-    // 企業型DC利回り（3層加重平均）
     const dc_sp_ratio = parseFloat(document.getElementById('dc_sp_ratio').value) || 0;
     const dc_nas_ratio = parseFloat(document.getElementById('dc_nas_ratio').value) || 0;
     const dc_sel_ratio = parseFloat(document.getElementById('dc_sel_ratio').value) || 0;
@@ -568,7 +591,6 @@ function calculateAll() {
     const mon_dc = parseFloat(document.getElementById('mon_dc').value) || 0;
     const r_dc = (dc_sp_ratio * (parseFloat(document.getElementById('dc_sp_y').value)||0) + dc_nas_ratio * (parseFloat(document.getElementById('dc_nas_y').value)||0) + dc_sel_ratio * (parseFloat(document.getElementById('t_sel_y').value)||0)) / 10000;
 
-    // NISA聖域利回り（3層加重平均）
     const n_sp_ratio = parseFloat(document.getElementById('n_sp_ratio').value) || 0;
     const n_nas_ratio = parseFloat(document.getElementById('n_nas_ratio').value) || 0;
     const n_sel_ratio = parseFloat(document.getElementById('n_sel_ratio').value) || 0;
@@ -579,7 +601,6 @@ function calculateAll() {
     const loan_a8 = parseFloat(document.getElementById('loan_a8').value) || 0;
     const loan_s12 = parseFloat(document.getElementById('loan_s12').value) || 0;
     
-    // 開始・終了金利パラメーター取得
     const rate_a8_start = parseFloat(document.getElementById('rate_a8_start').value) || 0;
     const rate_a8_end = parseFloat(document.getElementById('rate_a8_end').value) || 0;
     const rate_s12_start = parseFloat(document.getElementById('rate_s12_start').value) || 0;
@@ -590,39 +611,22 @@ function calculateAll() {
     document.getElementById('lbl_rate_s12_start').innerText = rate_s12_start.toFixed(1) + "%";
     document.getElementById('lbl_rate_s12_end').innerText = rate_s12_end.toFixed(1) + "%";
 
-    let ages = [];
-    let tokutei_data = [];
-    let dc_data = [];
-    let nisa_data = [];
-    let mochikabu_data = [];
-    let loan_data = [];
-
-    let v_tokutei = cur_tokutei;
-    let v_dc = cur_dc;
-    let v_nisa = cur_nisa;
-    let v_mochikabu = cur_mochikabu;
-    let v_loan = 0;
+    let ages = []; let tokutei_data = []; let dc_data = []; let nisa_data = []; let mochikabu_data = []; let loan_data = [];
+    let v_tokutei = cur_tokutei; let v_dc = cur_dc; let v_nisa = cur_nisa; let v_mochikabu = cur_mochikabu; let v_loan = 0;
 
     globalResults = {};
 
     for (let age = 53; age <= 90; age++) {
         if (age === 65) {
             v_tokutei += (v_mochikabu + v_dc);
-            v_mochikabu = 0;
-            v_dc = 0;
+            v_mochikabu = 0; v_dc = 0;
         }
 
-        ages.push(age);
-        tokutei_data.push(v_tokutei);
-        dc_data.push(v_dc);
-        nisa_data.push(v_nisa);
-        mochikabu_data.push(v_mochikabu);
-        loan_data.push(v_loan);
+        ages.push(age); tokutei_data.push(v_tokutei); dc_data.push(v_dc); nisa_data.push(v_nisa); mochikabu_data.push(v_mochikabu); loan_data.push(v_loan);
 
         let total_asset = v_tokutei + v_dc + v_nisa + v_mochikabu;
         let nomura_fort = v_tokutei;
         
-        // 精密インデックス3層絶対量計算
         let sp_amt = (v_tokutei * t_sp_ratio/100) + (v_dc * dc_sp_ratio/100) + (v_nisa * n_sp_ratio/100);
         let nas_amt = (v_tokutei * t_nas_ratio/100) + (v_dc * dc_nas_ratio/100) + (v_nisa * n_nas_ratio/100);
         let sel_amt = (v_tokutei * t_sel_ratio/100) + (v_dc * dc_sel_ratio/100) + (v_nisa * n_sel_ratio/100);
@@ -634,10 +638,7 @@ function calculateAll() {
         }
 
         globalResults[age] = {
-            total_asset: total_asset,
-            nomura_fort: nomura_fort,
-            nisa_val: v_nisa,
-            loan_bal: v_loan,
+            total_asset: total_asset, nomura_fort: nomura_fort, nisa_val: v_nisa, loan_bal: v_loan,
             net_fort: nomura_fort - v_loan,
             loan_ratio: nomura_fort > 0 ? (v_loan / nomura_fort) * 100 : 0,
             ratio_sp: total_asset > 0 ? (sp_amt / total_asset) * 100 : 0,
@@ -645,81 +646,62 @@ function calculateAll() {
             ratio_sel: total_asset > 0 ? (sel_amt / total_asset) * 100 : 0
         };
 
-        // 月次運用計算ループ
         for (let m = 0; m < 12; m++) {
             if (age >= 53 && age < 60) {
                 v_tokutei = (v_tokutei + mon_tokutei) * (1 + r_tokutei/12);
                 v_dc = (v_dc + mon_dc) * (1 + r_dc/12);
                 if (age < 65) v_mochikabu = v_mochikabu * (1 + r_mochikabu/12);
-                if ((age - 53) * 12 + m < 24) {
-                    v_nisa = (v_nisa + (rem_nisa / 24)) * (1 + r_nisa/12);
-                } else {
-                    v_nisa = v_nisa * (1 + r_nisa/12);
-                }
-            }
-            else if (age >= 60 && age < 65) {
-                v_tokutei = v_tokutei * (1 + r_tokutei/12);
-                v_dc = v_dc * (1 + r_dc/12);
+                if ((age - 53) * 12 + m < 24) { v_nisa = (v_nisa + (rem_nisa / 24)) * (1 + r_nisa/12); } 
+                else { v_nisa = v_nisa * (1 + r_nisa/12); }
+            } else if (age >= 60 && age < 65) {
+                v_tokutei = v_tokutei * (1 + r_tokutei/12); v_dc = v_dc * (1 + r_dc/12);
                 if (age < 65) v_mochikabu = v_mochikabu * (1 + r_mochikabu/12);
                 v_nisa = v_nisa * (1 + r_nisa/12);
-            }
-            else {
-                v_tokutei = v_tokutei * (1 + r_tokutei/12);
-                v_nisa = v_nisa * (1 + r_nisa/12);
+            } else {
+                v_tokutei = v_tokutei * (1 + r_tokutei/12); v_nisa = v_nisa * (1 + r_nisa/12);
             }
         }
 
-        // 🌟 有担保ローン期間別金利・直線比例（直線補間）計算
         if (age >= 65 && age < 90) {
-            let annual_draw = 0;
-            let current_rate = 0;
-
+            let annual_draw = 0; let current_rate = 0;
             if (age >= 65 && age <= 72) {
                 annual_draw = loan_a8 * 12;
-                // A8期の金利比例（65歳でstart、72歳でend）
                 let pct = (age - 65) / (72 - 65);
                 current_rate = (rate_a8_start + (rate_a8_end - rate_a8_start) * pct) / 100;
             } else if (age >= 73 && age <= 85) {
                 annual_draw = loan_s12 * 12;
-                // S12期の金利比例（73歳でstart、85歳でend）
                 let pct = (age - 73) / (85 - 73);
                 current_rate = (rate_s12_start + (rate_s12_end - rate_s12_start) * pct) / 100;
             } else if (age >= 86 && age <= 90) {
-                // C5期（終活）：追加借入は基本停止し、前年金利を維持して利息のみロールアップ
-                annual_draw = 0;
-                current_rate = rate_s12_end / 100;
+                annual_draw = 0; current_rate = rate_s12_end / 100;
             }
-
             v_loan = (v_loan + annual_draw) * (1 + current_rate);
         }
     }
 
-    const tTokutei = { x: ages, y: tokutei_data, name: '🏯 野村要塞 (特定口座)', type: 'scatter', line: {color: '#1e3a8a', width: 4, dash: 'solid'} };
+    const tTokutei = { x: ages, y: tokutei_data, name: '🏯 野村要塞 (特定口座)', type: 'scatter', line: {color: '#1e3a8a', width: 4} };
     const tDc = { x: ages, y: dc_data, name: '🧼 企業型DC部隊', type: 'scatter', line: {color: '#ed8936', width: 2.5, dash: 'dot'} };
     const tNisa = { x: ages, y: nisa_data, name: '🛡️ SBI・NISA聖域', type: 'scatter', line: {color: '#38a169', width: 2.5, dash: 'dash'} };
     const tMochi = { x: ages, y: mochikabu_data, name: '💼 持株会部隊', type: 'scatter', line: {color: '#d53f8c', width: 2.5, dash: 'dashdot'} };
     const tLoan = { x: ages, y: loan_data, name: '🚨 有担保ローン総残高', type: 'scatter', line: {color: '#e53e3e', width: 4, dash: 'longdash'} };
 
     const layouts = {
-        paper_bgcolor: paperBg, plot_bgcolor: plotBg,
-        font: { color: fontColor, size: 11 },
-        margin: { t: 30, b: 40, l: 65, r: 20 },
-        legend: { orientation: 'h', y: -0.18, font: {size: 10} },
-        xaxis: { gridcolor: gridColor, dtick: 5 }, yaxis: { gridcolor: gridColor },
-        hovermode: 'x unified',
+        paper_bgcolor: paperBg, plot_bgcolor: plotBg, font: { color: fontColor, size: 11 },
+        margin: { t: 30, b: 40, l: 65, r: 20 }, legend: { orientation: 'h', y: -0.18, font: {size: 10} },
+        xaxis: { gridcolor: gridColor, dtick: 5 }, yaxis: { gridcolor: gridColor }, hovermode: 'x unified',
         shapes: [
-            { type: 'rect', xref: 'x', yref: 'paper', x0: 53, x1: 60, y0: 0, y1: 1, fillcolor: isLight ? 'rgba(255, 165, 0, 0.05)' : 'rgba(255, 165, 0, 0.02)', line: {width: 0} },
-            { type: 'rect', xref: 'x', yref: 'paper', x0: 60, x1: 65, y0: 0, y1: 1, fillcolor: isLight ? 'rgba(0, 191, 255, 0.05)' : 'rgba(0, 191, 255, 0.02)', line: {width: 0} },
-            { type: 'rect', xref: 'x', yref: 'paper', x0: 65, x1: 73, y0: 0, y1: 1, fillcolor: isLight ? 'rgba(50, 205, 50, 0.05)' : 'rgba(50, 205, 50, 0.02)', line: {width: 0} },
-            { type: 'rect', xref: 'x', yref: 'paper', x0: 73, x1: 85, y0: 0, y1: 1, fillcolor: isLight ? 'rgba(138, 43, 226, 0.05)' : 'rgba(138, 43, 226, 0.02)', line: {width: 0} },
-            { type: 'rect', xref: 'x', yref: 'paper', x0: 85, x1: 90, y0: 0, y1: 1, fillcolor: isLight ? 'rgba(229, 62, 62, 0.05)' : 'rgba(229, 62, 62, 0.02)', line: {width: 0} }
+            { type: 'rect', xref: 'x', yref: 'paper', x0: 53, x1: 60, y0: 0, y1: 1, fillcolor: isDark ? 'rgba(255,165,0,0.02)' : 'rgba(255,165,0,0.04)', line: {width: 0} },
+            { type: 'rect', xref: 'x', yref: 'paper', x0: 60, x1: 65, y0: 0, y1: 1, fillcolor: isDark ? 'rgba(0,191,255,0.02)' : 'rgba(0,191,255,0.04)', line: {width: 0} },
+            { type: 'rect', xref: 'x', yref: 'paper', x0: 65, x1: 73, y0: 0, y1: 1, fillcolor: isDark ? 'rgba(50,205,50,0.02)' : 'rgba(50,205,50,0.04)', line: {width: 0} },
+            { type: 'rect', xref: 'x', yref: 'paper', x0: 73, x1: 85, y0: 0, y1: 1, fillcolor: isDark ? 'rgba(138,43,226,0.02)' : 'rgba(138,43,226,0.04)', line: {width: 0} },
+            { type: 'rect', xref: 'x', yref: 'paper', x0: 85, x1: 90, y0: 0, y1: 1, fillcolor: isDark ? 'rgba(229,62,62,0.02)' : 'rgba(229,62,62,0.04)', line: {width: 0} }
         ],
         annotations: [
-            { x: 56.5, y: 0.96, xref: 'x', yref: 'paper', text: '<b>F7期</b>', showarrow: false, font: {color: isLight ? '#b57c00' : '#ffca28', size: 11} },
-            { x: 62.5, y: 0.96, xref: 'x', yref: 'paper', text: '<b>B5期</b>', showarrow: false, font: {color: isLight ? '#007099' : '#40c4ff', size: 11} },
-            { x: 69, y: 0.96, xref: 'x', yref: 'paper', text: '<b>A8期</b>', showarrow: false, font: {color: isLight ? '#008744' : '#69f0ae', size: 11} },
-            { x: 79, y: 0.96, xref: 'x', yref: 'paper', text: '<b>S12期</b>', showarrow: false, font: {color: isLight ? '#7b1fa2' : '#ea80fc', size: 11} },
-            { x: 87.5, y: 0.96, xref: 'x', yref: 'paper', text: '<b>C5期</b>', showarrow: false, font: {color: isLight ? '#c53030' : '#feb2b2', size: 11} }
+            { x: 56.5, y: 0.96, xref: 'x', yref: 'paper', text: '<b>F7期</b>', showarrow: false, font: {color: isDark ? '#ffca28' : '#b57c00', size: 11} },
+            { x: 62.5, y: 0.96, xref: 'x', yref: 'paper', text: '<b>B5期</b>', showarrow: false, font: {color: isDark ? '#40c4ff' : '#007099', size: 11} },
+            { x: 69, y: 0.96, xref: 'x', yref: 'paper', text: '<b>A8期</b>', showarrow: false, font: {color: isDark ? '#69f0ae' : '#008744', size: 11} },
+            { x: 79, y: 0.96, xref: 'x', yref: 'paper', text: '<b>S12期</b>', showarrow: false, font: {color: isDark ? '#ea80fc' : '#7b1fa2', size: 11} },
+            { x: 87.5, y: 0.96, xref: 'x', yref: 'paper', text: '<b>C5期</b>', showarrow: false, font: {color: isDark ? '#feb2b2' : '#c53030', size: 11} }
         ]
     };
 
@@ -744,9 +726,7 @@ function renderDashboard(age) {
     document.getElementById('d_ratio_sel').innerText = `Selected: ${data.ratio_sel.toFixed(1)}%`;
 
     let advice = `総司令官！共通スライダーにより **${age}歳** 時点の陣形をピンポイント抽出中だだにゆ！<br>`;
-    if (age == 65) {
-        advice += `【歴史的聖誕祭】65歳の瞬間、持株会と企業型DC部隊がすべて野村要塞に雪崩れ込み、担保能力が一撃で大爆発しただだにゆ！<br>`;
-    }
+    if (age == 65) advice += `【歴史的聖誕祭】65歳の瞬間、持株会と企業型DC部隊がすべて野村要塞に雪崩れ込み、担保能力が一撃で大爆発しただだにゆ！<br>`;
     if (age >= 86) {
         advice += `🔮【C5期：終活・資産承継】${age}歳は人生の集大成フェーズ。借入のレバレッジリスクを完全に制圧しつつ、次世代への完璧な資産移転を視野に入れる美麗なる着陸フェーズだだにゆ。ニヤリｗ<br>`;
     } else if (data.loan_ratio > 35) {
@@ -757,7 +737,7 @@ function renderDashboard(age) {
     document.getElementById('ai_advice').innerHTML = advice;
 }
 
-// 初期化（全スライダーラベルの初期同期）
+// 初期化同期
 updateLabelText('t', 40, 40, 20);
 updateLabelText('dc', 50, 50, 0);
 updateLabelText('n', 40, 60, 0);

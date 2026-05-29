@@ -55,7 +55,6 @@ for m in range(years_to_retire * 12):
 dc_val = current_dc
 for m in range(12 * 12):
     current_age = age_start + (m // 12)
-    # 60歳までは追撃あり、それ以降は一括運用のみ
     if current_age < 60:
         dc_val = (dc_val + monthly_dc) * (1 + target_yield / 12)
     else:
@@ -103,24 +102,19 @@ for age in ages:
     nisa_assets.append(current_nisa)
     loan_balances.append(current_loan)
     
-    # レバレッジ比率計算
     lev = (current_loan / current_nomura) * 100 if current_nomura > 0 else 0
     leverage_ratios.append(lev)
     
-    # ローン引き出し額の決定（A8かS12か）
     if age < age_s12:
         draw = annual_loan_draw
     else:
         draw = annual_loan_draw * s12_loan_ratio
         
-    # 次の年への遷移（年利7%運用とローンの追加）
     current_nomura = (current_nomura) * (1 + target_yield)
     current_nisa = current_nisa * (1 + target_yield)
-    # ローン残高（金利は仮に年2.0%と想定して累積、生活費が加算される）
     if age < age_end:
         current_loan = (current_loan + draw) * 1.02 
 
-# データフレーム化
 df_g20 = pd.DataFrame({
     "年齢": ages,
     "野村要塞資産": nomura_assets,
@@ -134,16 +128,21 @@ st.header("📈 G20フェーズ（65歳〜85歳）資産・ローン動的推移
 
 fig = go.Figure()
 fig.add_trace(go.Scatter(x=df_g20["年齢"], y=df_g20["野村要塞資産"], name="🏯 野村要塞資産(担保)", line=dict(color='#1f77b4', width=3)))
-fig.add_trace(go.Scatter(x=df_g20["SBI・NISA聖域"], x=df_g20["年齢"], y=df_g20["SBI・NISA聖域"], name="🛡️ SBI・NISA聖域(無税)", line=dict(color='#2ca02c', width=2, dash='dash')))
+fig.add_trace(go.Scatter(x=df_g20["年齢"], y=df_g20["SBI・NISA聖域"], name="🛡️ SBI・NISA聖域(無税)", line=dict(color='#2ca02c', width=2, dash='dash')))
 fig.add_trace(go.Scatter(x=df_g20["年齢"], y=df_g20["ローン借入残高"], name="🚨 ローン借入残高", line=dict(color='#d62728', width=3)))
 
-fig.update_layout(title="資産増殖 vs ローン残高のデッドヒート", xlab_title="年齢", ylab_title="金額（万円）", hovermode="x unified")
+fig.update_layout(
+    title="資産増殖 vs ローン残高のデッドヒート", 
+    xaxis_title="年齢", 
+    yaxis_title="金額（万円）", 
+    hovermode="x unified"
+)
 st.plotly_chart(fig, use_container_width=True)
 
 # --- 動的AI（軍師）アドバイスシステム ---
 st.header("🧠 専属軍師のリアルタイム動的進言")
 
-latest_lev = leverage_ratios[0] # 65歳時点
+latest_lev = leverage_ratios[0]
 max_lev = max(leverage_ratios)
 end_asset = nomura_assets[-1] + nisa_assets[-1]
 
@@ -154,7 +153,6 @@ with col_adv1:
     st.write(f"* **G20期間中の最大レバレッジ比率:** {max_lev:.1f} %")
     st.write(f"* **85歳時点の持株会抜き総戦闘力:** {int(end_asset):,} 万円")
     
-    # レバレッジ比率に応じた動的アラート
     if max_lev < 25:
         st.success("🟢 【絶対不沈モード】レバレッジが25%未満に抑え込まれています！暴落耐性-50%超。核シェルター級の安全性だだにゆ！")
     elif max_lev <= 35:
@@ -176,7 +174,6 @@ with col_adv2:
         この場合は、現役時代の追撃スピード（特定口座への月30万やDCなど）を少しだけ強めるか、利回りの上振れを狙う精鋭銘柄への集中投資を検討すると、一気に2億円の大大要塞へ復帰できるだだにゆ！！」
         """)
 
-# データテーブル表示（確認用）
 if st.checkbox("🔍 詳細な数値データ一覧（グリッド表示）"):
     st.dataframe(df_g20.style.format({
         "野村要塞資産": "{:,.0f}万円",

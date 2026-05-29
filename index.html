@@ -1,11 +1,12 @@
 import streamlit as st
+import streamlit.components.v1 as components
 import pandas as pd
 import plotly.graph_objects as go
 
 # ==========================================
 # 1. 究極のサイバーフォント & スライダー陰影強化 CSS
 # ==========================================
-st.set_page_config(layout="wide", page_title="Operation Freedom Dashboard Ver.7.3")
+st.set_page_config(layout="wide", page_title="Operation Freedom Dashboard Ver.7.4")
 
 st.markdown("""
     <style>
@@ -94,7 +95,7 @@ st.markdown("""
 
 # タイトルセクション
 st.markdown('<h1 class="super-title">Dashboard / ダッシュボード</h1>', unsafe_allow_html=True)
-st.markdown('<p class="super-subtitle">OPERATION FREEDOM : NOMURA FORTRESS SYSTEM VER 7.3</p>', unsafe_allow_html=True)
+st.markdown('<p class="super-subtitle">OPERATION FREEDOM : NOMURA FORTRESS SYSTEM VER 7.4</p>', unsafe_allow_html=True)
 
 # ==========================================
 # 2. サイドバー：作戦統制室 & 金利管制
@@ -183,7 +184,7 @@ with col_sim1:
     st.markdown('<div class="slider-ticks"><span>-60%</span><span>-50%</span><span>-40%</span><span>-30%</span><span>-20%</span><span>-10%</span><span>0%</span></div>', unsafe_allow_html=True)
     
     # 分母を「野村要塞の総担保評価額」として計算
-    fortress_initial_value = 146000000 # 特定分とDC分の合算要塞入りベース
+    fortress_initial_value = 146000000 
     post_drop_fortress = fortress_initial_value * (1 + market_drop / 100)
     post_drop_nisa = 58000000 * (1 + market_drop / 100)
     
@@ -196,11 +197,8 @@ with col_sim1:
     st.markdown(f"**暴落後の野村要塞・総担保評価額:** {post_drop_fortress:,.0f} 円")
     st.markdown(f"**現在の総借入額:** {current_borrow_amount:,.0f} 円")
     
-    # 閾値LTV 60%超でアラート発令
     if ltv_ratio > 60:
         st.error(f"🚨 警告：野村要塞の借入比率（LTV）が {ltv_ratio:.1f}% まで上昇！追証発生しきい値(60%)を突破しました！")
-        
-        # 要塞の担保不足額（注入必要額）の逆算
         required_inject = (current_borrow_amount / 0.60) - post_drop_fortress
         
         if required_inject <= post_drop_nisa:
@@ -263,7 +261,7 @@ with col_m3:
     st.progress(0.05)
 
 # ==========================================
-# 5. TradingView リアルチャート
+# 5. TradingView リアルチャート (安全エスケープ版)
 # ==========================================
 st.markdown("---")
 st.subheader("📊 リアルタイム戦況ボード (三位一体相関分析)")
@@ -279,15 +277,16 @@ else:
 
 col_ch1, col_ch2, col_ch3 = st.columns(3)
 
+# Pythonのf-stringバグを完全に回避するため、置換方式で安全にHTMLを生成
 def generate_tv_html(symbol):
-    return f"""
-    <div id="tv-chart-{symbol}" style="height:400px;"></div>
+    html_template = """
+    <div id="tv-chart-TARGET" style="height:400px;"></div>
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
     <script type="text/javascript">
-    new TradingView.widget({{
+    new TradingView.widget({
       "width": "100%",
       "height": 400,
-      "symbol": "{symbol}",
+      "symbol": "TARGET",
       "interval": "D",
       "timezone": "Asia/Tokyo",
       "theme": "dark",
@@ -297,25 +296,26 @@ def generate_tv_html(symbol):
       "enable_publishing": false,
       "hide_side_toolbar": true,
       "allow_symbol_change": false,
-      "container_id": "tv-chart-{symbol}"
-    }});
+      "container_id": "tv-chart-TARGET"
+    });
     </script>
     """
+    return html_template.replace("TARGET", symbol)
 
 with col_ch1:
     st.markdown(f"#### 🇺🇸 S&P500 連動兵団 ({sp500_symbol})")
-    st.components.v1.html(generate_tv_html(sp500_symbol), height=410)
+    components.html(generate_tv_html(sp500_symbol), height=410)
 
 with col_ch2:
     st.markdown(f"🚀 NASDAQ100 主力兵団 ({nas100_symbol})")
-    st.components.v1.html(generate_tv_html(nas100_symbol), height=410)
+    components.html(generate_tv_html(nas100_symbol), height=410)
 
 with col_ch3:
     st.markdown("#### 💴 為替クッション (USD/JPY)")
-    st.components.v1.html(generate_tv_html("FX:USDJPY"), height=410)
+    components.html(generate_tv_html("FX:USDJPY"), height=410)
 
 # ==========================================
-# 6. 人生戦略ロードマップ & 金利比例計算 (C5終活対応)
+# 6. 人生戦略ロードマップ & 金利比例計算
 # ==========================================
 st.markdown("---")
 st.subheader("🗺️ 65歳全軍集結・黄金ライフフェーズ・ロードマップ")

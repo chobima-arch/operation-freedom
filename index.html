@@ -1,301 +1,603 @@
-import streamlit as st
-import pandas as pd
-import plotly.graph_objects as go
-
-# ==========================================
-# 1. 究極のサイバーフォント & スライダー陰影強化 CSS
-# ==========================================
-st.set_page_config(layout="wide", page_title="Operation Freedom Dashboard Ver.6.0")
-
-st.markdown("""
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operation Freedom Dashboard Ver.7.5</title>
+    <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
     <style>
-    /* Google Fontsから近未来SF風のOrbitronと洗練されたハイクラスなMontserratを召喚 */
-    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Orbitron:wght@500;900&family=Noto+Sans+JP:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Orbitron:wght@500;900&family=Noto+Sans+JP:wght@400;700&display=swap');
 
-    /* 総タイトルの超絶かっこいいフォントスタイリング */
-    .super-title {
-        font-family: 'Orbitron', 'Montserrat', 'Noto Sans JP', sans-serif;
-        font-weight: 900;
-        font-size: 3.2rem;
-        background: linear-gradient(45deg, #00ffcc, #0077ff, #ff0077);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        text-shadow: 0px 0px 20px rgba(0, 255, 204, 0.3);
-        letter-spacing: 2px;
-        margin-bottom: 0px;
-        padding-bottom: 0px;
-    }
-    .super-subtitle {
-        font-family: 'Montserrat', 'Noto Sans JP', sans-serif;
-        font-size: 1.1rem;
-        color: #8892b0;
-        letter-spacing: 5px;
-        margin-top: -5px;
-        margin-bottom: 25px;
-    }
+        body {
+            background-color: #060b16;
+            color: #ffffff;
+            font-family: 'Noto Sans JP', 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
 
-    /* スライダーのバックシャドウ（陰影・立体感）を圧倒的に強化 */
-    .stSlider > div [data-baseweb="slider"] {
-        background: linear-gradient(135deg, #111726, #070913) !important;
-        box-shadow: inset 0px 4px 10px rgba(0, 0, 0, 0.9), 
-                    0px 2px 4px rgba(255, 255, 255, 0.05) !important;
-        border-radius: 10px;
-        padding: 12px 20px !important;
-        border: 1px solid rgba(0, 255, 204, 0.15);
-    }
-    
-    /* スライダーのノブ（つまみ）をネオン発光 */
-    .stSlider > div [data-baseweb="slider"] > div > div {
-        background-color: #00ffcc !important;
-        box-shadow: 0 0 12px #00ffcc, 0 0 5px #00ffcc !important;
-    }
+        /* 全体レイアウト */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
 
-    /* カードUIのデザイン */
-    .asset-card {
-        background: rgba(16, 22, 37, 0.6);
-        border: 1px solid rgba(0, 255, 204, 0.2);
-        border-radius: 12px;
-        padding: 20px;
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-        backdrop-filter: blur(4px);
-        margin-bottom: 15px;
-    }
-    .asset-header {
-        font-size: 1.1rem;
-        font-weight: bold;
-        color: #00ffcc;
-        border-bottom: 1px solid rgba(0, 255, 204, 0.2);
-        padding-bottom: 8px;
-        margin-bottom: 12px;
-    }
+        /* 総タイトルのグラデーション */
+        .super-title {
+            font-family: 'Orbitron', 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-size: 3rem;
+            background: linear-gradient(45deg, #00ffcc, #0077ff, #ff0077);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0px 0px 25px rgba(0, 255, 204, 0.4);
+            letter-spacing: 3px;
+            margin: 0;
+        }
+        .super-subtitle {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            color: #8892b0;
+            letter-spacing: 6px;
+            margin-top: 5px;
+            margin-bottom: 30px;
+        }
+
+        /* 2カラム構成 (左: 設定サイドバー、右: メイン) */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 25px;
+        }
+
+        /* 作戦統制室 (サイドバー) */
+        .sidebar {
+            background: rgba(16, 22, 37, 0.8);
+            border: 1px solid rgba(0, 255, 204, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            height: fit-content;
+        }
+        .sidebar h2 {
+            color: #00ffcc;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            margin-top: 0;
+            border-bottom: 1px solid rgba(0, 255, 204, 0.2);
+            padding-bottom: 10px;
+        }
+
+        /* メインコンテンツ */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        /* 配備図カードレイアウト */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .asset-card {
+            background: rgba(16, 22, 37, 0.6);
+            border: 1px solid rgba(0, 255, 204, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+        }
+        .asset-header {
+            font-size: 1.05rem;
+            font-weight: bold;
+            color: #00ffcc;
+            border-bottom: 1px solid rgba(0, 255, 204, 0.2);
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+        }
+        .asset-val {
+            font-size: 1.8rem;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+        .asset-note {
+            font-size: 0.8rem;
+            color: #8892b0;
+            margin-top: 5px;
+            line-height: 1.4;
+        }
+
+        /* プログレスバー（ファンド比率） */
+        .progress-container {
+            margin-top: 10px;
+        }
+        .progress-label {
+            font-size: 0.75rem;
+            color: #a8b2d1;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2px;
+        }
+        .progress-bar {
+            background: #0d1527;
+            border-radius: 4px;
+            height: 6px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #0077ff, #00ffcc);
+        }
+
+        /* シミュレーターエリア */
+        .sim-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .sim-box {
+            background: rgba(16, 22, 37, 0.6);
+            border: 1px solid rgba(0, 255, 204, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+        }
+        .sim-box h3 {
+            margin-top: 0;
+            color: #ffffff;
+            font-size: 1.15rem;
+            border-left: 4px solid #ff0077;
+            padding-left: 10px;
+        }
+
+        /* カッコいい立体陰影スライダー */
+        .cyber-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 14px;
+            background: linear-gradient(135deg, #0d1527, #04060c);
+            border: 1px solid rgba(0, 255, 204, 0.3);
+            border-radius: 12px;
+            outline: none;
+            box-shadow: inset 0px 4px 10px rgba(0, 0, 0, 0.9);
+            margin: 15px 0 5px 0;
+        }
+        .cyber-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #00ffcc;
+            cursor: pointer;
+            box-shadow: 0 0 15px #00ffcc, 0 0 5px #00ffcc;
+            transition: 0.1s;
+        }
+        .slider-ticks {
+            display: flex;
+            justify-content: space-between;
+            color: #55627d;
+            font-size: 0.75rem;
+            font-family: 'Orbitron', sans-serif;
+            margin-bottom: 15px;
+        }
+
+        /* アラート・結果表示 */
+        .alert-zone {
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        .alert-success {
+            background: rgba(0, 255, 204, 0.1);
+            border: 1px solid #00ffcc;
+            color: #00ffcc;
+        }
+        .alert-danger {
+            background: rgba(255, 0, 119, 0.1);
+            border: 1px solid #ff0077;
+            color: #ff0077;
+        }
+
+        /* フォーム入力 */
+        .cyber-input {
+            background: #0d1527;
+            border: 1px solid rgba(0, 255, 204, 0.3);
+            color: white;
+            padding: 6px;
+            border-radius: 4px;
+            width: 80px;
+            font-family: 'Orbitron', sans-serif;
+            text-align: center;
+        }
+        .input-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 0.85rem;
+        }
+
+        /* タイムライン進捗 */
+        .milestone-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .stealth-badge {
+            background: linear-gradient(90deg, #7300ff, #0077ff);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 5px;
+        }
+
+        /* チャートエリア */
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        /* ラジオボタンのカスタムスタイル */
+        .radio-group {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0 20px 0;
+        }
+        .radio-label {
+            cursor: pointer;
+            padding: 6px 12px;
+            background: #0d1527;
+            border: 1px solid rgba(0, 255, 204, 0.3);
+            border-radius: 4px;
+            font-size: 0.85rem;
+            flex: 1;
+            text-align: center;
+        }
+        .radio-group input {
+            display: none;
+        }
+        .radio-group input:checked + .radio-label {
+            background: linear-gradient(90deg, #0077ff, #00ffcc);
+            color: #060b16;
+            font-weight: bold;
+            border-color: #00ffcc;
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+        }
+
+        hr {
+            border: none;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin: 20px 0;
+        }
     </style>
-""", unsafe_allow_html=True)
+</head>
+<body>
 
-# タイトルセクションの配置
-st.markdown('<h1 class="super-title">Dashboard / ダッシュボード</h1>', unsafe_allow_html=True)
-st.markdown('<p class="super-subtitle">OPERATION FREEDOM : STEALTH RETIREMENT STRATEGY</p>', unsafe_allow_html=True)
+<div class="container">
+    <h1 class="super-title">Dashboard / ダッシュボード</h1>
+    <p class="super-subtitle">OPERATION FREEDOM : NOMURA FORTRESS SYSTEM VER 7.5</p>
 
-# ==========================================
-# 2. サイドバー：作戦統制室 & 金利管制（比例計算対応）
-# ==========================================
-st.sidebar.header("🎯 全軍作戦統制システム")
+    <div class="dashboard-grid">
+        <div class="sidebar">
+            <h2>🎯 全軍作戦統制室</h2>
+            
+            <label style="font-size:0.85rem; color:#8892b0;">📈 チャートベース選択</label>
+            <div class="radio-group">
+                <input type="radio" id="base_yen" name="chart_base" value="yen" checked onchange="toggleCharts()">
+                <label for="base_yen" class="radio-label">💴 円ベース</label>
+                <input type="radio" id="base_usd" name="chart_base" value="usd" onchange="toggleCharts()">
+                <label for="base_usd" class="radio-label">💵 ドルベース</label>
+            </div>
 
-# チャート表示切り替えボタン
-chart_mode = st.sidebar.radio("📈 チャートベース選択", ["💴 円ベース (東証ETF連動)", "💵 ドルベース (生指数)"])
+            <hr>
+            <h3 style="color:#00ffcc; font-size:1rem; margin-top:0;">G20野村信託借入・金利</h3>
+            
+            <div class="input-group">
+                <label>基本/実運用 借入比率:</label>
+                <span id="borrow_ratio_txt" style="color:#00ffcc; font-weight:bold;">35%</span>
+            </div>
+            <input type="range" id="borrow_ratio_sl" class="cyber-slider" min="0" max="50" value="35" step="5" oninput="updateAll()">
+            <div class="slider-ticks"><span>0%</span><span>25%</span><span>50%</span></div>
 
-st.sidebar.markdown("---")
-# スロットアイコンを削除し、指定の名前に変更
-st.sidebar.subheader("G20野村信託借入額・金利")
+            <p style="font-size:0.8rem; color:#00ffcc; font-weight:bold; margin-bottom:5px;">⏳ A8期 金利軌道 (65〜72歳)</p>
+            <div class="input-group">
+                <label>スタート金利 (%):</label>
+                <input type="number" id="a8_start" class="cyber-input" value="1.5" step="0.1" onchange="updateAll()">
+            </div>
+            <div class="input-group">
+                <label>ゴール金利 (%):</label>
+                <input type="number" id="a8_goal" class="cyber-input" value="2.2" step="0.1" onchange="updateAll()">
+            </div>
 
-# 借入金額設定
-borrow_ratio = st.sidebar.slider("基本設計/実運用 借入比率 (%)", min_value=0, max_value=50, value=35, step=5)
-st.sidebar.caption(f"現在の設定: 資産の {borrow_ratio}% 借入 (暴落耐性 約 -33%)")
-
-st.sidebar.markdown("##### ⏳ A8期 金利軌道 (65歳〜72歳)")
-col_a8_s, col_a8_g = st.sidebar.columns(2)
-with col_a8_s:
-    a8_rate_start = st.number_input("スタート金利 (%)", min_value=0.0, max_value=5.0, value=1.5, step=0.1, key="a8_s")
-with col_a8_g:
-    a8_rate_goal = st.number_input("ゴール金利 (%)", min_value=0.0, max_value=5.0, value=2.2, step=0.1, key="a8_g")
-
-st.sidebar.markdown("##### ⏳ S12期 金利軌道 (73歳〜85歳)")
-col_s12_s, col_s12_g = st.sidebar.columns(2)
-with col_s12_s:
-    s12_rate_start = st.number_input("スタート金利 (%)", min_value=0.0, max_value=5.0, value=2.2, step=0.1, key="s12_s")
-with col_s12_g:
-    s12_rate_goal = st.number_input("ゴール金利 (%)", min_value=0.0, max_value=5.0, value=1.8, step=0.1, key="s12_g")
-
-# ==========================================
-# 3. メイン画面：全軍配備図 & 統一UI (ファンド比率)
-# ==========================================
-st.subheader("⚔️ 全軍合流アロケーション配備図")
-
-# 現在評価額の文言統一
-assets = {
-    "特定口座 (楽天証券集約)": {"val": 73000000, "nas100": 40, "sp500": 50, "gold": 10},
-    "NISA口座 (SBI証券・2028完遂)": {"val": 58000000, "nas100": 50, "sp500": 40, "gold": 10}, # 5:4:1
-    "iDeCo/DC (楽天合流・退職所得控除)": {"val": 73000000, "nas100": 0, "sp500": 100, "gold": 0}   # Slim S&P500全振り
-}
-
-# 3つの主要口座に「同じいい感じのUI」を完全横展開
-cols_assets = st.columns(3)
-for i, (name, data) in enumerate(assets.items()):
-    with cols_assets[i]:
-        st.markdown(f"""
-        <div class="asset-card">
-            <div class="asset-header">{name}</div>
-            <p style='margin-bottom:2px; color:#8892b0;'>現在評価額</p>
-            <h3 style='margin-top:0px; color:#ffffff;'>{data['val']:,} 円</h3>
+            <p style="font-size:0.8rem; color:#ff0077; font-weight:bold; margin-bottom:5px; margin-top:15px;">⏳ S12期 金利軌道 (73〜85歳)</p>
+            <div class="input-group">
+                <label>スタート金利 (%):</label>
+                <input type="number" id="s12_start" class="cyber-input" value="2.2" step="0.1" onchange="updateAll()">
+            </div>
+            <div class="input-group">
+                <label>ゴール金利 (%):</label>
+                <input type="number" id="s12_goal" class="cyber-input" value="1.8" step="0.1" onchange="updateAll()">
+            </div>
         </div>
-        """, unsafe_allow_html=True)
-        
-        # 共通の綺麗に整ったファンド構成比率UI
-        st.markdown("<p style='font-size:0.85rem; font-weight:bold; color:#00ffcc; margin-bottom:5px;'>📊 ファンド構成比率</p>", unsafe_allow_html=True)
-        
-        # NASDAQ100のバー
-        st.caption(f"ニッセイ NASDAQ100: {data['nas100']}%")
-        st.progress(data['nas100'] / 100)
-        
-        # S&P500のバー
-        st.caption(f"eMAXIS Slim S&P500: {data['sp500']}%")
-        st.progress(data['sp500'] / 100)
-        
-        # GOLDのバー
-        st.caption(f"純金ファンド / 他: {data['gold']}%")
-        st.progress(data['gold'] / 100)
-        st.markdown("<br>", unsafe_allow_html=True)
 
-# 持株会の現在評価額の表現統一
-st.markdown("""
-<div class="asset-card" style="border-left: 4px solid #ff0077;">
-    <span style="color:#ff0077; font-weight:bold;">⚔️ 従業員持株会 (野村⇒楽天移管予定部隊)</span> ｜ 
-    <span style="color:#8892b0;">現在評価額:</span> <strong style="color:#ffffff;">判定中 (60歳時に楽天へ全軍合流)</strong>
+        <div class="main-content">
+            
+            <div class="subheader" style="font-size:1.3rem; color:#00ffcc; font-weight:bold;">⚔️ 全軍合流アロケーション配備図</div>
+            <div class="card-grid">
+                <div class="asset-card">
+                    <div class="asset-header">特定口座 (楽天証券集約)</div>
+                    <div style="font-size:0.8rem; color:#8892b0;">現在評価額</div>
+                    <div class="asset-val">73,000,000 円</div>
+                    <div class="asset-note">備考: 65歳時に野村要塞の特定口座へ集結</div>
+                    <div class="progress-container">
+                        <div class="progress-label"><span>NAS100: 40%</span></div>
+                        <div class="progress-bar"><div class="progress-fill" style="width:40%;"></div></div>
+                        <div class="progress-label"><span>S&P500: 50%</span></div>
+                        <div class="progress-bar"><div class="progress-fill" style="width:50%;"></div></div>
+                        <div class="progress-label"><span>Gold/他: 10%</span></div>
+                        <div class="progress-bar"><div class="progress-fill" style="width:10%;"></div></div>
+                    </div>
+                </div>
+                <div class="asset-card">
+                    <div class="asset-header">NISA口座 (SBI証券・2028完遂)</div>
+                    <div style="font-size:0.8rem; color:#8892b0;">現在評価額</div>
+                    <div class="asset-val">58,000,000 円</div>
+                    <div class="asset-note">備考: 暴落時非常用バッファ</div>
+                    <div class="progress-container">
+                        <div class="progress-label"><span>NAS100: 50%</span></div>
+                        <div class="progress-bar"><div class="progress-fill" style="width:50%;"></div></div>
+                        <div class="progress-label"><span>S&P500: 40%</span></div>
+                        <div class="progress-bar"><div class="progress-fill" style="width:40%;"></div></div>
+                        <div class="progress-label"><span>Gold/他: 10%</span></div>
+                        <div class="progress-bar"><div class="progress-fill" style="width:10%;"></div></div>
+                    </div>
+                </div>
+                <div class="asset-card">
+                    <div class="asset-header">企業型DC (65歳まで運用継続)</div>
+                    <div style="font-size:0.8rem; color:#8892b0;">現在評価額</div>
+                    <div class="asset-val">73,000,000 円</div>
+                    <div class="asset-note">備考: 60歳で拠出終了、65歳まで運用継続し野村要塞特定へ合流</div>
+                    <div class="progress-container">
+                        <div class="progress-label"><span>NAS100: 0%</span></div>
+                        <div class="progress-bar"><div class="progress-fill" style="width:0%;"></div></div>
+                        <div class="progress-label"><span>S&P500: 100%</span></div>
+                        <div class="progress-bar"><div class="progress-fill" style="width:100%;"></div></div>
+                        <div class="progress-label"><span>Gold/他: 0%</span></div>
+                        <div class="progress-bar"><div class="progress-fill" style="width:0%;"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="asset-card" style="border-left: 4px solid #ff0077; padding: 15px;">
+                <span style="color:#ff0077; font-weight:bold;">⚔️ 従業員持株会 (野村⇒楽天移管予定部隊)</span> ｜ 
+                <span style="color:#8892b0;">現在評価額:</span> <strong>判定中 (60歳時に楽天経由、最終的に野村要塞へ合流可能)</strong>
+            </div>
+
+            <hr>
+            <div class="subheader" style="font-size:1.3rem; color:#00ffcc; font-weight:bold;">🛡️ 独立防衛コア・シミュレーター部隊</div>
+            <div class="sim-grid">
+                <div class="sim-box">
+                    <h3>🚨 【追証完全回避】暴落・NISAバッファ注入シミュレーション</h3>
+                    <p style="font-size:0.75rem; color:#8892b0; margin-bottom:15px;">※65歳集結時、旧特定とDC合流分（1.46億円）が野村要塞へ配備された担保資産ベースの融資管制モデル</p>
+                    
+                    <label style="font-size:0.85rem;">想定市場暴落率: <span id="drop_ratio_txt" style="color:#ff0077; font-weight:bold;">0%</span></label>
+                    <input type="range" id="drop_ratio_sl" class="cyber-slider" min="-60" max="0" value="0" step="10" oninput="updateAll()">
+                    <div class="slider-ticks"><span>-60%</span><span>-40%</span><span>-20%</span><span>0%</span></div>
+
+                    <div style="font-size:0.85rem; margin-top:10px;">
+                        <div>暴落後の野村要塞担保評価額: <span id="fortress_val_txt">146,000,000</span> 円</div>
+                        <div>現在の設定総借入額: <span id="borrow_val_txt">71,400,000</span> 円</div>
+                    </div>
+                    <div id="ltv_alert_zone" class="alert-zone alert-success"></div>
+                </div>
+
+                <div class="sim-box">
+                    <h3>💰 【合法的ステルス生活】CF ＆ 利息相殺メーター</h3>
+                    <p style="font-size:0.75rem; color:#8892b0; margin-bottom:15px;">目標生活費: 年間 912万円 (月々60万 ＋ 年金16万) をローンで賄うモデル</p>
+                    
+                    <label style="font-size:0.85rem;">資産の想定年間利回り: <span id="return_ratio_txt" style="color:#00ffcc; font-weight:bold;">5%</span></label>
+                    <input type="range" id="return_ratio_sl" class="cyber-slider" min="0" max="10" value="5" step="1" oninput="updateAll()">
+                    <div class="slider-ticks"><span>0%</span><span>5%</span><span>10%</span></div>
+
+                    <div style="font-size:0.85rem; margin-top:10px; line-height:1.6;">
+                        <div>想定年間資産成長額: <span id="growth_val_txt" style="color:#00ffcc;">+10,200,000</span> 円</div>
+                        <div>想定年間利息コスト: <span id="interest_val_txt" style="color:#ff0077;">-1,071,000</span> 円</div>
+                        <div>目標年間生活引き出し: <span style="color:#ff0077;">-9,120,000</span> 円</div>
+                    </div>
+                    <div id="cf_alert_zone" class="alert-zone alert-success"></div>
+                </div>
+            </div>
+
+            <hr>
+            <div class="subheader" style="font-size:1.3rem; color:#00ffcc; font-weight:bold;">⏳ 【全軍集結】タイムライン進捗</div>
+            <div class="milestone-container">
+                <div class="asset-card" style="padding:15px;">
+                    <span class="stealth-badge">55歳完遂目標</span> <strong style="font-size:0.85rem; display:block;">2028年：NISA 1,800万枠完遂</strong>
+                    <div style="font-size:0.75rem; color:#8892b0; margin-top:5px;">残り: あと2年｜評価額ベース5,800万突破</div>
+                    <div class="progress-bar" style="margin-top:8px;"><div class="progress-fill" style="width:75%;"></div></div>
+                </div>
+                <div class="asset-card" style="padding:15px;">
+                    <span class="stealth-badge">60歳大移動</span> <strong style="font-size:0.85rem; display:block;">2033年：持株会移管 ＆ 企業型DC拠出完了</strong>
+                    <div style="font-size:0.75rem; color:#8892b0; margin-top:5px;">残り: あと7年｜65歳までDC運用継続期へ</div>
+                    <div class="progress-bar" style="margin-top:8px;"><div class="progress-fill" style="width:20%;"></div></div>
+                </div>
+                <div class="asset-card" style="padding:15px;">
+                    <span class="stealth-badge">65歳全軍集結</span> <strong style="font-size:0.85rem; display:block;">2038年：全特定集約 ＆ 企業型DC一時金合流</strong>
+                    <div style="font-size:0.75rem; color:#8892b0; margin-top:5px;">残り: あと12年｜1億5千万円「野村要塞」完成</div>
+                    <div class="progress-bar" style="margin-top:8px;"><div class="progress-fill" style="width:5%;"></div></div>
+                </div>
+            </div>
+
+            <hr>
+            <div class="subheader" style="font-size:1.3rem; color:#00ffcc; font-weight:bold;">📊 リアルタイム戦況ボード (三位一体相関分析)</div>
+            
+            <div id="charts_yen" class="chart-grid">
+                <div class="asset-card" style="padding:10px;">
+                    <div style="font-size:0.85rem; font-weight:bold; margin-bottom:5px;">🇺🇸 S&P500 東証ETF (2558)</div>
+                    <iframe src="https://s.tradingview.com/widgetembed/?frameElementId=tradingview_2558&symbol=TSE%3A2558&interval=D&theme=dark&style=1&timezone=Asia%2FTokyo" style="width:100%; height:350px; border:none;"></iframe>
+                </div>
+                <div class="asset-card" style="padding:10px;">
+                    <div style="font-size:0.85rem; font-weight:bold; margin-bottom:5px;">🚀 NASDAQ100 東証ETF (1545)</div>
+                    <iframe src="https://s.tradingview.com/widgetembed/?frameElementId=tradingview_1545&symbol=TSE%3A1545&interval=D&theme=dark&style=1&timezone=Asia%2FTokyo" style="width:100%; height:350px; border:none;"></iframe>
+                </div>
+                <div class="asset-card" style="padding:10px;">
+                    <div style="font-size:0.85rem; font-weight:bold; margin-bottom:5px;">💴 為替クッション (USD/JPY)</div>
+                    <iframe src="https://s.tradingview.com/widgetembed/?frameElementId=tradingview_usdjpy&symbol=FX%3AUSDJPY&interval=D&theme=dark&style=1&timezone=Asia%2FTokyo" style="width:100%; height:350px; border:none;"></iframe>
+                </div>
+            </div>
+
+            <div id="charts_usd" class="chart-grid" style="display:none;">
+                <div class="asset-card" style="padding:10px;">
+                    <div style="font-size:0.85rem; font-weight:bold; margin-bottom:5px;">🇺🇸 S&P500 生指数 (SPX)</div>
+                    <iframe src="https://s.tradingview.com/widgetembed/?frameElementId=tradingview_spx&symbol=SP%3ASPX&interval=D&theme=dark&style=1&timezone=Asia%2FTokyo" style="width:100%; height:350px; border:none;"></iframe>
+                </div>
+                <div class="asset-card" style="padding:10px;">
+                    <div style="font-size:0.85rem; font-weight:bold; margin-bottom:5px;">🚀 NASDAQ100 生指数 (NDX)</div>
+                    <iframe src="https://s.tradingview.com/widgetembed/?frameElementId=tradingview_ndx&symbol=NASDAQ%3ANDX&interval=D&theme=dark&style=1&timezone=Asia%2FTokyo" style="width:100%; height:350px; border:none;"></iframe>
+                </div>
+                <div class="asset-card" style="padding:10px;">
+                    <div style="font-size:0.85rem; font-weight:bold; margin-bottom:5px;">💴 為替クッション (USD/JPY)</div>
+                    <iframe src="https://s.tradingview.com/widgetembed/?frameElementId=tradingview_usdjpy2&symbol=FX%3AUSDJPY&interval=D&theme=dark&style=1&timezone=Asia%2FTokyo" style="width:100%; height:350px; border:none;"></iframe>
+                </div>
+            </div>
+
+            <hr>
+            <div class="subheader" style="font-size:1.3rem; color:#00ffcc; font-weight:bold;">🗺️ 65歳全軍集結・黄金ライフフェーズ・ロードマップ</div>
+            <div class="asset-card">
+                <div id="plotly_chart" style="width:100%; height:450px;"></div>
+            </div>
+
+            <div style="text-align: right; color: #8892b0; font-size: 0.85rem; margin-top: 10px;">
+                🔑 出口戦略コアキーワード: <strong>合法的ステルス生活</strong>
+            </div>
+
+        </div>
+    </div>
 </div>
-""", unsafe_allow_html=True)
 
-# ==========================================
-# 4. TradingView リアルチャート（Apple化バグ完全修正陣形）
-# ==========================================
-st.markdown("---")
-st.subheader("📊 リアルタイム戦況ボード (三位一体相関分析)")
+<script>
+    // 定数定義 (総資産ベース)
+    const TOTAL_ASSETS = 204000000; 
+    const FORTRESS_BASE = 146000000; // 特定(7300万) + DC(7300万)
+    const NISA_BASE = 58000000;
+    const TARGET_LIVING_COST = 9120000;
 
-# Apple化を防ぐための正確な取引所プレフィックスの選定
-if "円ベース" in chart_mode:
-    sp500_symbol = "TSE:2558"   # MAXIS S&P500上場投信（円建て投信と完全一致）
-    nas100_symbol = "TSE:1545"  # NEXT FUNDS NASDAQ100（円建て投信と完全一致）
-    st.info("💡 現在の表示：投資信託と完全に同一の値動きをする【東証円建てETFリアルチャート】を展開中だだにゆ！")
-else:
-    sp500_symbol = "SP:SPX"     # S&P500 本家生指数（ドル建て）
-    nas100_symbol = "NASDAQ:NDX" # NASDAQ100 本家生指数（ドル建て）
-    st.info("💡 現在の表示：為替影響を除いた【米国本家生指数（ドル建て）】を展開中だだにゆ！")
+    // チャート表示切り替え
+    function toggleCharts() {
+        const isYen = document.getElementById("base_yen").checked;
+        document.getElementById("charts_yen").style.display = isYen ? "grid" : "none";
+        document.getElementById("charts_usd").style.display = isYen ? "none" : "grid";
+    }
 
-# 3面並列チャートのトリプル展開
-col_ch1, col_ch2, col_ch3 = st.columns(3)
+    // 計算メイン処理
+    function updateAll() {
+        // スライダー・入力値の取得
+        const borrowRatio = parseInt(document.getElementById("borrow_ratio_sl").value);
+        const marketDrop = parseInt(document.getElementById("drop_ratio_sl").value);
+        const assetReturn = parseInt(document.getElementById("return_ratio_sl").value);
 
-def generate_tv_html(symbol):
-    return f"""
-    <div id="tv-chart-{symbol}" style="height:400px;"></div>
-    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-    <script type="text/javascript">
-    new TradingView.widget({{
-      "width": "100%",
-      "height": 400,
-      "symbol": "{symbol}",
-      "interval": "D",
-      "timezone": "Asia/Tokyo",
-      "theme": "dark",
-      "style": "1",
-      "locale": "ja",
-      "toolbar_bg": "#f1f3f6",
-      "enable_publishing": false,
-      "hide_side_toolbar": true,
-      "allow_symbol_change": false,
-      "container_id": "tv-chart-{symbol}"
-    }});
-    </script>
-    """
+        const a8Start = parseFloat(document.getElementById("a8_start").value);
+        const a8Goal = parseFloat(document.getElementById("a8_goal").value);
+        const s12Start = parseFloat(document.getElementById("s12_start").value);
+        const s12Goal = parseFloat(document.getElementById("s12_goal").value);
 
-with col_ch1:
-    st.markdown(f"#### 🇺🇸 S&P500 連動兵団 ({sp500_symbol})")
-    st.components.v1.html(generate_tv_html(sp500_symbol), height=410)
+        // 表示テキスト更新
+        document.getElementById("borrow_ratio_txt").innerText = borrowRatio + "%";
+        document.getElementById("drop_ratio_txt").innerText = marketDrop + "%";
+        document.getElementById("return_ratio_txt").innerText = assetReturn + "%";
 
-with col_ch2:
-    st.markdown(f"🚀 NASDAQ100 主力兵団 ({nas100_symbol})")
-    st.components.v1.html(generate_tv_html(nas100_symbol), height=410)
+        // --- 1. 追証回避シミュレーション計算 ---
+        const currentBorrow = TOTAL_ASSETS * (borrowRatio / 100);
+        const postDropFortress = FORTRESS_BASE * (1 + marketDrop / 100);
+        const postDropNisa = NISA_BASE * (1 + marketDrop / 100);
 
-with col_ch3:
-    st.markdown("#### 💴 為替クッション (USD/JPY)")
-    st.components.v1.html(generate_tv_html("FX:USDJPY"), height=410)
+        document.getElementById("fortress_val_txt").innerText = Math.round(postDropFortress).toLocaleString();
+        document.getElementById("borrow_val_txt").innerText = Math.round(currentBorrow).toLocaleString();
 
-# ==========================================
-# 5. 人生戦略ロードマップ & 金利比例計算シミュレーション
-# ==========================================
-st.markdown("---")
-st.subheader("🗺️ 65歳全軍集結・黄金ライフフェーズ・ロードマップ")
+        const ltv = postDropFortress > 0 ? (currentBorrow / postDropFortress) * 100 : 999.9;
+        const ltvAlert = document.getElementById("ltv_alert_zone");
 
-# 比例計算ロジックの実装
-ages = list(range(53, 91))
-timeline_data = []
+        if (ltv > 60) {
+            const requiredInject = (currentBorrow / 0.60) - postDropFortress;
+            ltvAlert.className = "alert-zone alert-danger";
+            if (requiredInject <= postDropNisa) {
+                ltvAlert.innerHTML = `🚨 <strong>警告：借入比率（LTV）が ${ltv.toFixed(1)}% まで上昇！</strong><br>追証限界線(60%)を突破しました。NISAバッファから【<strong>${Math.round(requiredInject).toLocaleString()} 円</strong>】を野村要塞へ注入せよ！追証を完全回避だだにゆ！`;
+            } else {
+                ltvAlert.innerHTML = `⚠️ <strong>深刻な危機：LTV ${ltv.toFixed(1)}%</strong><br>NISAの暴落後残高（${Math.round(postDropNisa).toLocaleString()} 円）を超える担保割れが発生しています。防衛陣形を再構築してください。`;
+            }
+        } else {
+            ltvAlert.className = "alert-zone alert-success";
+            ltvAlert.innerHTML = `🟢 <strong>現在の野村要塞借入比率（LTV）: ${ltv.toFixed(1)}%</strong><br>安全圏です。追証限界線の60%未満をガッチリ維持中だだにゆ！`;
+        }
 
-total_base_asset = 204000000 # 7300万 + 7300万 + 5800万
-borrow_amount = total_base_asset * (borrow_ratio / 100)
+        // --- 2. キャッシュフロー計算 ---
+        const annualGrowth = TOTAL_ASSETS * (assetReturn / 100);
+        const annualInterest = currentBorrow * (a8Start / 100);
+        const netStealthPower = annualGrowth - annualInterest - TARGET_LIVING_COST;
 
-for age in ages:
-    # 各フェーズの定義変更 (S12期は85歳まで、それ以降はC5に修正)
-    if 53 <= age <= 59:
-        phase = "Foundation7 (F7)"
-        color = "🔵 F7期"
-        current_rate = 0.0
-    elif 60 <= age <= 64:
-        phase = "Boost5 (B5)"
-        color = "🟡 B5期"
-        current_rate = 0.0
-    elif 65 <= age <= 72:
-        phase = "Active8 (A8)"
-        color = "🟢 A8期"
-        # A8期間の金利比例計算
-        current_rate = a8_rate_start + (a8_rate_goal - a8_rate_start) * (age - 65) / (72 - 65)
-    elif 73 <= age <= 85:
-        phase = "Slow12 (S12)"
-        color = "🟠 S12期"
-        # S12期間の金利比例計算
-        current_rate = s12_rate_start + (s12_rate_goal - s12_rate_start) * (age - 73) / (85 - 73)
-    else:
-        phase = "人生の集大成・終活 C5"
-        color = "🔮 C5期"
-        current_rate = 0.0 # 終活期はローン精算想定
-        
-    # 年間想定利息コストの計算
-    annual_cost = borrow_amount * (current_rate / 100) if current_rate > 0 else 0
-    
-    timeline_data.append({
-        "年齢": age,
-        "フェーズ": phase,
-        "ライフエリア": color,
-        "適用比例金利 (%)": round(current_rate, 2),
-        "想定金利コスト (万円)": round(annual_cost / 10000, 1)
-    })
+        document.getElementById("growth_val_txt").innerText = "+" + Math.round(annualGrowth).toLocaleString();
+        document.getElementById("interest_val_txt").innerText = "-" + Math.round(annualInterest).toLocaleString();
 
-df_timeline = pd.DataFrame(timeline_data)
+        const cfAlert = document.getElementById("cf_alert_zone");
+        if (netStealthPower >= 0) {
+            cfAlert.className = "alert-zone alert-success";
+            cfAlert.innerHTML = `🔥 <strong>真の防衛純増力: ＋${Math.round(netStealthPower).toLocaleString()} 円 / 年</strong><br>総司令官、資産を取り崩さずにステルス生活を維持しながら、全軍の戦闘力は拡大し続けていますだだにゆ！ニヤリｗ`;
+        } else {
+            cfAlert.className = "alert-zone alert-danger";
+            cfAlert.innerHTML = `⚠️ <strong>真の防衛純増力: ${Math.round(netStealthPower).toLocaleString()} 円 / 年</strong><br>リターン想定が低いため、見かけ上資産が縮小側に傾いています。相場の上昇、または借入金利の低下を待つ陣形です。`;
+        }
 
-# 10%刻みの目盛を意識した、視認性の高いタイムライングラフの構築
-fig = go.Figure()
+        // --- 3. ロードマップグラフの描画更新 ---
+        const ages = [];
+        const rates = [];
+        for (let age = 53; age <= 90; age++) {
+            ages.push(age);
+            let currentRate = 0.0;
+            if (65 <= age && age <= 72) {
+                currentRate = a8Start + (a8Goal - a8Start) * (age - 65) / (72 - 65);
+            } else if (73 <= age && age <= 85) {
+                currentRate = s12Start + (s12Goal - s12Start) * (age - 73) / (85 - 73);
+            }
+            rates.push(currentRate);
+        }
 
-# フェーズごとの背景塗りつぶし用オブジェクトの作成
-fig.add_trace(go.Scatter(
-    x=df_timeline["年齢"], y=df_timeline["適用比例金利 (%)"],
-    mode='lines+markers',
-    line=dict(color='#00ffcc', width=3),
-    marker=dict(size=8, color='#ff0077'),
-    name="比例変動金利 (%)",
-    hovertemplate="年齢: %{x}歳<br>金利: %{y}%<br>"
-))
+        const trace = {
+            x: ages,
+            y: rates,
+            mode: 'lines+markers',
+            line: {color: '#00ffcc', width: 3},
+            marker: {size: 6, color: '#ff0077'},
+            name: '比例変動金利 (%)',
+            type: 'scatter'
+        };
 
-fig.update_layout(
-    title="🌌 黄金レバレッジ金利軌道 & ライフフェーズ相関図",
-    font=dict(family="Montserrat, Noto Sans JP"),
-    template="plotly_dark",
-    xaxis=dict(title="年齢 (歳)", tickmode="linear", dtick=2, gridcolor="rgba(255,255,255,0.05)"),
-    yaxis=dict(title="金利 (%)", gridcolor="rgba(255,255,255,0.05)"),
-    height=450,
-    backgroundcolor="rgba(0,0,0,0)",
-    plot_bgcolor="rgba(16, 22, 37, 0.5)"
-)
+        const layout = {
+            title: { text: '🌌 黄金レバレッジ金利軌道 ＆ ライフフェーズ相関図', font: {color: '#ffffff', family: 'Montserrat, Noto Sans JP'} },
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            plot_bgcolor: 'rgba(16, 22, 37, 0.5)',
+            font: {color: '#a8b2d1'},
+            xaxis: { title: '年齢 (歳)', gridcolor: 'rgba(255,255,255,0.05)', dtick: 2 },
+            yaxis: { title: '金利 (%)', gridcolor: 'rgba(255,255,255,0.05)' },
+            margin: { t: 50, b: 40, l: 50, r: 20 }
+        };
 
-st.plotly_chart(fig, use_container_index=True)
+        Plotly.newPlot('plotly_chart', [trace], layout, {responsive: true, displayModeBar: false});
+    }
 
-# 詳細データテーブル
-with st.expander("👁️ ステルス隠密作戦・年齢別コスト詳細データテーブル"):
-    st.dataframe(
-        df_timeline.style.format({
-            "適用比例金利 (%)": "{:.2f} %",
-            "想定金利コスト (万円)": "{:,.1f} 万円"
-        }),
-        use_container_width=True
-    )
+    // 初回起動
+    window.onload = function() {
+        updateAll();
+    };
+</script>
 
-st.markdown("""
-<div style="text-align: right; color: #8892b0; font-size: 0.85rem; margin-top: 20px;">
-🔑 出口戦略コアキーワード: <strong>合法的ステルス生活</strong>
-</div>
-""", unsafe_allow_html=True)
+</body>
+</html>

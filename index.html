@@ -314,7 +314,7 @@
                     <div class="col-sm-6 col-md-3">
                         <div class="p-2 rounded border" style="background: rgba(138,43,226,0.08); height:100%; border-color: rgba(138,43,226,0.3) !important;">
                             <span class="phase-badge bg-secondary text-white mb-1 d-inline-block">S12期 (73〜90歳)</span>
-                            <p class="mt-1 mb-0" style="font-size: 0.78rem; line-height: 1.4; opacity: 0.95;">G20後半戦。生活規模と借入を月30万に縮小。安全性、相続税圧縮、精度、精神的絶対余裕をすべて同時に最大化。</p>
+                            <p class="mt-1 mb-0" style="font-size: 0.78rem; line-height: 1.4; opacity: 0.95;">G20前半戦。全特定口座を楽天へ集結。有価証券担保ローンから月60万を引っ張り「合法的ステルス生活」を確立。</p>
                         </div>
                     </div>
                 </div>
@@ -335,11 +335,11 @@
                 </div>
                 <div class="row g-2">
                     <div class="col-md-6">
-                        <div class="border rounded p-1 text-center bg-dark small fw-bold py-1 text-light">S&P 500</div>
+                        <div class="border rounded p-1 text-center bg-dark small fw-bold py-1 text-light">SPY (S&P 500)</div>
                         <div id="tv_chart_sp" style="height: 280px; width:100%;"></div>
                     </div>
                     <div class="col-md-6">
-                        <div class="border rounded p-1 text-center bg-dark small fw-bold py-1 text-light">NASDAQ 100</div>
+                        <div class="border rounded p-1 text-center bg-dark small fw-bold py-1 text-light">QQQ (NASDAQ 100)</div>
                         <div id="tv_chart_nas" style="height: 280px; width:100%;"></div>
                     </div>
                 </div>
@@ -418,7 +418,7 @@ function switchChartBase(base) {
     updateTradingViewCharts(base);
 }
 
-// 🌟 TradingView埋め込み連動コア
+// 🌟 TradingView埋め込み連動コア（完全円建て最適化版）
 function updateTradingViewCharts(base) {
     const isLight = document.body.getAttribute('data-theme') === 'light';
     const theme = isLight ? 'light' : 'dark';
@@ -427,11 +427,10 @@ function updateTradingViewCharts(base) {
     lastTheme = theme;
     lastBase = base;
     
-    // 【ピンポイント修正箇所】
-    // 円ベース時に東証上場ETFコード(TSE:2558/1545)を指定すると、TradingViewウィジェット側の制限でApple(AAPL)に化けるため、
-    // 確実に対応しており値動きが同一の米国メジャーインデックスETF（SPY/QQQ）へ差し替えて完全回避します。
-    let spSymbol = (base === 'USD') ? 'INDEX:SPX' : 'AMEX:SPY';
-    let nasSymbol = (base === 'USD') ? 'INDEX:NDX' : 'NASDAQ:QQQ';
+    // 円ベース（JPY）が選択されたときは、ETFシンボルにドル円（FX_IDC:USDJPY）の掛け算を仕込み、
+    // Appleへの誤変化を完全に回避しながら「円建て」表示を確実に実現する仕様にアップデート
+    let spSymbol = (base === 'USD') ? 'AMEX:SPY' : 'AMEX:SPY*FX_IDC:USDJPY';
+    let nasSymbol = (base === 'USD') ? 'NASDAQ:QQQ' : 'NASDAQ:QQQ*FX_IDC:USDJPY';
     
     renderIframeWidget('tv_chart_sp', spSymbol, theme);
     renderIframeWidget('tv_chart_nas', nasSymbol, theme);

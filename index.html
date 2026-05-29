@@ -3,120 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Operation Freedom デジタル作戦盤</title>
+    <title>Operation Freedom 全人生フェーズ作戦盤</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist@2.24.1/plotly.min.js"></script>
     <style>
         body { background-color: #121212; color: #e0e0e0; font-family: 'Helvetica Neue', Arial, sans-serif; }
         .card { background-color: #1e1e1e; border: 1px solid #333; color: #e0e0e0; margin-bottom: 20px; }
-        .form-label { color: #aaa; font-weight: bold; }
+        .form-label { color: #aaa; font-weight: bold; font-size: 0.9rem; }
         .form-control, .form-select { background-color: #2a2a2a; border: 1px solid #444; color: #fff; }
-        .form-control:focus, .form-select:focus { background-color: #333; color: #fff; border-color: #0d6efd; box-shadow: none; }
-        .metric { font-size: 1.8rem; font-weight: bold; color: #0d6efd; }
+        .metric { font-size: 1.6rem; font-weight: bold; color: #0d6efd; }
         .quote { background-color: #1a237e; border-left: 5px solid #0d6efd; padding: 15px; border-radius: 4px; margin-bottom: 25px; }
+        .badge-f7 { background-color: rgba(255, 165, 0, 0.2); color: #ffca28; border: 1px solid #ffa500; }
+        .badge-b5 { background-color: rgba(0, 191, 255, 0.2); color: #40c4ff; border: 1px solid #00bfff; }
+        .badge-a8 { background-color: rgba(50, 205, 50, 0.2); color: #69f0ae; border: 1px solid #32cd32; }
+        .badge-s12 { background-color: rgba(138, 43, 226, 0.2); color: #ea80fc; border: 1px solid #8a237e; }
     </style>
 </head>
 <body>
 
 <div class="container my-4">
     <div class="text-center mb-4">
-        <h1>🏯 Operation Freedom 特設デジタル作戦盤</h1>
-        <p class="text-muted">総司令官専用・iPad最適化HTML5作戦盤（G20対応型）</p>
+        <h1>🏯 Operation Freedom 全人生フェーズ動的作戦盤</h1>
+        <p class="text-muted">総司令官専用・53歳現在から90歳までのライフタイム管制システム</p>
     </div>
 
     <div class="quote">
-        <strong>軍師直言：</strong> 司令官、Streamlitの罠をステルス回避し、HTML5の独立兵器を錬成しただだにゆ！数値をいじれば、65歳時の戦闘力やローン安全度がiPad上でリアルタイムに超高速再計算されますだだにゆ！ニヤリｗ
+        <strong>軍師直言：</strong> 司令官！ご命令通り、F7（基盤）➡ B5（加速）➡ A8（全力）➡ S12（ステルス＋その先）までを完全連結しただだにゆ！グラフの背景色で各フェーズのアクションエリアがひと目で分かる仕様だだにゆ！ニヤリｗ
     </div>
 
     <div class="row">
         <div class="col-lg-4">
             <div class="card p-3">
-                <h4 class="mb-3 text-primary">⚔️ 前線アセット現在値</h4>
+                <h4 class="mb-3 text-primary">⚔️ 前線アセット現在値 (53歳)</h4>
                 
-                <h5 class="text-info mt-3">① 旧・特定口座部隊</h5>
+                <h5 class="text-warning mt-2">🛡️ F7期 (53-60歳) アクション</h5>
                 <div class="mb-2">
-                    <label class="form-label">現在の評価額（万円）</label>
+                    <label class="form-label">旧・特定口座 現在額（万円）</label>
                     <input type="number" id="cur_tokutei" class="form-control" value="1800" oninput="calculateAll()">
                 </div>
-                <div class="mb-3">
-                    <label class="form-label">毎月の追撃（万円/月）</label>
-                    <input type="range" id="mon_tokutei" class="form-range" min="0" max="50" value="30" oninput="updateRangeLabel('tokutei_lbl', this.value); calculateAll();">
-                    <span id="tokutei_lbl" class="badge bg-secondary">30 万円/月</span>
-                </div>
-
-                <h5 class="text-info mt-3">② 企業型DC部隊</h5>
                 <div class="mb-2">
-                    <label class="form-label">DC現在の総額（万円）</label>
+                    <label class="form-label">特定口座への月々追撃（万円/月）</label>
+                    <input type="range" id="mon_tokutei" class="form-range" min="0" max="50" value="30" oninput="updateRangeLabel('tokutei_lbl', this.value); calculateAll();">
+                    <span id="tokutei_lbl" class="badge badge-f7">30 万円/月</span>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">企業型DC 現在総額（万円）</label>
                     <input type="number" id="cur_dc" class="form-control" value="3400" oninput="calculateAll()">
                 </div>
-                <div class="mb-3">
-                    <label class="form-label">60歳までの追撃（万円/月）</label>
+                <div class="mb-2">
+                    <label class="form-label">DCへの月々追撃（万円/月）</label>
                     <input type="range" id="mon_dc" class="form-range" min="0" max="10" step="0.5" value="5.5" oninput="updateRangeLabel('dc_lbl', this.value); calculateAll();">
-                    <span id="dc_lbl" class="badge bg-secondary">5.5 万円/月</span>
+                    <span id="dc_lbl" class="badge badge-f7">5.5 万円/月</span>
                 </div>
 
-                <h5 class="text-info mt-3">③ SBI聖域（NISA）</h5>
+                <h5 class="text-info mt-3">🚀 B5期 (60-65歳) アクション</h5>
                 <div class="mb-2">
-                    <label class="form-label">NISA現在の評価額（万円）</label>
+                    <label class="form-label">NISA 現在の評価額（万円）</label>
                     <input type="number" id="cur_nisa" class="form-control" value="1550" oninput="calculateAll()">
                 </div>
-                <div class="mb-3">
-                    <label class="form-label">残り2年の総追撃額（万円）</label>
+                <div class="mb-2">
+                    <label class="form-label">NISA残り枠埋め総額（万円）</label>
                     <input type="number" id="rem_nisa" class="form-control" value="720" oninput="calculateAll()">
                 </div>
 
-                <h5 class="text-info mt-3">⚙️ 巡航システム設定</h5>
+                <h5 class="text-success mt-3">🎰 G20期 (65歳以降) ローン戦略</h5>
+                <div class="mb-2">
+                    <label class="form-label">A8フェーズの生活費（万円/年）</label>
+                    <input type="number" id="loan_draw" class="form-control" value="720" oninput="calculateAll()">
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">S12フェーズの生活費縮小率（%）</label>
+                    <input type="range" id="s12_ratio" class="form-range" min="10" max="100" step="5" value="50" oninput="updateRangeLabel('s12_lbl', this.value); calculateAll();">
+                    <span id="s12_lbl" class="badge badge-s12">50 %</span>
+                </div>
+
+                <h5 class="text-secondary mt-3">⚙️ システム共通設定</h5>
                 <div class="mb-2">
                     <label class="form-label">想定運用利回り（年利 %）</label>
                     <input type="range" id="yield" class="form-range" min="1" max="15" step="0.5" value="7.0" oninput="updateRangeLabel('yield_lbl', this.value); calculateAll();">
                     <span id="yield_lbl" class="badge bg-secondary">7.0 %</span>
-                </div>
-                <div class="mb-2">
-                    <label class="form-label">65歳以降のローン生活費（万円/年）</label>
-                    <input type="number" id="loan_draw" class="form-control" value="720" oninput="calculateAll()">
-                </div>
-                <div class="mb-2">
-                    <label class="form-label">73歳（S12）以降の生活費縮小率（%）</label>
-                    <input type="range" id="s12_ratio" class="form-range" min="10" max="100" step="5" value="50" oninput="updateRangeLabel('s12_lbl', this.value); calculateAll();">
-                    <span id="s12_lbl" class="badge bg-secondary">50 %</span>
                 </div>
             </div>
         </div>
 
         <div class="col-lg-8">
             <div class="row text-center">
-                <div class="col-md-6 col-xl-3 mb-3">
-                    <div class="card p-2"><div class="text-muted small">🏯野村要塞(担保総額)</div><div class="metric text-warning" id="m_nomura">0 万円</div></div>
+                <div class="col-md-4 mb-2">
+                    <div class="card p-2"><div class="text-muted small">🏯 65歳時点 要塞担保予定高</div><div class="metric text-warning" id="m_65_nomura">0 万円</div></div>
                 </div>
-                <div class="col-md-6 col-xl-3 mb-3">
-                    <div class="card p-2"><div class="text-muted small">①旧・特定口座</div><div class="metric" id="m_tokutei">0 万円</div></div>
+                <div class="col-md-4 mb-2">
+                    <div class="card p-2"><div class="text-muted small">🛡️ 65歳時点 NISA聖域高</div><div class="metric text-success" id="m_65_nisa">0 万円</div></div>
                 </div>
-                <div class="col-md-6 col-xl-3 mb-3">
-                    <div class="card p-2"><div class="text-muted small">②企業型DC(再配備)</div><div class="metric" id="m_dc">0 万円</div></div>
-                </div>
-                <div class="col-md-6 col-xl-3 mb-3">
-                    <div class="card p-2"><div class="text-muted small">🛡️SBI聖域(NISA)</div><div class="metric text-success" id="m_nisa">0 万円</div></div>
+                <div class="col-md-4 mb-2">
+                    <div class="card p-2"><div class="text-muted small">🚨 90歳到達時 ローン最終残高</div><div class="metric text-danger" id="m_90_loan">0 万円</div></div>
                 </div>
             </div>
 
             <div class="card p-3">
-                <h4 class="text-primary">📈 G20フェーズ（65歳〜85歳）資産・ローン動的推移マップ</h4>
-                <div id="chart_div" style="width:100%; height:400px;"></div>
+                <h4 class="text-primary">📈 53歳〜90歳 全人生フェーズ資産・ローン動的連結マップ</h4>
+                <div id="chart_div" style="width:100%; height:450px;"></div>
             </div>
 
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="card p-3" style="min-height: 180px;">
-                        <h5 class="text-info">📊 陣形の健康度チェック</h5>
-                        <div id="health_check"></div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card p-3" style="min-height: 180px; background-color: #1a1c2e;">
-                        <h5 class="text-warning">💬 専属軍師の動的直言</h5>
-                        <div id="ai_advice" class="small"></div>
-                    </div>
-                </div>
+            <div class="card p-3" style="background-color: #1a1c2e;">
+                <h5 class="text-warning">🧠 専属軍師のタイムライン直言</h5>
+                <div id="ai_advice" class="small"></div>
             </div>
         </div>
     </div>
@@ -128,7 +118,6 @@ function updateRangeLabel(id, val) {
 }
 
 function calculateAll() {
-    // 入力値の取得
     const cur_tokutei = parseFloat(document.getElementById('cur_tokutei').value) || 0;
     const mon_tokutei = parseFloat(document.getElementById('mon_tokutei').value) || 0;
     const cur_dc = parseFloat(document.getElementById('cur_dc').value) || 0;
@@ -139,100 +128,121 @@ function calculateAll() {
     const loan_draw = parseFloat(document.getElementById('loan_draw').value) || 0;
     const s12_ratio = (parseFloat(document.getElementById('s12_ratio').value) || 0) / 100;
 
-    // 65歳（12年後）時点の資産計算（月利複利ベース）
-    let tokutei_val = cur_tokutei;
-    for(let m=0; m<144; m++) { tokutei_val = (tokutei_val + mon_tokutei) * (1 + r/12); }
-
-    let dc_val = cur_dc;
-    for(let m=0; m<144; m++) {
-        if (m < 84) { dc_val = (dc_val + mon_dc) * (1 + r/12); } // 60歳まで（7年）
-        else { dc_val = dc_val * (1 + r/12); } // 65歳までガチホ
-    }
-
-    let nisa_val = cur_nisa;
-    for(let m=0; m<144; m++) {
-        if (m < 24) { nisa_val = (nisa_val + (rem_nisa / 24)) * (1 + r/12); } // 最初の2年
-        else { nisa_val = nisa_val * (1 + r/12); }
-    }
-
-    const nomura_fortress = tokutei_val + dc_val;
-
-    // メトリクスの更新表示
-    document.getElementById('m_nomura').innerText = Math.floor(nomura_fortress).toLocaleString() + " 万円";
-    document.getElementById('m_tokutei').innerText = Math.floor(tokutei_val).toLocaleString() + " 万円";
-    document.getElementById('m_dc').innerText = Math.floor(dc_val).toLocaleString() + " 万円";
-    document.getElementById('m_nisa').innerText = Math.floor(nisa_val).toLocaleString() + " 万円";
-
-    // G20（65〜85歳）のシミュレーションループ
     let ages = [];
-    let nomura_data = [];
+    let tokutei_data = [];
+    let dc_data = [];
     let nisa_data = [];
     let loan_data = [];
+    let total_asset_data = [];
     let lev_ratios = [];
 
-    let current_nomura = nomura_fortress;
-    let current_nisa = nisa_val;
-    let current_loan = 0;
+    // 53歳から90歳までの月次シミュレーション
+    let v_tokutei = cur_tokutei;
+    let v_dc = cur_dc;
+    let v_nisa = cur_nisa;
+    let v_loan = 0;
 
-    for (let age = 65; age <= 85; age++) {
+    let m_65_nomura = 0;
+    let m_65_nisa = 0;
+
+    for (let age = 53; age <= 90; age++) {
+        // 年の頭のデータを記録
         ages.push(age);
-        nomura_data.push(current_nomura);
-        nisa_data.push(current_nisa);
-        loan_data.push(current_loan);
-
-        let lev = current_nomura > 0 ? (current_loan / current_nomura) * 100 : 0;
+        tokutei_data.push(v_tokutei);
+        dc_data.push(v_dc);
+        nisa_data.push(v_nisa);
+        loan_data.push(v_loan);
+        total_asset_data.push(v_tokutei + v_dc + v_nisa);
+        
+        let lev = v_tokutei + v_dc > 0 ? (v_loan / (v_tokutei + v_dc)) * 100 : 0;
         lev_ratios.push(lev);
 
-        let draw = (age < 73) ? loan_draw : loan_draw * s12_ratio;
+        if (age === 65) {
+            m_65_nomura = v_tokutei + v_dc;
+            m_65_nisa = v_nisa;
+        }
 
-        current_nomura = current_nomura * (1 + r);
-        current_nisa = current_nisa * (1 + r);
-        if (age < 85) {
-            current_loan = (current_loan + draw) * 1.02; // 金利仮に年2%
+        // 1年間の月次ループ処理
+        for (let m = 0; m < 12; m++) {
+            // F7期 (53〜59歳)
+            if (age >= 53 && age < 60) {
+                v_tokutei = (v_tokutei + mon_tokutei) * (1 + r/12);
+                v_dc = (v_dc + mon_dc) * (1 + r/12);
+                if ((age - 53) * 12 + m < 24) {
+                    v_nisa = (v_nisa + (rem_nisa / 24)) * (1 + r/12);
+                } else {
+                    v_nisa = v_nisa * (1 + r/12);
+                }
+            }
+            // B5期 (60〜64歳)
+            else if (age >= 60 && age < 65) {
+                v_tokutei = v_tokutei * (1 + r/12);
+                v_dc = v_dc * (1 + r/12); // iDeCo洗濯運用中
+                v_nisa = v_nisa * (1 + r/12);
+            }
+            // G20期 (65歳以降)
+            else {
+                v_tokutei = v_tokutei * (1 + r/12);
+                v_dc = v_dc * (1 + r/12);
+                v_nisa = v_nisa * (1 + r/12);
+            }
+        }
+
+        // 65歳以降のローン引き出し（年次処理として年末に加算）
+        if (age >= 65 && age < 90) {
+            let draw = (age < 73) ? loan_draw : loan_draw * s12_ratio;
+            v_loan = (v_loan + draw) * 1.02; // 金利2%想定
         }
     }
 
-    // グラフ描画
-    const traceNomura = { x: ages, y: nomura_data, name: '🏯 野村要塞資産(担保)', type: 'scatter', line: {color: '#0d6efd', width: 3} };
-    const traceNisa = { x: ages, y: nisa_data, name: '🛡️ SBI・NISA聖域(無税)', type: 'scatter', line: {color: '#198754', width: 2, dash: 'dash'} };
-    const traceLoan = { x: ages, y: loan_data, name: '🚨 ローン借入残高', type: 'scatter', line: {color: '#dc3545', width: 3} };
+    // メトリクス表示更新
+    document.getElementById('m_65_nomura').innerText = Math.floor(m_65_nomura).toLocaleString() + " 万円";
+    document.getElementById('m_65_nisa').innerText = Math.floor(m_65_nisa).toLocaleString() + " 万円";
+    document.getElementById('m_90_loan').innerText = Math.floor(v_loan).toLocaleString() + " 万円";
 
-    const layout = {
+    // Plotlyのトレース作成
+    const tTokutei = { x: ages, y: tokutei_data, name: '🏯 特定口座(後の野村要塞)', type: 'scatter', line: {color: '#0d6efd', width: 3} };
+    const tDc = { x: ages, y: dc_data, name: '🧼 企業型DC / iDeCo', type: 'scatter', line: {color: '#ffc107', width: 2, dash: 'dot'} };
+    const tNisa = { x: ages, y: nisa_data, name: '🛡️ SBI・NISA聖域(無税)', type: 'scatter', line: {color: '#198754', width: 2, dash: 'dash'} };
+    const tLoan = { x: ages, y: loan_data, name: '🚨 有価証券担保ローン残高', type: 'scatter', line: {color: '#dc3545', width: 3} };
+    const tTotal = { x: ages, y: total_asset_data, name: '📊 総資産アセット(持株抜)', type: 'scatter', line: {color: '#ffffff', width: 1, stroke: 'none'}, visible: 'legendonly' };
+
+    // フェーズ背景色（Shapes）と注釈（Annotations）
+    const layouts = {
         paper_bgcolor: '#1e1e1e', plot_bgcolor: '#1e1e1e',
         font: { color: '#e0e0e0' },
-        margin: { t: 30, b: 40, l: 50, r: 20 },
-        legend: { orientation: 'h', y: -0.2 },
-        xaxis: { gridcolor: '#333' }, yaxis: { gridcolor: '#333' }
+        margin: { t: 40, b: 40, l: 65, r: 20 },
+        legend: { orientation: 'h', y: -0.15 },
+        xaxis: { gridcolor: '#333', dtick: 5 }, yaxis: { gridcolor: '#333' },
+        hovermode: 'x unified',
+        shapes: [
+            { type: 'rect', xref: 'x', yref: 'paper', x0: 53, x1: 60, y0: 0, y1: 1, fillcolor: 'rgba(255, 165, 0, 0.06)', line: {width: 0} }, // F7
+            { type: 'rect', xref: 'x', yref: 'paper', x0: 60, x1: 65, y0: 0, y1: 1, fillcolor: 'rgba(0, 191, 255, 0.06)', line: {width: 0} }, // B5
+            { type: 'rect', xref: 'x', yref: 'paper', x0: 65, x1: 73, y0: 0, y1: 1, fillcolor: 'rgba(50, 205, 50, 0.06)', line: {width: 0} }, // A8
+            { type: 'rect', xref: 'x', yref: 'paper', x0: 73, x1: 90, y0: 0, y1: 1, fillcolor: 'rgba(138, 43, 226, 0.06)', line: {width: 0} }  // S12
+        ],
+        annotations: [
+            { x: 56.5, y: 0.95, xref: 'x', yref: 'paper', text: '<b>F7期</b><br>月30万追撃', showarrow: false, font: {color: '#ffca28', size: 10} },
+            { x: 62.5, y: 0.95, xref: 'x', yref: 'paper', text: '<b>B5期</b><br>一本化洗濯', showarrow: false, font: {color: '#40c4ff', size: 10} },
+            { x: 69, y: 0.95, xref: 'x', yref: 'paper', text: '<b>A8期</b><br>生活費ローン', showarrow: false, font: {color: '#69f0ae', size: 10} },
+            { x: 81.5, y: 0.95, xref: 'x', yref: 'paper', text: '<b>S12期(〜90歳)</b><br>合法的ステルス生活', showarrow: false, font: {color: '#ea80fc', size: 10} }
+        ]
     };
-    Plotly.newPlot('chart_div', [traceNomura, traceNisa, traceLoan], layout);
 
-    // 軍師のアドバイスロジック更新
+    Plotly.newPlot('chart_div', [tTokutei, tDc, tNisa, tLoan, tTotal], layouts);
+
+    // 軍師のアドバイス
     const max_lev = Math.max(...lev_ratios);
-    const end_total = nomura_data[nomura_data.length-1] + nisa_data[nisa_data.length-1];
-    
-    let health_html = `<ul>
-        <li>G20全期間の最大レバレッジ: <strong>${max_lev.toFixed(1)}%</strong></li>
-        <li>85歳時点の総戦闘力(持株抜き): <strong>${Math.floor(end_total).toLocaleString()}万円</strong></li>
-    </ul>`;
-    if(max_lev < 25) {
-        health_html += `<span class="badge bg-success">🟢 絶対不沈モード（核シェルター級）</span>`;
-    } else if(max_lev <= 35) {
-        health_html += `<span class="badge bg-info">🔵 巡航強化モード（司令官の狙い通り）</span>`;
+    let advice_text = `「総司令官、完璧なライフタイムマップが完成しただだにゆ！<br>`;
+    if (m_65_nomura >= 20000) {
+        advice_text += `53歳からの猛追撃（F7）が実を結び、65歳遷都の瞬間には特定口座とDCの連合艦隊（野村要塞）が **${(m_65_nomura/10000).toFixed(2)}億円** という圧倒的戦闘力にまで膨れ上がる想定だだにゆ！<br>
+        ここからA8フェーズで毎年${loan_draw}万円を引き抜いても、90歳時点の野村要塞の資産増殖スピードが勝つため、ローン残高（赤線）を完全に引き離して資産が拡大し続ける『永久機関』の軌道が見えるだだにゆ！これぞ合法的ステルス生活の真骨頂、ニヤリだだにゆ！ｗｗ」`;
     } else {
-        health_html += `<span class="badge bg-danger">🔴 攻撃特化モード（要警戒）</span>`;
+        advice_text += `65歳時点の要塞担保が2億円のラインをわずかに下回る想定になっているだだにゆ。現役時代の追撃を少し強めるか、年利の想定を0.5%上げるだけで、一気にグラフの全貌が上方へトランスフォームするだだにゆ！」`;
     }
-    document.getElementById('health_check').innerHTML = health_html;
-
-    let advice_text = "";
-    if (nomura_fortress >= 20000) {
-        advice_text = `「総司令官！！！ 凄まじいだだにゆ！65歳時点で野村要塞の純担保が **${(nomura_fortress/10000).toFixed(2)}億円** を突破する世界線だだにゆ！これなら年間 ${loan_draw}万円 のローンを引き抜き続けても、資産の複利パワーが圧倒的に勝つため、使えば使うほど資産が増える大富豪永久機関が完成するだだにゆ。大勝利のニヤリだだにゆ！！ｗｗ」`;
-    } else {
-        advice_text = `「総司令官！ 計算値が2億円を下回っただだにゆ。もし2億の大台をキープしたいなら、現在値を少し高めに見積もるか、毎月の追撃額を少し引き上げることで、一瞬で2億円要塞へ復帰できるだだにゆ！」`;
-    }
-    document.getElementById('ai_advice').innerText = advice_text;
+    document.getElementById('ai_advice').innerHTML = advice_text;
 }
 
-// 初期実行
 calculateAll();
 </script>
 </body>

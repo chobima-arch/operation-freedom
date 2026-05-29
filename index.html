@@ -1,12 +1,11 @@
 import streamlit as st
-import streamlit.components.v1 as components
 import pandas as pd
 import plotly.graph_objects as go
 
 # ==========================================
 # 1. 究極のサイバーフォント & スライダー陰影強化 CSS
 # ==========================================
-st.set_page_config(layout="wide", page_title="Operation Freedom Dashboard Ver.7.4")
+st.set_page_config(layout="wide", page_title="Operation Freedom Dashboard Ver.7.1")
 
 st.markdown("""
     <style>
@@ -95,7 +94,7 @@ st.markdown("""
 
 # タイトルセクション
 st.markdown('<h1 class="super-title">Dashboard / ダッシュボード</h1>', unsafe_allow_html=True)
-st.markdown('<p class="super-subtitle">OPERATION FREEDOM : NOMURA FORTRESS SYSTEM VER 7.4</p>', unsafe_allow_html=True)
+st.markdown('<p class="super-subtitle">OPERATION FREEDOM : STEALTH RETIREMENT STRATEGY VER 7.1</p>', unsafe_allow_html=True)
 
 # ==========================================
 # 2. サイドバー：作戦統制室 & 金利管制
@@ -131,9 +130,9 @@ with col_s12_g:
 st.subheader("⚔️ 全軍合流アロケーション配備図")
 
 assets = {
-    "特定口座 (楽天証券集約)": {"val": 73000000, "nas100": 40, "sp500": 50, "gold": 10, "note": "備考: 65歳時に野村要塞の特定口座へ集結"},
+    "特定口座 (楽天証券集約)": {"val": 73000000, "nas100": 40, "sp500": 50, "gold": 10, "note": "備考: 有価証券担保ローン対象"},
     "NISA口座 (SBI証券・2028完遂)": {"val": 58000000, "nas100": 50, "sp500": 40, "gold": 10, "note": "備考: 暴落時非常用バッファ"},
-    "企業型DC (65歳まで運用継続・退職所得)": {"val": 73000000, "nas100": 0, "sp500": 100, "gold": 0, "note": "備考: 60歳で拠出終了、65歳まで運用継続し野村要塞特定へ合流"}
+    "iDeCo/DC (楽天合流・退職所得控除)": {"val": 73000000, "nas100": 0, "sp500": 100, "gold": 0, "note": "備考: 60歳時にiDeCo開設・楽天へ移管"}
 }
 
 cols_assets = st.columns(3)
@@ -160,12 +159,12 @@ for i, (name, data) in enumerate(assets.items()):
 st.markdown("""
 <div class="asset-card" style="border-left: 4px solid #ff0077;">
     <span style="color:#ff0077; font-weight:bold;">⚔️ 従業員持株会 (野村⇒楽天移管予定部隊)</span> ｜ 
-    <span style="color:#8892b0;">現在評価額:</span> <strong style="color:#ffffff;">判定中 (60歳時に楽天経由、最終的に野村要塞へ合流可能)</strong>
+    <span style="color:#8892b0;">現在評価額:</span> <strong style="color:#ffffff;">判定中 (60歳時に楽天へ全軍合流)</strong>
 </div>
 """, unsafe_allow_html=True)
 
 # ==========================================
-# 4. 独立防衛コア・シミュレーター部隊 (野村要塞総資産評価額モデル)
+# 4. 独立防衛コア・シミュレーター部隊 (LTV 60% 追証対応に修正)
 # ==========================================
 st.markdown("---")
 st.subheader("🛡️ 独立防衛コア・シミュレーター部隊")
@@ -177,36 +176,38 @@ current_borrow_amount = total_base_asset * (borrow_ratio / 100)
 
 with col_sim1:
     st.markdown("### 🚨 【追証完全回避】暴落・NISAバッファ注入シミュレーター")
-    st.caption("※65歳全軍集結時、旧特定分と企業型DCの合流分が合算され【野村要塞】に配備された総担保資産をベースとした融資管制モデルです。")
+    st.caption("※65歳全軍集結時（特定口座にiDeCoが合流し1億4,600万円になった状態）の、投資信託担保ローン借入比率（LTV）モデルです。")
     
     # 10%刻みの目盛付き暴落スライダー
     market_drop = st.slider("想定市場暴落率 (%)", min_value=-60, max_value=0, value=0, step=10, key="drop_sl")
     st.markdown('<div class="slider-ticks"><span>-60%</span><span>-50%</span><span>-40%</span><span>-30%</span><span>-20%</span><span>-10%</span><span>0%</span></div>', unsafe_allow_html=True)
     
-    # 分母を「野村要塞の総担保評価額」として計算
-    fortress_initial_value = 146000000 
-    post_drop_fortress = fortress_initial_value * (1 + market_drop / 100)
+    # 暴落後の担保資産とNISA資産の目減り連動
+    post_drop_tokutei = 146000000 * (1 + market_drop / 100)
     post_drop_nisa = 58000000 * (1 + market_drop / 100)
     
-    # 借入比率（LTV = 借入額 / 野村要塞総担保評価額）
-    if post_drop_fortress > 0:
-        ltv_ratio = (current_borrow_amount / post_drop_fortress) * 100
+    # 【ロジック完全修正】借入比率（LTV = 借入額 / 担保価値）の計算
+    if post_drop_tokutei > 0:
+        ltv_ratio = (current_borrow_amount / post_drop_tokutei) * 100
     else:
         ltv_ratio = 999.9
         
-    st.markdown(f"**暴落後の野村要塞・総担保評価額:** {post_drop_fortress:,.0f} 円")
+    st.markdown(f"**暴落後の特定口座担保価値:** {post_drop_tokutei:,.0f} 円")
     st.markdown(f"**現在の総借入額:** {current_borrow_amount:,.0f} 円")
     
+    # 閾値を「LTV 60%超」に修正してアラート発令
     if ltv_ratio > 60:
-        st.error(f"🚨 警告：野村要塞の借入比率（LTV）が {ltv_ratio:.1f}% まで上昇！追証発生しきい値(60%)を突破しました！")
-        required_inject = (current_borrow_amount / 0.60) - post_drop_fortress
+        st.error(f"🚨 警告：借入比率（LTV）が {ltv_ratio:.1f}% まで上昇！追証発生しきい値(60%)を突破しました！")
+        
+        # LTVを60%に抑え込むために必要な担保不足額（注入必要額）の逆算
+        required_inject = (current_borrow_amount / 0.60) - post_drop_tokutei
         
         if required_inject <= post_drop_nisa:
-            st.success(f"🛡️ NISAバッファ発動可能！NISAから【{required_inject:,.0f} 円】を野村要塞へ注入せよ！これにより借入比率を60%以下に引き下げ、追証を完全回避だだにゆ！")
+            st.success(f"🛡️ NISAバッファ発動可能！NISAから【{required_inject:,.0f} 円】を特定口座へ注入せよ！これにより借入比率を60%以下に引き下げ、追証を完全回避だだにゆ！")
         else:
-            st.warning(f"⚠️ 深刻な危機：NISAバッファの暴落後残高（{post_drop_nisa:,.0f} 円）が、野村要塞の必要注入額を超えています！追加の防衛資金が必要です！")
+            st.warning(f"⚠️ 深刻な危機：NISAバッファの暴落後残高（{post_drop_nisa:,.0f} 円）を超えています！追加の防衛資金が必要です！")
     else:
-        st.success(f"🟢 現在の野村要塞借入比率（LTV）: {ltv_ratio:.1f}% (安全圏。追証限界線の60%未満をガッチリ維持中だだにゆ！)")
+        st.success(f"🟢 現在の借入比率（LTV）: {ltv_ratio:.1f}% (安全圏。追証限界線の60%未満をガッチリ維持中だだにゆ！)")
 
 with col_sim2:
     st.markdown("### 💰 【合法的ステルス生活】キャッシュフロー＆利息相殺メーター")
@@ -251,17 +252,17 @@ with col_m1:
     st.progress(0.75)
 
 with col_m2:
-    st.markdown("<span class='stealth-badge'>60歳大移動</span> <strong>2033年：持株会楽天移管 ＆ 企業型DC拠出完了</strong>", unsafe_allow_html=True)
-    st.caption("残り時間: あと 7年 ｜ 65歳までDC運用継続フェーズへ突入")
+    st.markdown("<span class='stealth-badge'>60歳大移動</span> <strong>2033年：持株会楽天移管 ＆ DCをiDeCoへ</strong>", unsafe_allow_html=True)
+    st.caption("残り時間: あと 7年 ｜ 楽天証券への最速一本化ルート構築")
     st.progress(0.20)
 
 with col_m3:
-    st.markdown("<span class='stealth-badge'>65歳全軍集結</span> <strong>2038年：全特定集約 ＆ 企業型DC一時金合流</strong>", unsafe_allow_html=True)
-    st.caption("残り時間: あと 12年 ｜ 1億5千万円の目標を超えた【野村要塞】の完成")
+    st.markdown("<span class='stealth-badge'>65歳全軍集結</span> <strong>2038年：全特定集約 ＆ iDeCo洗濯合流</strong>", unsafe_allow_html=True)
+    st.caption("残り時間: あと 12年 ｜ 1億5千万円の目標を超えた最終防衛線の完成")
     st.progress(0.05)
 
 # ==========================================
-# 5. TradingView リアルチャート (安全エスケープ版)
+# 5. TradingView リアルチャート（Apple化修正済）
 # ==========================================
 st.markdown("---")
 st.subheader("📊 リアルタイム戦況ボード (三位一体相関分析)")
@@ -277,16 +278,15 @@ else:
 
 col_ch1, col_ch2, col_ch3 = st.columns(3)
 
-# Pythonのf-stringバグを完全に回避するため、置換方式で安全にHTMLを生成
 def generate_tv_html(symbol):
-    html_template = """
-    <div id="tv-chart-TARGET" style="height:400px;"></div>
+    return f"""
+    <div id="tv-chart-{symbol}" style="height:400px;"></div>
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
     <script type="text/javascript">
-    new TradingView.widget({
+    new TradingView.widget({{
       "width": "100%",
       "height": 400,
-      "symbol": "TARGET",
+      "symbol": "{symbol}",
       "interval": "D",
       "timezone": "Asia/Tokyo",
       "theme": "dark",
@@ -296,26 +296,25 @@ def generate_tv_html(symbol):
       "enable_publishing": false,
       "hide_side_toolbar": true,
       "allow_symbol_change": false,
-      "container_id": "tv-chart-TARGET"
-    });
+      "container_id": "tv-chart-{symbol}"
+    }});
     </script>
     """
-    return html_template.replace("TARGET", symbol)
 
 with col_ch1:
     st.markdown(f"#### 🇺🇸 S&P500 連動兵団 ({sp500_symbol})")
-    components.html(generate_tv_html(sp500_symbol), height=410)
+    st.components.v1.html(generate_tv_html(sp500_symbol), height=410)
 
 with col_ch2:
     st.markdown(f"🚀 NASDAQ100 主力兵団 ({nas100_symbol})")
-    components.html(generate_tv_html(nas100_symbol), height=410)
+    st.components.v1.html(generate_tv_html(nas100_symbol), height=410)
 
 with col_ch3:
     st.markdown("#### 💴 為替クッション (USD/JPY)")
-    components.html(generate_tv_html("FX:USDJPY"), height=410)
+    st.components.v1.html(generate_tv_html("FX:USDJPY"), height=410)
 
 # ==========================================
-# 6. 人生戦略ロードマップ & 金利比例計算
+# 6. 人生戦略ロードマップ & 金利比例計算 (C5終活対応)
 # ==========================================
 st.markdown("---")
 st.subheader("🗺️ 65歳全軍集結・黄金ライフフェーズ・ロードマップ")

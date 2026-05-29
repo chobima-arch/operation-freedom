@@ -7,35 +7,79 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist@2.24.1/plotly.min.js"></script>
     <style>
-        body { background-color: #121212; color: #e0e0e0; font-family: 'Helvetica Neue', Arial, sans-serif; }
-        .card { background-color: #1e1e1e; border: 1px solid #333; color: #e0e0e0; margin-bottom: 12px; }
-        .form-label { color: #aaa; font-weight: bold; font-size: 0.85rem; margin-bottom: 2px; }
-        .form-control { background-color: #2a2a2a; border: 1px solid #444; color: #fff; font-size: 0.9rem; padding: 4px 8px; }
-        .metric { font-size: 1.5rem; font-weight: bold; color: #0d6efd; }
-        .quote { background-color: #1a237e; border-left: 5px solid #0d6efd; padding: 10px; border-radius: 4px; margin-bottom: 15px; font-size: 0.9rem; }
-        .box-title { font-size: 1rem; border-bottom: 1px solid #444; padding-bottom: 2px; margin-bottom: 8px; }
-        .badge-fund { background-color: #333; color: #fff; font-size: 0.75rem; }
+        /* CSS変数によるテーマ管理 */
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-color: #e0e0e0;
+            --border-color: #333;
+            --form-bg: #2a2a2a;
+            --form-text: #fff;
+            --form-border: #444;
+            --advice-bg: #16192b;
+            --advice-text: #e0e0e0;
+            --advice-border: #232a45;
+        }
+        [data-theme="light"] {
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+            --text-color: #212529;
+            --border-color: #dee2e6;
+            --form-bg: #ffffff;
+            --form-text: #212529;
+            --form-border: #ced4da;
+            --advice-bg: #e8eaf6;
+            --advice-text: #1a237e;
+            --advice-border: #c5cae9;
+        }
+
+        body { background-color: var(--bg-color); color: var(--text-color); font-family: 'Helvetica Neue', Arial, sans-serif; transition: background 0.3s, color 0.3s; }
+        .card { background-color: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); margin-bottom: 15px; transition: background 0.3s, border-color 0.3s; }
+        .form-label { color: var(--text-color); opacity: 0.8; font-weight: bold; font-size: 0.85rem; margin-bottom: 3px; }
+        .form-control { background-color: var(--form-bg); border: 1px solid var(--form-border); color: var(--form-text); font-size: 0.9rem; padding: 5px 10px; }
+        .form-control:focus { background-color: var(--form-bg); color: var(--form-text); }
+        
+        /* アイコンの巨大化と配置調整 */
+        .icon-lg { font-size: 1.4rem; vertical-align: middle; margin-right: 6px; }
+        .box-title { font-size: 1.05rem; font-weight: bold; border-bottom: 1px solid var(--border-color); padding-bottom: 5px; margin-bottom: 10px; display: flex; align-items: center; }
+        
+        /* 右上数字ボックスの統一スタイル */
+        .metric-title { font-size: 0.95rem; font-weight: bold; margin-bottom: 5px; }
+        .metric { font-size: 1.6rem; font-weight: bold; }
+        .metric-sub { font-size: 0.75rem; opacity: 0.7; margin-top: 4px; }
+        
+        /* リアルタイム進言ボックスの視認性固定化 */
+        .advice-box { background-color: var(--advice-bg); border: 1px solid var(--advice-border); color: var(--advice-text); padding: 15px; border-radius: 6px; font-size: 0.9rem; line-height: 1.5; }
+        
+        .quote { background-color: rgba(13, 110, 253, 0.1); border-left: 5px solid #0d6efd; padding: 12px; border-radius: 4px; margin-bottom: 20px; font-size: 0.9rem; }
+        .badge-fund { background-color: #555; color: #fff; font-size: 0.75rem; padding: 3px 6px; }
     </style>
 </head>
 <body>
 
-<div class="container-fluid px-4 my-3">
-    <div class="text-center mb-2">
-        <h1>🏯 Operation Freedom 全人生フェーズ作戦盤</h1>
-        <p class="text-muted small">総司令官専用・持株会65歳スイッチング合流 × G20月額コスト分離システム</p>
+<div class="container-fluid px-4 my-4">
+    <div class="d-flex justify-content-between align-items-center mb-3结合">
+        <div>
+            <h1 class="h2 mb-0">🏯 Operation Freedom 全人生フェーズ作戦盤</h1>
+            <p class="text-muted small mb-0">総司令官専用・持株会65歳スイッチング合流 × G20月次コスト完全管制システム</p>
+        </div>
+        <div class="form-check form-switch bg-body-secondary p-2 rounded shadow-sm border" style="padding-left: 2.5em !important; cursor: pointer;">
+            <input class="form-check-input" type="checkbox" id="themeToggle" style="cursor: pointer;" onchange="toggleTheme()">
+            <label class="form-check-label fw-bold small text-nowrap" for="themeToggle" id="themeLabel" style="cursor: pointer; margin-right: 5px;">🌙 ダークモード</label>
+        </div>
     </div>
 
     <div class="quote">
-        <strong>軍師直言：</strong> 司令官！ご命令通り「旧」を葬り去り、53歳時点の持株会590万部隊を新設！65歳で特定口座（野村要塞）のS&P500/NAS100へ一斉合流スイッチさせるコードを組み込んだだだにゆ！G20の借入も月単位ベースで完璧にコントロール可能だだにゆ！ニヤリｗ
+        <strong>専属軍師直言：</strong> 司令官！ご指示通り、画面を1秒で白銀の世界へ変える「テーマスイッチ」を配備し、右上の3大数値を完全対称の美しいボックスへ統合、アイコンもドカンと拡大しただだにゆ！これぞ真の完成形だだにゆ！ニヤリｗ
     </div>
 
-    <div class="row">
+    <div class="row g-3">
         <div class="col-xl-4 col-lg-5">
-            <div class="card p-3">
-                <h4 class="mb-2 text-primary text-center" style="font-size:1.1rem;">⚔️ 前線各箱（ボックス）個別設定</h4>
+            <div class="card p-3 shadow-sm">
+                <h4 class="mb-3 text-primary text-center fw-bold" style="font-size:1.15rem; border-bottom: 2px solid #0d6efd; padding-bottom: 5px;">⚔️ 各要塞ボックス 個別兵装兵力設定</h4>
                 
-                <div class="mb-2 p-2 rounded" style="background-color: rgba(233, 30, 99, 0.03); border: 1px solid #4a1525;">
-                    <h5 class="box-title text-danger">💼 持株会部隊（65歳で特定へ合流）</h5>
+                <div class="mb-3 p-3 rounded border" style="background-color: rgba(233, 30, 99, 0.03);">
+                    <h5 class="box-title text-danger"><span class="icon-lg">💼</span>持株会部隊（65歳で特定へ合流）</h5>
                     <div class="row g-2">
                         <div class="col-6">
                             <label class="form-label">今日現在 額 (万円)</label>
@@ -48,8 +92,8 @@
                     </div>
                 </div>
 
-                <div class="mb-2 p-2 rounded" style="background-color: rgba(255, 165, 0, 0.03); border: 1px solid #443010;">
-                    <h5 class="box-title text-warning">🛡️ 特定口座部隊</h5>
+                <div class="mb-3 p-3 rounded border" style="background-color: rgba(255, 165, 0, 0.03);">
+                    <h5 class="box-title text-warning"><span class="icon-lg">🛡️</span>特定口座部隊</h5>
                     <div class="row g-2 mb-2">
                         <div class="col-6">
                             <label class="form-label">現在評価額 (万円)</label>
@@ -60,21 +104,21 @@
                             <input type="number" id="mon_tokutei" class="form-control" value="30" oninput="calculateAll()">
                         </div>
                     </div>
-                    <div class="mb-1">
-                        <label class="form-label d-flex justify-content-between">
-                            <span>Slim S&P500 比率</span>
+                    <div class="mb-2">
+                        <label class="form-label d-flex justify-content-between align-items-center">
+                            <span>Slim S&P500 配分比率</span>
                             <span id="lbl_t_sp_ratio" class="badge badge-fund">50%</span>
                         </label>
                         <input type="range" id="t_sp_ratio" class="form-range" min="0" max="100" value="50" oninput="calculateAll()">
                     </div>
-                    <div class="row g-2 small text-muted">
-                        <div class="col-6">S&P500年率: <input type="number" id="t_sp_y" class="form-control form-control-sm d-inline-block w-60" value="7.0" step="0.1" oninput="calculateAll()">%</div>
-                        <div class="col-6 text-end">NAS100年率: <input type="number" id="t_nas_y" class="form-control form-control-sm d-inline-block w-60" value="9.0" step="0.1" oninput="calculateAll()">%</div>
+                    <div class="row g-2 small">
+                        <div class="col-6">S&P500年率: <input type="number" id="t_sp_y" class="form-control form-control-sm d-inline-block w-50" value="7.0" step="0.1" oninput="calculateAll()">%</div>
+                        <div class="col-6 text-end">NAS100年率: <input type="number" id="t_nas_y" class="form-control form-control-sm d-inline-block w-50" value="9.0" step="0.1" oninput="calculateAll()">%</div>
                     </div>
                 </div>
 
-                <div class="mb-2 p-2 rounded" style="background-color: rgba(0, 191, 255, 0.03); border: 1px solid #103c4a;">
-                    <h5 class="box-title text-info">🧼 企業型DC / iDeCo部隊</h5>
+                <div class="mb-3 p-3 rounded border" style="background-color: rgba(0, 191, 255, 0.03);">
+                    <h5 class="box-title text-info"><span class="icon-lg">🧼</span>企業型DC / iDeCo部隊</h5>
                     <div class="row g-2 mb-2">
                         <div class="col-6">
                             <label class="form-label">現在総額 (万円)</label>
@@ -85,21 +129,21 @@
                             <input type="number" id="mon_dc" class="form-control" value="5.5" step="0.5" oninput="calculateAll()">
                         </div>
                     </div>
-                    <div class="mb-1">
-                        <label class="form-label d-flex justify-content-between">
-                            <span>Slim S&P500 比率</span>
+                    <div class="mb-2">
+                        <label class="form-label d-flex justify-content-between align-items-center">
+                            <span>Slim S&P500 配分比率</span>
                             <span id="lbl_dc_sp_ratio" class="badge badge-fund">50%</span>
                         </label>
                         <input type="range" id="dc_sp_ratio" class="form-range" min="0" max="100" value="50" oninput="calculateAll()">
                     </div>
-                    <div class="row g-2 small text-muted">
-                        <div class="col-6">S&P500年率: <input type="number" id="dc_sp_y" class="form-control form-control-sm d-inline-block w-60" value="7.0" step="0.1" oninput="calculateAll()">%</div>
-                        <div class="col-6 text-end">NAS100年率: <input type="number" id="dc_nas_y" class="form-control form-control-sm d-inline-block w-60" value="9.0" step="0.1" oninput="calculateAll()">%</div>
+                    <div class="row g-2 small">
+                        <div class="col-6">S&P500年率: <input type="number" id="dc_sp_y" class="form-control form-control-sm d-inline-block w-50" value="7.0" step="0.1" oninput="calculateAll()">%</div>
+                        <div class="col-6 text-end">NAS100年率: <input type="number" id="dc_nas_y" class="form-control form-control-sm d-inline-block w-50" value="9.0" step="0.1" oninput="calculateAll()">%</div>
                     </div>
                 </div>
 
-                <div class="mb-2 p-2 rounded" style="background-color: rgba(50, 205, 50, 0.03); border: 1px solid #1a401a;">
-                    <h5 class="box-title text-success">🛡️ SBI・NISA聖域部隊</h5>
+                <div class="mb-3 p-3 rounded border" style="background-color: rgba(50, 205, 50, 0.03);">
+                    <h5 class="box-title text-success"><span class="icon-lg">🛡️</span>SBI・NISA聖域部隊</h5>
                     <div class="row g-2 mb-2">
                         <div class="col-6">
                             <label class="form-label">現在評価額 (万円)</label>
@@ -110,28 +154,28 @@
                             <input type="number" id="rem_nisa" class="form-control" value="720" oninput="calculateAll()">
                         </div>
                     </div>
-                    <div class="mb-1">
-                        <label class="form-label d-flex justify-content-between">
-                            <span>Slim S&P500 比率</span>
+                    <div class="mb-2">
+                        <label class="form-label d-flex justify-content-between align-items-center">
+                            <span>Slim S&P500 配分比率</span>
                             <span id="lbl_n_sp_ratio" class="badge badge-fund">40%</span>
                         </label>
                         <input type="range" id="n_sp_ratio" class="form-range" min="0" max="100" value="40" oninput="calculateAll()">
                     </div>
-                    <div class="row g-2 small text-muted">
-                        <div class="col-6">S&P500年率: <input type="number" id="n_sp_y" class="form-control form-control-sm d-inline-block w-60" value="7.0" step="0.1" oninput="calculateAll()">%</div>
-                        <div class="col-6 text-end">NAS100年率: <input type="number" id="n_nas_y" class="form-control form-control-sm d-inline-block w-60" value="9.0" step="0.1" oninput="calculateAll()">%</div>
+                    <div class="row g-2 small">
+                        <div class="col-6">S&P500年率: <input type="number" id="n_sp_y" class="form-control form-control-sm d-inline-block w-50" value="7.0" step="0.1" oninput="calculateAll()">%</div>
+                        <div class="col-6 text-end">NAS100年率: <input type="number" id="n_nas_y" class="form-control form-control-sm d-inline-block w-50" value="9.0" step="0.1" oninput="calculateAll()">%</div>
                     </div>
                 </div>
 
-                <div class="p-2 rounded" style="background-color: rgba(255, 255, 255, 0.02); border: 1px solid #333;">
-                    <h5 class="box-title text-secondary">🎰 G20借入コスト設定 (月次ベース)</h5>
+                <div class="p-3 rounded border" style="background-color: rgba(158, 158, 158, 0.03);">
+                    <h5 class="box-title text-secondary"><span class="icon-lg">🎰</span>G20借入コスト設定（月額ベース）</h5>
                     <div class="row g-2">
                         <div class="col-6">
-                            <label class="form-label">A8期 借入 (万円/月)</label>
+                            <label class="form-label">A8期 借入 (万/月)</label>
                             <input type="number" id="loan_a8" class="form-control" value="60" oninput="calculateAll()">
                         </div>
                         <div class="col-6">
-                            <label class="form-label">S12期 借入 (万円/月)</label>
+                            <label class="form-label">S12期 借入 (万/月)</label>
                             <input type="number" id="loan_s12" class="form-control" value="30" oninput="calculateAll()">
                         </div>
                     </div>
@@ -140,33 +184,65 @@
         </div>
 
         <div class="col-xl-8 col-lg-7">
-            <div class="row text-center mb-2">
-                <div class="col-md-4 mb-1">
-                    <div class="card p-2"><div class="text-muted small">🏯 65歳 野村要塞担保高(持株合流済)</div><div class="metric text-warning" id="m_65_nomura">0 万円</div></div>
+            <div class="row g-3 text-center mb-3">
+                <div class="col-md-4">
+                    <div class="card h-100 p-3 shadow-sm border-warning" style="border-top: 4px solid #ffc107 !important;">
+                        <div class="metric-title text-warning">🏯 65歳時点 野村要塞担保高</div>
+                        <div class="metric text-warning my-2" id="m_65_nomura">0 万円</div>
+                        <div class="metric-sub text-muted">特定口座＋iDeCo＋持株会合流高</div>
+                    </div>
                 </div>
-                <div class="col-md-4 mb-1">
-                    <div class="card p-2"><div class="text-muted small">🛡️ 65歳 NISA無税聖域</div><div class="metric text-success" id="m_65_nisa">0 万円</div></div>
+                <div class="col-md-4">
+                    <div class="card h-100 p-3 shadow-sm border-success" style="border-top: 4px solid #198754 !important;">
+                        <div class="metric-title text-success">🛡️ 65歳時点 NISA無税聖域</div>
+                        <div class="metric text-success my-2" id="m_65_nisa">0 万円</div>
+                        <div class="metric-sub text-muted">完全非課税運用・非常用バッファ</div>
+                    </div>
                 </div>
-                <div class="col-md-4 mb-1">
-                    <div class="card p-2"><div class="text-muted small">🚨 90歳到達時 ローン最終残高</div><div class="metric text-danger" id="m_90_loan">0 万円</div></div>
+                <div class="col-md-4">
+                    <div class="card h-100 p-3 shadow-sm border-danger" style="border-top: 4px solid #dc3545 !important;">
+                        <div class="metric-title text-danger">🚨 90歳到達時 ローン最終残高</div>
+                        <div class="metric text-danger my-2" id="m_90_loan">0 万円</div>
+                        <div class="metric-sub text-muted">有担保ローン金利2.0%想定の総債務</div>
+                    </div>
                 </div>
             </div>
 
-            <div class="card p-2">
-                <div id="chart_div" style="width:100%; height:490px;"></div>
+            <div class="card p-2 shadow-sm mb-3">
+                <div id="chart_div" style="width:100%; height:460px;"></div>
             </div>
 
-            <div class="card p-2" style="background-color: #16192b; border: 1px solid #232a45;">
-                <h5 class="text-warning small mb-1">🧠 専属軍師のリアルタイム戦略進言</h5>
-                <div id="ai_advice" class="small text-muted" style="line-height:1.4;"></div>
+            <div class="advice-box shadow-sm">
+                <h5 class="fw-bold mb-2" style="font-size: 1rem; color: #ffca28;"><span class="icon-lg">🧠</span>専属軍師のリアルタイム戦略進言</h5>
+                <div id="ai_advice"></div>
             </div>
         </div>
     </div>
 </div>
 
 <script>
+// テーマ切り替え機能
+function toggleTheme() {
+    const isLight = document.getElementById('themeToggle').checked;
+    if (isLight) {
+        document.body.setAttribute('data-theme', 'light');
+        document.getElementById('themeLabel').innerHTML = '☀️ ライトモード';
+    } else {
+        document.body.removeAttribute('data-theme');
+        document.getElementById('themeLabel').innerHTML = '🌙 ダークモード';
+    }
+    calculateAll(); // グラフの色を連動して再描画
+}
+
 function calculateAll() {
-    // 各箱のデータ・利回り計算
+    // 現在のテーマを判定してグラフのカラーアセットを決定
+    const isLight = document.body.getAttribute('data-theme') === 'light';
+    const paperBg = isLight ? '#ffffff' : '#1e1e1e';
+    const plotBg = isLight ? '#ffffff' : '#1e1e1e';
+    const fontColor = isLight ? '#212529' : '#e0e0e0';
+    const gridColor = isLight ? '#e2e8f0' : '#333333';
+
+    // 各データ・利回り計算
     const cur_mochikabu = parseFloat(document.getElementById('cur_mochikabu').value) || 0;
     const m_yield = parseFloat(document.getElementById('m_yield').value) || 0;
     const r_mochikabu = m_yield / 100;
@@ -199,7 +275,6 @@ function calculateAll() {
     let nisa_data = [];
     let mochikabu_data = [];
     let loan_data = [];
-    let total_asset_data = [];
 
     let v_tokutei = cur_tokutei;
     let v_dc = cur_dc;
@@ -211,7 +286,6 @@ function calculateAll() {
     let m_65_nisa = 0;
 
     for (let age = 53; age <= 90; age++) {
-        // 65歳になった瞬間に持株会を特定口座（野村要塞）へ全部スイッチング・合流させる
         if (age === 65) {
             v_tokutei += v_mochikabu;
             v_mochikabu = 0;
@@ -225,11 +299,8 @@ function calculateAll() {
         nisa_data.push(v_nisa);
         mochikabu_data.push(v_mochikabu);
         loan_data.push(v_loan);
-        total_asset_data.push(v_tokutei + v_dc + v_nisa + v_mochikabu);
 
-        // 12ヶ月の月次運用
         for (let m = 0; m < 12; m++) {
-            // F7期 (53〜59歳)
             if (age >= 53 && age < 60) {
                 v_tokutei = (v_tokutei + mon_tokutei) * (1 + r_tokutei/12);
                 v_dc = (v_dc + mon_dc) * (1 + r_dc/12);
@@ -240,14 +311,12 @@ function calculateAll() {
                     v_nisa = v_nisa * (1 + r_nisa/12);
                 }
             }
-            // B5期 (60〜64歳)
             else if (age >= 60 && age < 65) {
                 v_tokutei = v_tokutei * (1 + r_tokutei/12);
                 v_dc = v_dc * (1 + r_dc/12);
                 if (age < 65) v_mochikabu = v_mochikabu * (1 + r_mochikabu/12);
                 v_nisa = v_nisa * (1 + r_nisa/12);
             }
-            // G20期 (65歳以降)
             else {
                 v_tokutei = v_tokutei * (1 + r_tokutei/12);
                 v_dc = v_dc * (1 + r_dc/12);
@@ -255,19 +324,16 @@ function calculateAll() {
             }
         }
 
-        // ローン借入コスト（月次ベースを年換算して年末に加算）
         if (age >= 65 && age < 90) {
             let annual_draw = (age < 73) ? (loan_a8 * 12) : (loan_s12 * 12);
-            v_loan = (v_loan + annual_draw) * 1.02; // 有担保ローン金利2.0%想定
+            v_loan = (v_loan + annual_draw) * 1.02; // ローン金利2.0%想定
         }
     }
 
-    // 表示更新
     document.getElementById('m_65_nomura').innerText = Math.floor(m_65_nomura).toLocaleString() + " 万円";
     document.getElementById('m_65_nisa').innerText = Math.floor(m_65_nisa).toLocaleString() + " 万円";
     document.getElementById('m_90_loan').innerText = Math.floor(v_loan).toLocaleString() + " 万円";
 
-    // トレース
     const tTokutei = { x: ages, y: tokutei_data, name: '🏯 特定口座資産', type: 'scatter', line: {color: '#0d6efd', width: 3} };
     const tDc = { x: ages, y: dc_data, name: '🧼 企業型DC / iDeCo', type: 'scatter', line: {color: '#ffc107', width: 2, dash: 'dot'} };
     const tNisa = { x: ages, y: nisa_data, name: '🛡️ SBI・NISA聖域(無税)', type: 'scatter', line: {color: '#198754', width: 2, dash: 'dash'} };
@@ -275,35 +341,37 @@ function calculateAll() {
     const tLoan = { x: ages, y: loan_data, name: '🚨 有価証券担保ローン残高', type: 'scatter', line: {color: '#dc3545', width: 3} };
 
     const layouts = {
-        paper_bgcolor: '#1e1e1e', plot_bgcolor: '#1e1e1e',
-        font: { color: '#e0e0e0', size: 11 },
+        paper_bgcolor: paperBg, plot_bgcolor: plotBg,
+        font: { color: fontColor, size: 11 },
         margin: { t: 30, b: 40, l: 65, r: 20 },
-        legend: { orientation: 'h', y: -0.12, font: {size: 10} },
-        xaxis: { gridcolor: '#333', dtick: 5 }, yaxis: { gridcolor: '#333' },
+        legend: { orientation: 'h', y: -0.15, font: {size: 10} },
+        xaxis: { gridcolor: gridColor, dtick: 5 }, yaxis: { gridcolor: gridColor },
         hovermode: 'x unified',
         shapes: [
-            { type: 'rect', xref: 'x', yref: 'paper', x0: 53, x1: 60, y0: 0, y1: 1, fillcolor: 'rgba(255, 165, 0, 0.04)', line: {width: 0} },
-            { type: 'rect', xref: 'x', yref: 'paper', x0: 60, x1: 65, y0: 0, y1: 1, fillcolor: 'rgba(0, 191, 255, 0.04)', line: {width: 0} },
-            { type: 'rect', xref: 'x', yref: 'paper', x0: 65, x1: 73, y0: 0, y1: 1, fillcolor: 'rgba(50, 205, 50, 0.04)', line: {width: 0} },
-            { type: 'rect', xref: 'x', yref: 'paper', x0: 73, x1: 90, y0: 0, y1: 1, fillcolor: 'rgba(138, 43, 226, 0.04)', line: {width: 0} }
+            { type: 'rect', xref: 'x', yref: 'paper', x0: 53, x1: 60, y0: 0, y1: 1, fillcolor: isLight ? 'rgba(255, 165, 0, 0.04)' : 'rgba(255, 165, 0, 0.02)', line: {width: 0} },
+            { type: 'rect', xref: 'x', yref: 'paper', x0: 60, x1: 65, y0: 0, y1: 1, fillcolor: isLight ? 'rgba(0, 191, 255, 0.04)' : 'rgba(0, 191, 255, 0.02)', line: {width: 0} },
+            { type: 'rect', xref: 'x', yref: 'paper', x0: 65, x1: 73, y0: 0, y1: 1, fillcolor: isLight ? 'rgba(50, 205, 50, 0.04)' : 'rgba(50, 205, 50, 0.02)', line: {width: 0} },
+            { type: 'rect', xref: 'x', yref: 'paper', x0: 73, x1: 90, y0: 0, y1: 1, fillcolor: isLight ? 'rgba(138, 43, 226, 0.04)' : 'rgba(138, 43, 226, 0.02)', line: {width: 0} }
         ],
         annotations: [
-            { x: 56.5, y: 0.96, xref: 'x', yref: 'paper', text: '<b>F7期</b>', showarrow: false, font: {color: '#ffca28', size: 11} },
-            { x: 62.5, y: 0.96, xref: 'x', yref: 'paper', text: '<b>B5期</b>', showarrow: false, font: {color: '#40c4ff', size: 11} },
-            { x: 69, y: 0.96, xref: 'x', yref: 'paper', text: '<b>A8期</b>', showarrow: false, font: {color: '#69f0ae', size: 11} },
-            { x: 81.5, y: 0.96, xref: 'x', yref: 'paper', text: '<b>S12期</b>', showarrow: false, font: {color: '#ea80fc', size: 11} }
+            { x: 56.5, y: 0.96, xref: 'x', yref: 'paper', text: '<b>F7期</b>', showarrow: false, font: {color: isLight ? '#b57c00' : '#ffca28', size: 11} },
+            { x: 62.5, y: 0.96, xref: 'x', yref: 'paper', text: '<b>B5期</b>', showarrow: false, font: {color: isLight ? '#007099' : '#40c4ff', size: 11} },
+            { x: 69, y: 0.96, xref: 'x', yref: 'paper', text: '<b>A8期</b>', showarrow: false, font: {color: isLight ? '#008744' : '#69f0ae', size: 11} },
+            { x: 81.5, y: 0.96, xref: 'x', yref: 'paper', text: '<b>S12期</b>', showarrow: false, font: {color: isLight ? '#7b1fa2' : '#ea80fc', size: 11} }
         ]
     };
 
     Plotly.newPlot('chart_div', [tTokutei, tDc, tNisa, tMochi, tLoan], layouts);
 
-    // 軍師進言
-    let advice_text = `「総司令官！ グラフの **65歳の瞬間** をご覧くださいだだにゆ！ ピンク色の持株会ラインが0へ消失すると同時に、青色の特定口座ラインが一撃でドンと跳ね上がっているだだにゆ！<br>`;
-    advice_text += `これこそが、司令官の狙い通り『持株会アセットを野村要塞に合流させ、S&P500やNAS100のインデックス戦闘力へ変換した』歴史的瞬間だだにゆね！<br>`;
-    advice_text += `A8期に毎月 ${loan_a8} 万円、S12期に毎月 ${loan_s12} 万円を借り入れるコストを設定しても、この合流エネルギーのおかげで担保の絶対壁（青線）が凄まじい防衛能力を誇っているだだにゆ。ククク……ニヤリｗｗ」`;
+    // 進言テキストの更新（テーマごとに文字の可読性を最大化）
+    let advice_text = `総司令官！現在設定されている特定口座の合成想定利回りは **${(r_tokutei*100).toFixed(2)}%**、DCは **${(r_dc*100).toFixed(2)}%**、NISAは **${(r_nisa*100).toFixed(2)}%** だだにゆ！<br>`;
+    advice_text += `画面最上部のトグルスイッチでライトモードに切り替えても、この文字やグラフの線がくっきり視認できるよう完全に対策しただだにゆ。<br>`;
+    advice_text += `右上の3つの情報要塞カードも、縦のサイズを1ミリの狂いもなく完全同期させたことで、65歳時点の要塞担保力と90歳時点のローン最終残高（赤線）のパワーバランスが圧倒的に見やすくなっただだにゆ！スライダーを動かして、最適な未来陣形をニヤリと描き出してほしいだだにゆ！ｗｗ`;
+    
     document.getElementById('ai_advice').innerHTML = advice_text;
 }
 
+// 初期実行
 calculateAll();
 </script>
 </body>

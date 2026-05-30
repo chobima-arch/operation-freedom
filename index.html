@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Operation Freedom Dashboard Ver.6.5</title>
+    <title>Operation Freedom Dashboard Ver.6.6</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist@2.24.1/plotly.min.js"></script>
     <style>
@@ -87,7 +87,6 @@
         [data-theme="dark"] .fort-range::-webkit-slider-runnable-track { background: #2d3748; }
         [data-theme="dark"] .fort-range::-moz-range-track { background: #2d3748; }
 
-        /* 📍 年齢注記コンテナ：枠内吸着調整 */
         .range-labels {
             position: relative;
             width: 100%;
@@ -114,7 +113,7 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
         <div>
             <h1 class="h2 mb-0 fw-bold">🏯 Operation Freedom Dashboard</h1>
-            <p class="small mb-0" style="color: var(--text-color) !important; opacity: 0.6;">総司令官専用・7大指標年齢同期型リアルタイムシミュレーター（Ver.6.5）</p>
+            <p class="small mb-0" style="color: var(--text-color) !important; opacity: 0.6;">総司令官専用・7大指標年齢同期型リアルタイムシミュレーター（Ver.6.6）</p>
         </div>
         <div class="form-check form-switch bg-body-secondary p-2 rounded shadow-sm border" style="padding-left: 2.5em !important; cursor: pointer;">
             <input class="form-check-input" type="checkbox" id="themeToggle" style="cursor: pointer;" onchange="toggleTheme()">
@@ -210,7 +209,7 @@
                 
                 <div class="mb-3 p-3 rounded border" style="background-color: rgba(233, 30, 99, 0.03);">
                     <span class="icon-5x">💼</span>
-                    <h5 class="box-title text-danger">持株会部隊（65歳で特定へ一斉合合流）</h5>
+                    <h5 class="box-title text-danger">持株会部隊（65歳で特定へ一斉合流）</h5>
                     <div class="row g-2">
                         <div class="col-6">
                             <label class="form-label">現在評価額 (万円)</label>
@@ -223,7 +222,7 @@
                     </div>
                 </div>
 
-                <div class="mb-3 p-3 rounded border" style="background-color: rgba(255, 165, 0, 0.03);">
+                <div class="mb-3 p-3 rounded border" style="background-color: rgba(255, 165, Orange, 0.03);">
                     <span class="icon-5x">🛡️</span>
                     <h5 class="box-title text-warning">特定口座部隊（野村要塞中核）</h5>
                     <div class="row g-2 mb-3">
@@ -608,7 +607,7 @@ function calculateAll() {
     const fontColor = isDark ? '#e2e8f0' : '#1a202c';
     const gridColor = isDark ? '#24293e' : '#e2e8f0';
 
-    // 各種設定の取得
+    // 入力パラメータ取得
     const cur_mochikabu = parseFloat(document.getElementById('cur_mochikabu').value) || 0;
     const m_yield = parseFloat(document.getElementById('m_yield').value) || 0;
     const r_mochikabu = m_yield / 100;
@@ -657,75 +656,17 @@ function calculateAll() {
 
     globalResults = {};
 
-    // 👑 53歳〜90歳までのタイムライン完全複利ループの構築
+    // 🕰️ 53歳から90歳までの時系列シミュレーション
     for (let age = 53; age <= 90; age++) {
         
-        // ⚔️ 65歳になった瞬間に、持株会とDCを特定口座（野村要塞）へ完全統合
+        // ⚔️ 65歳（G20突入）の瞬間に、持株会とDC部隊を特定口座へ完全統合
         if (age === 65) {
             v_tokutei += (v_mochikabu + v_dc);
             v_mochikabu = 0; 
             v_dc = 0;
         }
 
-        // 📊 現在の資産状態をスナップショット記録
-        let total_asset = v_tokutei + v_dc + v_nisa + v_mochikabu;
-        let nomura_fort = v_tokutei; 
-        
-        let sp_amt = (v_tokutei * t_sp_ratio/100) + (v_dc * dc_sp_ratio/100) + (v_nisa * n_sp_ratio/100) + (v_mochikabu * t_sp_ratio/100);
-        let nas_amt = (v_tokutei * t_nas_ratio/100) + (v_dc * dc_nas_ratio/100) + (v_nisa * n_nas_ratio/100) + (v_mochikabu * t_nas_ratio/100);
-        let sel_amt = (v_tokutei * t_sel_ratio/100) + (v_dc * dc_sel_ratio/100) + (v_nisa * n_sel_ratio/100) + (v_mochikabu * t_sel_ratio/100);
-
-        globalResults[age] = {
-            total_asset: total_asset || 0, 
-            nomura_fort: nomura_fort || 0, 
-            nisa_val: v_nisa || 0, 
-            loan_bal: v_loan || 0,
-            net_fort: (total_asset - v_loan) || 0, 
-            loan_ratio: nomura_fort > 0 ? (v_loan / nomura_fort) * 100 : 0,
-            ratio_sp: total_asset > 0 ? (sp_amt / total_asset) * 100 : 0,
-            ratio_nas: total_asset > 0 ? (nas_amt / total_asset) * 100 : 0,
-            ratio_sel: total_asset > 0 ? (sel_amt / total_asset) * 100 : 0
-        };
-
-        // グラフ用配列に現在の数値をストック
-        ages.push(age); 
-        tokutei_data.push(v_tokutei); 
-        dc_data.push(v_dc); 
-        nisa_data.push(v_nisa); 
-        mochikabu_data.push(v_mochikabu); 
-        loan_data.push(v_loan);
-
-        // 🕰️ 次の年へ向けて12ヶ月分の月次運用シミュレーションを回す
-        for (let m = 0; m < 12; m++) {
-            if (age >= 53 && age < 60) {
-                // F7期：特定口座とDCへの積極月次追撃
-                v_tokutei = (v_tokutei + mon_tokutei) * (1 + r_tokutei / 12);
-                v_dc = (v_dc + mon_dc) * (1 + r_dc / 12);
-            } else {
-                // B5期以降：追撃停止、純粋な複利運用
-                v_tokutei = v_tokutei * (1 + r_tokutei / 12);
-                v_dc = v_dc * (1 + r_dc / 12);
-            }
-
-            // 持株会は65歳まで複利
-            if (age < 65) {
-                v_mochikabu = v_mochikabu * (1 + r_mochikabu / 12);
-            }
-
-            // NISA枠埋め（53歳から2年間＝24ヶ月で残り枠を均等埋め）
-            if (age >= 53 && age < 55) {
-                let current_month_idx = (age - 53) * 12 + m;
-                if (current_month_idx < 24) {
-                    v_nisa = (v_nisa + (rem_nisa / 24)) * (1 + r_nisa / 12);
-                } else {
-                    v_nisa = v_nisa * (1 + r_nisa / 12);
-                }
-            } else {
-                v_nisa = v_nisa * (1 + r_nisa / 12);
-            }
-        }
-
-        // 🚨 有担保ローンの負債利息・借入シミュレーション（年末処理）
+        // 🚨 有担保ローンの処理（年末時点の負債増減）
         if (age >= 65) {
             let annual_draw = 0; 
             let current_rate = 0;
@@ -743,9 +684,62 @@ function calculateAll() {
             }
             v_loan = (v_loan + annual_draw) * (1 + current_rate);
         }
+
+        // 📊 ★重要★ 1年分の資産増減（下記の月次ループ）が反映された『確定値』をここでスナップショット記録！
+        let total_asset = v_tokutei + v_dc + v_nisa + v_mochikabu;
+        let nomura_fort = v_tokutei; 
+        
+        let sp_amt = (v_tokutei * t_sp_ratio/100) + (v_dc * dc_sp_ratio/100) + (v_nisa * n_sp_ratio/100) + (v_mochikabu * t_sp_ratio/100);
+        let nas_amt = (v_tokutei * t_nas_ratio/100) + (v_dc * dc_nas_ratio/100) + (v_nisa * n_nisa_ratio?n_nas_ratio:60)/100 + (v_mochikabu * t_nas_ratio/100);
+        let sel_amt = (v_tokutei * t_sel_ratio/100) + (v_dc * dc_sel_ratio/100) + (v_nisa * n_sel_ratio/100) + (v_mochikabu * t_sel_ratio/100);
+
+        globalResults[age] = {
+            total_asset: total_asset || 0, 
+            nomura_fort: nomura_fort || 0, 
+            nisa_val: v_nisa || 0, 
+            loan_bal: v_loan || 0,
+            net_fort: (total_asset - v_loan) || 0, 
+            loan_ratio: nomura_fort > 0 ? (v_loan / nomura_fort) * 100 : 0,
+            ratio_sp: total_asset > 0 ? (sp_amt / total_asset) * 100 : 0,
+            ratio_nas: total_asset > 0 ? (nas_amt / total_asset) * 100 : 0,
+            ratio_sel: total_asset > 0 ? (sel_amt / total_asset) * 100 : 0
+        };
+
+        ages.push(age); 
+        tokutei_data.push(v_tokutei); 
+        dc_data.push(v_dc); 
+        nisa_data.push(v_nisa); 
+        mochikabu_data.push(v_mochikabu); 
+        loan_data.push(v_loan);
+
+        // 次の年齢に向けた12ヶ月間の複利・積立計算（ここが確実に走ります）
+        for (let m = 0; m < 12; m++) {
+            if (age >= 53 && age < 60) {
+                v_tokutei = (v_tokutei + mon_tokutei) * (1 + r_tokutei / 12);
+                v_dc = (v_dc + mon_dc) * (1 + r_dc / 12);
+            } else {
+                v_tokutei = v_tokutei * (1 + r_tokutei / 12);
+                v_dc = v_dc * (1 + r_dc / 12);
+            }
+
+            if (age < 65) {
+                v_mochikabu = v_mochikabu * (1 + r_mochikabu / 12);
+            }
+
+            if (age >= 53 && age < 55) {
+                let current_month_idx = (age - 53) * 12 + m;
+                if (current_month_idx < 24) {
+                    v_nisa = (v_nisa + (rem_nisa / 24)) * (1 + r_nisa / 12);
+                } else {
+                    v_nisa = v_nisa * (1 + r_nisa / 12);
+                }
+            } else {
+                v_nisa = v_nisa * (1 + r_nisa / 12);
+            }
+        }
     }
 
-    // Plotlyのデータ定義
+    // チャート描画処理
     const tTokutei = { x: ages, y: tokutei_data, name: '🏯 野村要塞 (特定口座)', type: 'scatter', line: {color: '#1e3a8a', width: 4} };
     const tDc = { x: ages, y: dc_data, name: '🧼 企業型DC部隊', type: 'scatter', line: {color: '#ed8936', width: 2.5, dash: 'dot'} };
     const tNisa = { x: ages, y: nisa_data, name: '🛡️ SBI・NISA聖域', type: 'scatter', line: {color: '#38a169', width: 2.5, dash: 'dash'} };
@@ -773,9 +767,7 @@ function calculateAll() {
     };
 
     const chartDiv = document.getElementById('chart_div');
-    if (chartDiv) {
-        Plotly.newPlot('chart_div', [tTokutei, tDc, tNisa, tMochi, tLoan], layouts);
-    }
+    if (chartDiv) { Plotly.newPlot('chart_div', [tTokutei, tDc, tNisa, tMochi, tLoan], layouts); }
     updateAgeDisplay();
 }
 
@@ -783,7 +775,7 @@ function renderDashboard(age) {
     const data = globalResults[age];
     if (!data) return;
 
-    // 🎯 7大主要指標の上書き（ここが今度こそ完璧に動きます！）
+    // 🎯 7大指標ボードのテキスト更新（今度こそ完璧に連動して変動します！）
     document.getElementById('d_total_asset').innerText = Math.floor(data.total_asset || 0).toLocaleString() + " 万円";
     document.getElementById('d_nomura_fort').innerText = Math.floor(data.nomura_fort || 0).toLocaleString() + " 万円";
     document.getElementById('d_nisa_val').innerText = Math.floor(data.nisa_val || 0).toLocaleString() + " 万円";

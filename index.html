@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Operation Freedom v7.9.6</title>
+    <title>Operation Freedom v7.9.7</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist@2.24.1/plotly.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -16,17 +16,17 @@
         .dark .custom-scrollbar::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
         .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); }
         
-        /* 年齢コントロール用の淡い5色フェーズグラデーションレール (53歳〜90歳の全37年ベースに完全最適化) */
+        /* 年齢コントロール用の淡い5色フェーズグラデーションレール */
         .phase-rail {
             position: relative;
             height: 12px;
             border-radius: 6px;
             background: linear-gradient(to right, 
-                rgba(59, 130, 246, 0.22) 0%, rgba(59, 130, 246, 0.22) 18.92%,      /* F7: 53-60歳 (7年/37年 = 18.92%) */
-                rgba(168, 85, 247, 0.22) 18.92%, rgba(168, 85, 247, 0.22) 32.43%,  /* B5: 60-65歳 (5年/37年 = 13.51% -> 計32.43%) */
-                rgba(244, 63, 94, 0.22) 32.43%, rgba(244, 63, 94, 0.22) 54.05%,   /* A8: 65-73歳 (8年/37年 = 21.62% -> 計54.05%) */
-                rgba(14, 165, 233, 0.22) 54.05%, rgba(14, 165, 233, 0.22) 86.49%,  /* S12: 73-85歳 (12年/37年 = 32.43% -> 計86.49%) */
-                rgba(100, 116, 139, 0.22) 86.49%, rgba(100, 116, 139, 0.22) 100%  /* C5: 85-90歳 (5年/37年 = 13.51% -> 計100%) */
+                rgba(59, 130, 246, 0.22) 0%, rgba(59, 130, 246, 0.22) 18.92%,      /* F7: 53-60歳 */
+                rgba(168, 85, 247, 0.22) 18.92%, rgba(168, 85, 247, 0.22) 32.43%,  /* B5: 60-65歳 */
+                rgba(244, 63, 94, 0.22) 32.43%, rgba(244, 63, 94, 0.22) 54.05%,   /* A8: 65-73歳 */
+                rgba(14, 165, 233, 0.22) 54.05%, rgba(14, 165, 233, 0.22) 86.49%,  /* S12: 73-85歳 */
+                rgba(100, 116, 139, 0.22) 86.49%, rgba(100, 116, 139, 0.22) 100%  /* C5: 85-90歳 */
             );
         }
 
@@ -34,36 +34,72 @@
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             border-radius: 50%;
-            background: #D4AF37;
+            background: #475569;
             cursor: pointer;
             border: 2px solid #ffffff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-            margin-top: -4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            margin-top: -6px;
         }
         .dark input[type="range"]::-webkit-slider-thumb {
             border: 2px solid #1e293b;
+            background: #94a3b8;
         }
         input[type="range"]::-moz-range-thumb {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             border-radius: 50%;
-            background: #D4AF37;
+            background: #475569;
             cursor: pointer;
             border: 2px solid #ffffff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
         }
         .dark input[type="range"]::-moz-range-thumb {
             border: 2px solid #1e293b;
+            background: #94a3b8;
         }
         
-        /* 年齢コントロールスライダー専用のつまみ設定 */
+        /* 部隊ボックス用のカラフルなつまみ制御 */
+        .accent-blue-thumb::-webkit-slider-thumb { background: #3B82F6 !important; }
+        .accent-blue-thumb::-moz-range-thumb { background: #3B82F6 !important; }
+        .accent-purple-thumb::-webkit-slider-thumb { background: #A855F7 !important; }
+        .accent-purple-thumb::-moz-range-thumb { background: #A855F7 !important; }
+        .accent-emerald-thumb::-webkit-slider-thumb { background: #10B981 !important; }
+        .accent-emerald-thumb::-moz-range-thumb { background: #10B981 !important; }
+        .accent-amber-thumb::-webkit-slider-thumb { background: #F59E0B !important; }
+        .accent-amber-thumb::-moz-range-thumb { background: #F59E0B !important; }
+        .accent-rose-thumb::-webkit-slider-thumb { background: #F43F5E !important; }
+        .accent-rose-thumb::-moz-range-thumb { background: #F43F5E !important; }
+
+        /* 年齢コントロールスライダー専用のゴールドつまみ設定（レール上に完全配置するためマージン調整） */
         #age-slider::-webkit-slider-thumb {
-            margin-top: 0px;
+            -webkit-appearance: none;
+            appearance: none;
             width: 24px;
             height: 24px;
+            border-radius: 50%;
+            background: #D4AF37 !important;
+            cursor: pointer;
+            border: 2px solid #ffffff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            margin-top: -6px;
+        }
+        .dark #age-slider::-webkit-slider-thumb {
+            border: 2px solid #0f172a;
+        }
+        #age-slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #D4AF37 !important;
+            cursor: pointer;
+            border: 2px solid #ffffff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        .dark #age-slider::-moz-range-thumb {
+            border: 2px solid #0f172a;
         }
     </style>
     <script>
@@ -95,8 +131,8 @@
                     <i class="fa-solid fa-castle text-3xl"></i>
                 </div>
                 <div>
-                    <h1 class="text-lg font-black tracking-wider flex items-center gap-2">
-                        Operation Freedom <span class="text-xs bg-slate-100 dark:bg-slate-800 text-fortress-gold px-2 py-0.5 rounded-full border border-slate-200 dark:border-slate-700 font-bold">v7.9.6</span>
+                    <h1 class="text-xl md:text-2xl font-black tracking-wider flex items-center gap-2">
+                        Operation Freedom <span class="text-xs bg-slate-100 dark:bg-slate-800 text-fortress-gold px-2 py-0.5 rounded-full border border-slate-200 dark:border-slate-700 font-bold">v7.9.7</span>
                     </h1>
                     <p class="text-xs text-slate-500 dark:text-slate-400">(資産要塞シミュレーター)</p>
                 </div>
@@ -153,7 +189,7 @@
                         <div class="grid grid-cols-2 gap-3">
                             <div>
                                 <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1">初期資産額 (万)</label>
-                                <input type="number" id="tokutei-init" value="7300" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-sm font-bold text-blue-500 focus:outline-none focus:border-blue-500">
+                                <input type="number" id="tokutei-init" value="1700" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-sm font-bold text-blue-500 focus:outline-none focus:border-blue-500">
                             </div>
                             <div>
                                 <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1">毎月追撃額(万)</label>
@@ -167,21 +203,21 @@
                                     <span>S&P500 (<span id="tokutei-p1-val">50%</span>)</span>
                                     <div class="flex items-center gap-1">年率<input type="number" id="tokutei-r1" value="7.0" step="0.1" class="w-14 bg-slate-50 dark:bg-slate-900 border text-right rounded px-1 py-0.5 font-bold">%</div>
                                 </div>
-                                <input type="range" id="tokutei-p1" min="0" max="100" value="50" class="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-500">
+                                <input type="range" id="tokutei-p1" min="0" max="100" value="50" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-thumb">
                             </div>
                             <div class="space-y-2">
                                 <div class="flex justify-between items-center text-xs">
                                     <span>NASDAQ100 (<span id="tokutei-p2-val">30%</span>)</span>
                                     <div class="flex items-center gap-1">年率<input type="number" id="tokutei-r2" value="8.5" step="0.1" class="w-14 bg-slate-50 dark:bg-slate-900 border text-right rounded px-1 py-0.5 font-bold">%</div>
                                 </div>
-                                <input type="range" id="tokutei-p2" min="0" max="100" value="30" class="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-500">
+                                <input type="range" id="tokutei-p2" min="0" max="100" value="30" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-thumb">
                             </div>
                             <div class="space-y-2">
                                 <div class="flex justify-between items-center text-xs">
                                     <span>Selected Fund (<span id="tokutei-p3-val">20%</span>)</span>
                                     <div class="flex items-center gap-1">年率<input type="number" id="tokutei-r3" value="5.5" step="0.1" class="w-14 bg-slate-50 dark:bg-slate-900 border text-right rounded px-1 py-0.5 font-bold">%</div>
                                 </div>
-                                <input type="range" id="tokutei-p3" min="0" max="100" value="20" class="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-500">
+                                <input type="range" id="tokutei-p3" min="0" max="100" value="20" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-thumb">
                             </div>
                         </div>
                     </div>
@@ -197,7 +233,7 @@
                         <div class="grid grid-cols-2 gap-3">
                             <div>
                                 <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1">初期資産額 (万)</label>
-                                <input type="number" id="dc-init" value="7300" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-sm font-bold text-purple-500 focus:outline-none focus:border-purple-500">
+                                <input type="number" id="dc-init" value="3400" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-sm font-bold text-purple-500 focus:outline-none focus:border-purple-500">
                             </div>
                             <div>
                                 <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1">毎月積立額(万)</label>
@@ -211,21 +247,21 @@
                                     <span>S&P500 (<span id="dc-p1-val">40%</span>)</span>
                                     <div class="flex items-center gap-1">年率<input type="number" id="dc-r1" value="7.0" step="0.1" class="w-14 bg-slate-50 dark:bg-slate-900 border text-right rounded px-1 py-0.5 font-bold">%</div>
                                 </div>
-                                <input type="range" id="dc-p1" min="0" max="100" value="40" class="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-purple-500">
+                                <input type="range" id="dc-p1" min="0" max="100" value="40" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-purple-thumb">
                             </div>
                             <div class="space-y-2">
                                 <div class="flex justify-between items-center text-xs">
                                     <span>NASDAQ100 (<span id="dc-p2-val">40%</span>)</span>
                                     <div class="flex items-center gap-1">年率<input type="number" id="dc-r2" value="8.5" step="0.1" class="w-14 bg-slate-50 dark:bg-slate-900 border text-right rounded px-1 py-0.5 font-bold">%</div>
                                 </div>
-                                <input type="range" id="dc-p2" min="0" max="100" value="40" class="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-purple-500">
+                                <input type="range" id="dc-p2" min="0" max="100" value="40" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-purple-thumb">
                             </div>
                             <div class="space-y-2">
                                 <div class="flex justify-between items-center text-xs">
                                     <span>Selected Fund (<span id="dc-p3-val">20%</span>)</span>
                                     <div class="flex items-center gap-1">年率<input type="number" id="dc-r3" value="5.5" step="0.1" class="w-14 bg-slate-50 dark:bg-slate-900 border text-right rounded px-1 py-0.5 font-bold">%</div>
                                 </div>
-                                <input type="range" id="dc-p3" min="0" max="100" value="20" class="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-purple-500">
+                                <input type="range" id="dc-p3" min="0" max="100" value="20" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-purple-thumb">
                             </div>
                         </div>
                     </div>
@@ -241,7 +277,7 @@
                         <div class="grid grid-cols-2 gap-3">
                             <div>
                                 <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1">初期資産額 (万)</label>
-                                <input type="number" id="nisa-init" value="4000" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-sm font-bold text-fortress-emerald focus:outline-none focus:border-fortress-emerald">
+                                <input type="number" id="nisa-init" value="1600" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-sm font-bold text-fortress-emerald focus:outline-none focus:border-fortress-emerald">
                             </div>
                             <div>
                                 <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1">毎月枠埋め(万)</label>
@@ -259,28 +295,28 @@
                                     <span>S&P500 (<span id="nisa-p1-val">40%</span>)</span>
                                     <div class="flex items-center gap-1">年率<input type="number" id="nisa-r1" value="7.0" step="0.1" class="w-14 bg-slate-50 dark:bg-slate-900 border text-right rounded px-1 py-0.5 font-bold">%</div>
                                 </div>
-                                <input type="range" id="nisa-p1" min="0" max="100" value="40" class="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-fortress-emerald">
+                                <input type="range" id="nisa-p1" min="0" max="100" value="40" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-fortress-emerald animate-none accent-emerald-thumb">
                             </div>
                             <div class="space-y-2">
                                 <div class="flex justify-between items-center text-xs">
                                     <span>NASDAQ100 (<span id="nisa-p2-val">50%</span>)</span>
                                     <div class="flex items-center gap-1">年率<input type="number" id="nisa-r2" value="8.5" step="0.1" class="w-14 bg-slate-50 dark:bg-slate-900 border text-right rounded px-1 py-0.5 font-bold">%</div>
                                 </div>
-                                <input type="range" id="nisa-p2" min="0" max="100" value="50" class="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-fortress-emerald">
+                                <input type="range" id="nisa-p2" min="0" max="100" value="50" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-thumb">
                             </div>
                             <div class="space-y-2">
                                 <div class="flex justify-between items-center text-xs">
                                     <span>Selected Fund (<span id="nisa-p3-val">10%</span>)</span>
                                     <div class="flex items-center gap-1">年率<input type="number" id="nisa-r3" value="5.5" step="0.1" class="w-14 bg-slate-50 dark:bg-slate-900 border text-right rounded px-1 py-0.5 font-bold">%</div>
                                 </div>
-                                <input type="range" id="nisa-p3" min="0" max="100" value="10" class="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-fortress-emerald">
+                                <input type="range" id="nisa-p3" min="0" max="100" value="10" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-thumb">
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="bg-white dark:bg-slate-950 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-1.5 h-full bg-amber-500"></div>
+                    <div class="absolute top-0 left-0 w-1.5 h-full bg-F59E0B bg-amber-500"></div>
                     <h2 class="text-sm font-black tracking-wide text-slate-400 dark:text-slate-500 uppercase mb-4 flex justify-between items-center">
                         <span class="flex items-center gap-2.5"><i class="fa-solid fa-building text-amber-500 text-5xl"></i> 持株会部隊</span>
                         <span class="text-xs bg-amber-50 dark:bg-amber-950/40 text-amber-500 px-2 py-0.5 rounded-md font-bold">65歳信託合流</span>
@@ -308,21 +344,21 @@
                                     <span>S&P500 (<span id="mochikabu-p1-val">50%</span>)</span>
                                     <div class="flex items-center gap-1">年率<input type="number" id="mochikabu-r1" value="7.0" step="0.1" class="w-14 bg-slate-50 dark:bg-slate-900 border text-right rounded px-1 py-0.5 font-bold">%</div>
                                 </div>
-                                <input type="range" id="mochikabu-p1" min="0" max="100" value="50" class="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-500">
+                                <input type="range" id="mochikabu-p1" min="0" max="100" value="50" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-thumb">
                             </div>
                             <div class="space-y-2">
                                 <div class="flex justify-between items-center text-xs">
                                     <span>NASDAQ100 (<span id="mochikabu-p2-val">30%</span>)</span>
                                     <div class="flex items-center gap-1">年率<input type="number" id="mochikabu-r2" value="8.5" step="0.1" class="w-14 bg-slate-50 dark:bg-slate-900 border text-right rounded px-1 py-0.5 font-bold">%</div>
                                 </div>
-                                <input type="range" id="mochikabu-p2" min="0" max="100" value="30" class="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-500">
+                                <input type="range" id="mochikabu-p2" min="0" max="100" value="30" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-thumb">
                             </div>
                             <div class="space-y-2">
                                 <div class="flex justify-between items-center text-xs">
                                     <span>Selected Fund (<span id="mochikabu-p3-val">20%</span>)</span>
                                     <div class="flex items-center gap-1">年率<input type="number" id="mochikabu-r3" value="5.5" step="0.1" class="w-14 bg-slate-50 dark:bg-slate-900 border text-right rounded px-1 py-0.5 font-bold">%</div>
                                 </div>
-                                <input type="range" id="mochikabu-p3" min="0" max="100" value="20" class="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-500">
+                                <input type="range" id="mochikabu-p3" min="0" max="100" value="20" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-thumb">
                             </div>
                         </div>
                     </div>
@@ -337,38 +373,62 @@
                     
                     <div class="space-y-5 divide-y divide-slate-100 dark:divide-slate-800/60">
                         <div class="space-y-3 pt-2">
-                            <span class="text-xs font-black text-rose-500 block">🔴 Active8 (A8: 65〜73歳)</span>
-                            <div class="grid grid-cols-2 gap-2 text-xs">
-                                <div>毎月借入始(万): <span id="a8-b-val" class="font-bold text-fortress-rose">60</span><input type="range" id="loan-a8-b" min="0" max="150" value="60" class="w-full accent-fortress-rose"></div>
-                                <div>毎月借入終(万): <span id="a8-e-val" class="font-bold text-fortress-rose">60</span><input type="range" id="loan-a8-e" min="0" max="150" value="60" class="w-full accent-fortress-rose"></div>
+                            <span class="text-xs font-black text-rose-500 block">打撃部隊 Active8 (A8: 65〜73歳)</span>
+                            <div class="space-y-2">
+                                <div class="text-xs flex justify-between items-center">
+                                    <span>毎月借入額: <span id="a8-val" class="font-bold text-fortress-rose">60万円</span></span>
+                                </div>
+                                <input type="range" id="loan-a8" min="0" max="150" value="60" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-rose-thumb">
                             </div>
-                            <div class="grid grid-cols-2 gap-2 text-xs">
-                                <div>適用金利始: <span id="a8-r-b-val" class="font-bold text-slate-700 dark:text-slate-300">1.5%</span><input type="range" id="rate-a8-b" min="0" max="5" step="0.1" value="1.5" class="w-full accent-slate-500"></div>
-                                <div>適用金利終: <span id="a8-r-e-val" class="font-bold text-slate-700 dark:text-slate-300">1.5%</span><input type="range" id="rate-a8-e" min="0" max="5" step="0.1" value="1.5" class="w-full accent-slate-500"></div>
-                            </div>
-                        </div>
-
-                        <div class="space-y-3 pt-3">
-                            <span class="text-xs font-black text-sky-500 block">🔵 Slow12 (S12: 73〜85歳)</span>
-                            <div class="grid grid-cols-2 gap-2 text-xs">
-                                <div>毎月借入始(万): <span id="s12-b-val" class="font-bold text-fortress-rose">45</span><input type="range" id="loan-s12-b" min="0" max="150" value="45" class="w-full accent-fortress-rose"></div>
-                                <div>毎月借入終(万): <span id="s12-e-val" class="font-bold text-fortress-rose">45</span><input type="range" id="loan-s12-e" min="0" max="150" value="45" class="w-full accent-fortress-rose"></div>
-                            </div>
-                            <div class="grid grid-cols-2 gap-2 text-xs">
-                                <div>適用金利始: <span id="s12-r-b-val" class="font-bold text-slate-700 dark:text-slate-300">2.0%</span><input type="range" id="rate-s12-b" min="0" max="5" step="0.1" value="2.0" class="w-full accent-slate-500"></div>
-                                <div>適用金利終: <span id="s12-r-e-val" class="font-bold text-slate-700 dark:text-slate-300">2.0%</span><input type="range" id="rate-s12-e" min="0" max="5" step="0.1" value="2.0" class="w-full accent-slate-500"></div>
+                            <div class="grid grid-cols-2 gap-3 pt-1">
+                                <div class="space-y-1">
+                                    <div class="text-[11px] flex justify-between"><span>適用金利(始):</span> <span id="a8-r-b-val" class="font-bold text-slate-600 dark:text-slate-400">1.5%</span></div>
+                                    <input type="range" id="rate-a8-b" min="0" max="5" step="0.1" value="1.5" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer">
+                                </div>
+                                <div class="space-y-1">
+                                    <div class="text-[11px] flex justify-between"><span>適用金利(終):</span> <span id="a8-r-e-val" class="font-bold text-slate-600 dark:text-slate-400">1.5%</span></div>
+                                    <input type="range" id="rate-a8-e" min="0" max="5" step="0.1" value="1.5" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer">
+                                </div>
                             </div>
                         </div>
 
-                        <div class="space-y-3 pt-3">
-                            <span class="text-xs font-black text-slate-400 block">⚫ Closing5 (C5: 85〜90歳)</span>
-                            <div class="grid grid-cols-2 gap-2 text-xs">
-                                <div>毎月借入始(万): <span id="c5-b-val" class="font-bold text-fortress-rose">35</span><input type="range" id="loan-c5-b" min="0" max="150" value="35" class="w-full accent-fortress-rose"></div>
-                                <div>毎月借入終(万): <span id="c5-e-val" class="font-bold text-fortress-rose">35</span><input type="range" id="loan-c5-e" min="0" max="150" value="35" class="w-full accent-fortress-rose"></div>
+                        <div class="space-y-3 pt-4">
+                            <span class="text-xs font-black text-sky-500 block">潜行部隊 Slow12 (S12: 73〜85歳)</span>
+                            <div class="space-y-2">
+                                <div class="text-xs flex justify-between items-center">
+                                    <span>毎月借入額: <span id="s12-val" class="font-bold text-fortress-rose">45万円</span></span>
+                                </div>
+                                <input type="range" id="loan-s12" min="0" max="150" value="45" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-rose-thumb">
                             </div>
-                            <div class="grid grid-cols-2 gap-2 text-xs">
-                                <div>適用金利始: <span id="c5-r-b-val" class="font-bold text-slate-700 dark:text-slate-300">2.5%</span><input type="range" id="rate-c5-b" min="0" max="5" step="0.1" value="2.5" class="w-full accent-slate-500"></div>
-                                <div>適用金利終: <span id="c5-r-e-val" class="font-bold text-slate-700 dark:text-slate-300">2.5%</span><input type="range" id="rate-c5-e" min="0" max="5" step="0.1" value="2.5" class="w-full accent-slate-500"></div>
+                            <div class="grid grid-cols-2 gap-3 pt-1">
+                                <div class="space-y-1">
+                                    <div class="text-[11px] flex justify-between"><span>適用金利(始):</span> <span id="s12-r-b-val" class="font-bold text-slate-600 dark:text-slate-400">2.0%</span></div>
+                                    <input type="range" id="rate-s12-b" min="0" max="5" step="0.1" value="2.0" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer">
+                                </div>
+                                <div class="space-y-1">
+                                    <div class="text-[11px] flex justify-between"><span>適用金利(終):</span> <span id="s12-r-e-val" class="font-bold text-slate-600 dark:text-slate-400">2.0%</span></div>
+                                    <input type="range" id="rate-s12-e" min="0" max="5" step="0.1" value="2.0" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3 pt-4">
+                            <span class="text-xs font-black text-slate-400 block">撤退部隊 Closing5 (C5: 85〜90歳)</span>
+                            <div class="space-y-2">
+                                <div class="text-xs flex justify-between items-center">
+                                    <span>毎月借入額: <span id="c5-val" class="font-bold text-fortress-rose">35万円</span></span>
+                                </div>
+                                <input type="range" id="loan-c5" min="0" max="150" value="35" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-rose-thumb">
+                            </div>
+                            <div class="grid grid-cols-2 gap-3 pt-1">
+                                <div class="space-y-1">
+                                    <div class="text-[11px] flex justify-between"><span>適用金利(始):</span> <span id="c5-r-b-val" class="font-bold text-slate-600 dark:text-slate-400">2.5%</span></div>
+                                    <input type="range" id="rate-c5-b" min="0" max="5" step="0.1" value="2.5" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer">
+                                </div>
+                                <div class="space-y-1">
+                                    <div class="text-[11px] flex justify-between"><span>適用金利(終):</span> <span id="c5-r-e-val" class="font-bold text-slate-600 dark:text-slate-400">2.5%</span></div>
+                                    <input type="range" id="rate-c5-e" min="0" max="5" step="0.1" value="2.5" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -381,7 +441,7 @@
             
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 shrink-0">
                 <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
-                    <span class="text-[11px] text-slate-400 font-bold block mb-1 flex items-center gap-2"><i class="fa-solid fa-castle text-blue-500 text-3xl"></i> 野村要塞担保高</span>
+                    <span class="text-[11px] text-slate-400 font-bold block mb-1 flex items-center gap-2"><i class="fa-solid fa-fortress-gate text-blue-500 text-3xl"></i> 野村要塞担保高</span>
                     <div class="text-base sm:text-lg font-black tracking-tight text-blue-500" id="ind-fortress">0 <span class="text-xs font-normal text-slate-400">万円</span></div>
                     <span class="text-[9px] text-slate-400 block mt-1">特定+DC(60~)+持株(65~)</span>
                 </div>
@@ -439,17 +499,19 @@
                     </div>
                 </div>
                 
-                <div class="w-11/12 mx-auto space-y-2 pt-1 relative pb-8">
-                    <div class="phase-rail shadow-inner"></div>
-                    <input type="range" id="age-slider" min="53" max="90" value="65" class="w-full h-3 bg-transparent rounded-xl appearance-none cursor-pointer accent-fortress-gold -mt-4 relative z-10 focus:outline-none">
+                <div class="w-11/12 mx-auto space-y-2 pt-2 relative pb-8">
+                    <div class="relative h-12 flex items-center">
+                        <div class="phase-rail shadow-inner absolute left-0 right-0 w-full z-0"></div>
+                        <input type="range" id="age-slider" min="53" max="90" value="65" class="w-full bg-transparent appearance-none cursor-pointer absolute left-0 right-0 w-full z-10 focus:outline-none">
+                    </div>
                     
-                    <div class="absolute w-full top-5 left-0 text-[10px] font-black text-slate-400 select-none pointer-events-none">
-                        <div class="absolute text-center -translate-x-1/2 text-blue-500" style="left: 0.0%;">53歳<br><span class="font-normal text-[8px] opacity-80">Foundation7</span></div>
-                        <div class="absolute text-center -translate-x-1/2 text-purple-500" style="left: 18.92%;">60歳<br><span class="font-normal text-[8px] opacity-80">Boost5</span></div>
-                        <div class="absolute text-center -translate-x-1/2 text-rose-500" style="left: 32.43%;">65歳<br><span class="font-normal text-[8px] opacity-80">Active8</span></div>
-                        <div class="absolute text-center -translate-x-1/2 text-sky-500" style="left: 54.05%;">73歳<br><span class="font-normal text-[8px] opacity-80">Slow12</span></div>
-                        <div class="absolute text-center -translate-x-1/2 text-slate-500" style="left: 86.49%;">85歳<br><span class="font-normal text-[8px] opacity-80">Closing5</span></div>
-                        <div class="absolute text-center -translate-x-full text-slate-400" style="left: 100%;">90歳<br><span class="font-normal text-[8px] opacity-80">終点</span></div>
+                    <div class="absolute w-full top-10 left-0 text-[10px] font-black text-slate-400 select-none pointer-events-none whitespace-nowrap">
+                        <div class="absolute text-center -translate-x-1/2 text-blue-500" style="left: 0.0%;">53歳<br><span class="font-normal text-[8px] opacity-80">F7</span></div>
+                        <div class="absolute text-center -translate-x-1/2 text-purple-500" style="left: 18.92%;">60歳<br><span class="font-normal text-[8px] opacity-80">B5</span></div>
+                        <div class="absolute text-center -translate-x-1/2 text-rose-500" style="left: 32.43%;">65歳<br><span class="font-normal text-[8px] opacity-80">A8</span></div>
+                        <div class="absolute text-center -translate-x-1/2 text-sky-500" style="left: 54.05%;">73歳<br><span class="font-normal text-[8px] opacity-80">S12</span></div>
+                        <div class="absolute text-center -translate-x-1/2 text-slate-500" style="left: 86.49%;">85歳<br><span class="font-normal text-[8px] opacity-80">C5</span></div>
+                        <div class="absolute text-center -translate-x-full text-slate-400 pr-1" style="left: 100%;">90歳</div>
                     </div>
                 </div>
             </div>
@@ -496,7 +558,7 @@
     <footer class="mt-8 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 py-5 transition-colors duration-200">
         <div class="max-w-[1600px] mx-auto px-4 text-center text-xs text-slate-400 dark:text-slate-500 space-y-1">
             <p>Operation Freedom | Strategic Absolute Fortress Financial Model</p>
-            <p class="font-bold">Engine Optimized Ver 7.9.6 (Multi-Asset Specific Dynamic Compounding Engine Stabilized)</p>
+            <p class="font-bold">Engine Optimized Ver 7.9.7 (Multi-Asset Specific Dynamic Compounding Engine Stabilized)</p>
         </div>
     </footer>
 
@@ -600,11 +662,11 @@
             handleRatioSliders('nisa-p1', 'nisa-p2', 'nisa-p3', 'nisa-p1-val', 'nisa-p2-val', 'nisa-p3-val');
             handleRatioSliders('mochikabu-p1', 'mochikabu-p2', 'mochikabu-p3', 'mochikabu-p1-val', 'mochikabu-p2-val', 'mochikabu-p3-val');
 
-            const loanIds = ['loan-a8-b', 'loan-a8-e', 'rate-a8-b', 'rate-a8-e',
-                             'loan-s12-b', 'loan-s12-e', 'rate-s12-b', 'rate-s12-e',
-                             'loan-c5-b', 'loan-c5-e', 'rate-c5-b', 'rate-c5-e'];
+            const loanInputs = ['loan-a8', 'rate-a8-b', 'rate-a8-e',
+                                'loan-s12', 'rate-s12-b', 'rate-s12-e',
+                                'loan-c5', 'rate-c5-b', 'rate-c5-e'];
             
-            loanIds.forEach(id => {
+            loanInputs.forEach(id => {
                 document.getElementById(id).addEventListener('input', () => {
                     updateLoanLabels();
                     runSimulation();
@@ -628,18 +690,15 @@
         }
 
         function updateLoanLabels() {
-            document.getElementById('a8-b-val').innerText = document.getElementById('loan-a8-b').value;
-            document.getElementById('a8-e-val').innerText = document.getElementById('loan-a8-e').value;
+            document.getElementById('a8-val').innerText = document.getElementById('loan-a8').value + '万円';
             document.getElementById('a8-r-b-val').innerText = document.getElementById('rate-a8-b').value + '%';
             document.getElementById('a8-r-e-val').innerText = document.getElementById('rate-a8-e').value + '%';
 
-            document.getElementById('s12-b-val').innerText = document.getElementById('loan-s12-b').value;
-            document.getElementById('s12-e-val').innerText = document.getElementById('loan-s12-e').value;
+            document.getElementById('s12-val').innerText = document.getElementById('loan-s12').value + '万円';
             document.getElementById('s12-r-b-val').innerText = document.getElementById('rate-s12-b').value + '%';
             document.getElementById('s12-r-e-val').innerText = document.getElementById('rate-s12-e').value + '%';
 
-            document.getElementById('c5-b-val').innerText = document.getElementById('loan-c5-b').value;
-            document.getElementById('c5-e-val').innerText = document.getElementById('loan-c5-e').value;
+            document.getElementById('c5-val').innerText = document.getElementById('loan-c5').value + '万円';
             document.getElementById('c5-r-b-val').innerText = document.getElementById('rate-c5-b').value + '%';
             document.getElementById('c5-r-e-val').innerText = document.getElementById('rate-c5-e').value + '%';
         }
@@ -673,18 +732,15 @@
             const mR2 = (parseFloat(document.getElementById('mochikabu-r2').value) || 0) / 100;
             const mR3 = (parseFloat(document.getElementById('mochikabu-r3').value) || 0) / 100;
 
-            const la8_b = parseFloat(document.getElementById('loan-a8-b').value);
-            const la8_e = parseFloat(document.getElementById('loan-a8-e').value);
+            const la8 = parseFloat(document.getElementById('loan-a8').value);
             const ra8_b = parseFloat(document.getElementById('rate-a8-b').value) / 100;
             const ra8_e = parseFloat(document.getElementById('rate-a8-e').value) / 100;
 
-            const ls12_b = parseFloat(document.getElementById('loan-s12-b').value);
-            const ls12_e = parseFloat(document.getElementById('loan-s12-e').value);
+            const ls12 = parseFloat(document.getElementById('loan-s12').value);
             const rs12_b = parseFloat(document.getElementById('rate-s12-b').value) / 100;
             const rs12_e = parseFloat(document.getElementById('rate-s12-e').value) / 100;
 
-            const lc5_b = parseFloat(document.getElementById('loan-c5-b').value);
-            const lc5_e = parseFloat(document.getElementById('loan-c5-e').value);
+            const lc5 = parseFloat(document.getElementById('loan-c5').value);
             const rc5_b = parseFloat(document.getElementById('rate-c5-b').value) / 100;
             const rc5_e = parseFloat(document.getElementById('rate-c5-e').value) / 100;
 
@@ -751,15 +807,15 @@
 
                     if (age >= 65 && age < 73) {
                         let ratio = ((age - 65) * 12 + m) / (8 * 12);
-                        mBorrow = la8_b + (la8_e - la8_b) * ratio;
+                        mBorrow = la8;
                         mRate = (ra8_b + (ra8_e - ra8_b) * ratio) / 12;
                     } else if (age >= 73 && age < 85) {
                         let ratio = ((age - 73) * 12 + m) / (12 * 12);
-                        mBorrow = ls12_b + (ls12_e - ls12_b) * ratio;
+                        mBorrow = ls12;
                         mRate = (rs12_b + (rs12_e - rs12_b) * ratio) / 12;
                     } else if (age >= 85 && age <= 90) {
                         let ratio = ((age - 85) * 12 + m) / (5 * 12);
-                        mBorrow = lc5_b + (lc5_e - lc5_b) * ratio;
+                        mBorrow = lc5;
                         mRate = (rc5_b + (rc5_e - rc5_b) * ratio) / 12;
                     }
 

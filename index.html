@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>G20資産要塞シミュレーター v6.8</title>
+    <title>G20資産要塞シミュレーター v6.9</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist@2.24.1/plotly.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -60,7 +60,7 @@
                 </div>
                 <div>
                     <h1 class="text-lg font-black tracking-wider flex items-center gap-2">
-                        G20資産要塞シミュレーター <span class="text-xs bg-slate-100 dark:bg-slate-800 text-fortress-gold px-2 py-0.5 rounded-full border border-slate-200 dark:border-slate-700 font-mono">v6.8</span>
+                        G20資産要塞シミュレーター <span class="text-xs bg-slate-100 dark:bg-slate-800 text-fortress-gold px-2 py-0.5 rounded-full border border-slate-200 dark:border-slate-700 font-mono">v6.9</span>
                     </h1>
                     <p class="text-xs text-slate-500 dark:text-slate-400">Strategic Asset Allocation & Leverage Simulation</p>
                 </div>
@@ -82,10 +82,10 @@
         
         <section class="xl:col-span-4 space-y-6 max-h-[calc(100vh-100px)] xl:overflow-y-auto pr-0 xl:pr-2 custom-scrollbar">
             
-            <div class="bg-white dark:bg-slate-950 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden group">
+            <div class="bg-white dark:bg-slate-950 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden space-y-4">
                 <div class="absolute top-0 left-0 w-1.5 h-full bg-fortress-gold"></div>
-                <h2 class="text-sm font-black tracking-wide text-slate-400 dark:text-slate-500 uppercase mb-4 flex items-center gap-2">
-                    <i class="fa-solid fa-crosshairs text-fortress-gold"></i> 基本目標設定
+                <h2 class="text-sm font-black tracking-wide text-slate-400 dark:text-slate-500 uppercase flex items-center gap-2">
+                    <i class="fa-solid fa-crosshairs text-fortress-gold"></i> 基本目標・市場環境設定
                 </h2>
                 <div class="grid grid-cols-2 gap-4">
                     <div>
@@ -98,9 +98,23 @@
                     <div>
                         <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1">現在年齢</label>
                         <div class="relative">
-                            <input type="number" id="start-age" value="53" disabled class="w-full bg-slate-100 dark:bg-slate-800 text-slate-400 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-sm font-bold focus:outline-none pr-8 cursor-not-allowed">
+                            <input type="number" id="start-age" value="53" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-sm font-bold focus:outline-none focus:border-fortress-gold pr-8">
                             <span class="absolute right-3 top-2 text-xs text-slate-400">歳</span>
                         </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-3 gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+                    <div>
+                        <label class="block text-[10px] text-slate-500 dark:text-slate-400 mb-0.5">米ドル/円 (円)</label>
+                        <input type="number" id="usd-jpy" value="150.00" step="0.5" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg px-2 py-1 text-xs font-bold text-center">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-slate-500 dark:text-slate-400 mb-0.5">SPY株価 ($)</label>
+                        <input type="number" id="price-spy" value="500.00" step="5" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg px-2 py-1 text-xs font-bold text-center">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-slate-500 dark:text-slate-400 mb-0.5">QQQ株価 ($)</label>
+                        <input type="number" id="price-qqq" value="440.00" step="5" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg px-2 py-1 text-xs font-bold text-center">
                     </div>
                 </div>
             </div>
@@ -129,11 +143,11 @@
                     <div class="pt-2 border-t border-slate-100 dark:border-slate-800 space-y-2">
                         <span class="text-xs font-bold text-slate-400 block">ファンド配分比率</span>
                         <div class="space-y-1">
-                            <div class="flex justify-between text-xs font-mono"><span>S&P500</span><span id="tokutei-p1-val">40%</span></div>
+                            <div class="flex justify-between text-xs font-mono"><span>S&P500 (SPY等)</span><span id="tokutei-p1-val">40%</span></div>
                             <input type="range" id="tokutei-p1" min="0" max="100" value="40" class="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-500">
                         </div>
                         <div class="space-y-1">
-                            <div class="flex justify-between text-xs font-mono"><span>NASDAQ100</span><span id="tokutei-p2-val">40%</span></div>
+                            <div class="flex justify-between text-xs font-mono"><span>NASDAQ100 (QQQ等)</span><span id="tokutei-p2-val">40%</span></div>
                             <input type="range" id="tokutei-p2" min="0" max="100" value="40" class="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-500">
                         </div>
                         <div class="space-y-1">
@@ -147,7 +161,7 @@
             <div class="bg-white dark:bg-slate-950 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden">
                 <div class="absolute top-0 left-0 w-1.5 h-full bg-purple-500"></div>
                 <h2 class="text-sm font-black tracking-wide text-slate-400 dark:text-slate-500 uppercase mb-4 flex justify-between items-center">
-                    <span><i class="fa-solid fa-shield-halved text-purple-500 mr-1"></i> 企業型DC / iDeCo部隊</span>
+                    <span><i class="fa-solid fa-shield-halved text-purple-500 mr-1"></i> 企業型DC部隊</span>
                     <span class="text-xs bg-purple-50 dark:bg-purple-950/40 text-purple-500 px-2 py-0.5 rounded-md font-mono">60歳精算・合流</span>
                 </h2>
                 <div class="space-y-4">
@@ -164,6 +178,21 @@
                     <div>
                         <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1">想定年率 (%)</label>
                         <input type="number" id="dc-rate" value="5" step="0.1" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-sm font-bold focus:outline-none focus:border-purple-500">
+                    </div>
+                    <div class="pt-2 border-t border-slate-100 dark:border-slate-800 space-y-2">
+                        <span class="text-xs font-bold text-slate-400 block">ファンド配分比率</span>
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs font-mono"><span>S&P500</span><span id="dc-p1-val">40%</span></div>
+                            <input type="range" id="dc-p1" min="0" max="100" value="40" class="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-purple-500">
+                        </div>
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs font-mono"><span>NASDAQ100</span><span id="dc-p2-val">40%</span></div>
+                            <input type="range" id="dc-p2" min="0" max="100" value="40" class="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-purple-500">
+                        </div>
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs font-mono"><span>Selected Index</span><span id="dc-p3-val">20%</span></div>
+                            <input type="range" id="dc-p3" min="0" max="100" value="20" class="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-purple-500">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -193,6 +222,21 @@
                         <div>
                             <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1">枠完了まで(年)</label>
                             <input type="number" id="nisa-years" value="3" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-sm font-bold focus:outline-none focus:border-fortress-emerald">
+                        </div>
+                    </div>
+                    <div class="pt-2 border-t border-slate-100 dark:border-slate-800 space-y-2">
+                        <span class="text-xs font-bold text-slate-400 block">ファンド配分比率</span>
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs font-mono"><span>S&P500</span><span id="nisa-p1-val">40%</span></div>
+                            <input type="range" id="nisa-p1" min="0" max="100" value="40" class="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-fortress-emerald">
+                        </div>
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs font-mono"><span>NASDAQ100</span><span id="nisa-p2-val">40%</span></div>
+                            <input type="range" id="nisa-p2" min="0" max="100" value="40" class="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-fortress-emerald">
+                        </div>
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs font-mono"><span>Selected Index</span><span id="nisa-p3-val">20%</span></div>
+                            <input type="range" id="nisa-p3" min="0" max="100" value="20" class="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-fortress-emerald">
                         </div>
                     </div>
                 </div>
@@ -241,8 +285,8 @@
             <div class="bg-white dark:bg-slate-950 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden">
                 <div class="absolute top-0 left-0 w-1.5 h-full bg-fortress-rose"></div>
                 <h2 class="text-sm font-black tracking-wide text-slate-400 dark:text-slate-500 uppercase mb-4 flex justify-between items-center">
-                    <span><i class="fa-solid fa-scale-balanced text-fortress-rose mr-1"></i> G20レバレッジ戦略設定</span>
-                    <span class="text-xs bg-rose-50 dark:bg-rose-950/40 text-fortress-rose px-2 py-0.5 rounded-md font-mono">65歳(A8)起動</span>
+                    <span><i class="fa-solid fa-scale-balanced text-fortress-rose mr-1"></i> ローン借入設定</span>
+                    <span class="text-xs bg-rose-50 dark:bg-rose-950/40 text-fortress-rose px-2 py-0.5 rounded-md font-mono">65歳起動</span>
                 </h2>
                 <div class="space-y-4">
                     <div>
@@ -259,9 +303,8 @@
                         </div>
                     </div>
                     <div class="bg-slate-50 dark:bg-slate-900 p-3 rounded-xl border border-slate-100 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-400 space-y-1">
-                        <p class="font-bold text-slate-700 dark:text-slate-300"><i class="fa-solid fa-circle-info"></i> レバレッジ防衛ロジック</p>
-                        <p>・借入比率35%時の想定暴落耐性: 約 -33%</p>
-                        <p>・-50%超の超暴落時は温存NISAバッファを特定口座に注入し、追証を完全自動回避する設計。</p>
+                        <p class="font-bold text-slate-700 dark:text-slate-300"><i class="fa-solid fa-circle-info"></i> 防衛システム連動</p>
+                        <p>・借入比率に基づき、65歳以降自動でローン枠（有価証券担保ローン）を生成。</p>
                     </div>
                 </div>
             </div>
@@ -308,10 +351,10 @@
                     <span class="text-[9px] text-slate-400 block mt-1">ローン残高 ÷ 要塞担保高</span>
                 </div>
                 <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl relative shadow-sm">
-                    <span class="text-[11px] text-slate-400 font-bold block mb-1">🧬 主要コアファンド割合</span>
+                    <span class="text-[11px] text-slate-400 font-bold block mb-1">🧬 コアファンド推定保有割合</span>
                     <div class="text-xs font-bold space-y-0.5 text-slate-600 dark:text-slate-300 mt-1" id="ind-fund-mix">
-                        <div>S&P: --%</div>
-                        <div>NAS: --%</div>
+                        <div>S&P500: --%</div>
+                        <div>NAS100: --%</div>
                     </div>
                 </div>
             </div>
@@ -330,11 +373,11 @@
                 <div class="relative pt-2">
                     <input type="range" id="age-slider" min="53" max="85" value="65" class="w-full h-3 bg-slate-100 dark:bg-slate-800 rounded-xl appearance-none cursor-pointer accent-fortress-gold border border-slate-200 dark:border-slate-700 shadow-inner">
                     <div class="flex justify-between text-[11px] font-bold text-slate-400 px-1 mt-2">
-                        <span class="flex flex-col items-center"><span>53歳</span><span class="text-[9px] font-normal text-slate-400">現在</span></span>
-                        <span class="flex flex-col items-center text-purple-400"><span>60歳</span><span class="text-[9px] font-normal">iDeCo精算</span></span>
+                        <span class="flex flex-col items-center"><span id="slider-label-start">53歳</span><span class="text-[9px] font-normal text-slate-400">開始</span></span>
+                        <span class="flex flex-col items-center text-purple-400"><span>60歳</span><span class="text-[9px] font-normal">DC精算</span></span>
                         <span class="flex flex-col items-center text-fortress-rose"><span>65歳</span><span class="text-[9px] font-normal">A8レバ始動</span></span>
                         <span class="flex flex-col items-center text-amber-500"><span>72歳</span><span class="text-[9px] font-normal">Active終</span></span>
-                        <span class="flex flex-col items-center"><span>85歳</span><span class="text-[9px] font-normal">S12戦略限</span></span>
+                        <span class="flex flex-col items-center"><span>85歳</span><span class="text-[9px] font-normal">戦術限界</span></span>
                     </div>
                 </div>
             </div>
@@ -342,7 +385,7 @@
             <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-sm font-black tracking-wide text-slate-400 dark:text-slate-500 uppercase flex items-center gap-2">
-                        <i class="fa-solid fa-chart-area text-blue-500"></i> 全軍要塞アセット推移シミュレーション
+                        <i class="fa-solid fa-chart-area text-blue-500"></i> 全軍要塞アセット推移シミュレーション (SPY/QQQ価格・為替連動)
                     </h3>
                     <span class="text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-500 px-2 py-1 rounded-md font-mono">Interactive Plotly</span>
                 </div>
@@ -356,22 +399,19 @@
     <footer class="mt-12 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 py-6 transition-colors duration-200">
         <div class="max-w-[1600px] mx-auto px-4 text-center text-xs text-slate-400 dark:text-slate-500 space-y-2">
             <p>G20 Strategic Absolute Fortress Model | "合法的ステルス生活" 出口戦略仕様</p>
-            <p class="font-mono">Engine Optimized Ver 6.8 (Bugfix & Enhanced Mochikabu Sliders Connected)</p>
+            <p class="font-mono">Engine Optimized Ver 6.9 (Fund Sliders Fully Equipped & V6.7 Core Parameters Restored)</p>
         </div>
     </footer>
 
     <script>
-        // グローバルデータストア
         let simulationData = {};
 
-        // ドキュメント読み込み完了時
         document.addEventListener('DOMContentLoaded', () => {
             initTheme();
             setupEventListeners();
             runSimulation();
         });
 
-        // テーマ切替
         function initTheme() {
             if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                 document.documentElement.classList.add('dark');
@@ -442,9 +482,11 @@
             p3.addEventListener('input', () => { adjust(3); runSimulation(); });
         }
 
-        // イベントリスナー設定
         function setupEventListeners() {
+            // パッチ：全4部隊の3軸スライダー連動を定義
             handleRatioSliders('tokutei-p1', 'tokutei-p2', 'tokutei-p3', 'tokutei-p1-val', 'tokutei-p2-val', 'tokutei-p3-val');
+            handleRatioSliders('dc-p1', 'dc-p2', 'dc-p3', 'dc-p1-val', 'dc-p2-val', 'dc-p3-val');
+            handleRatioSliders('nisa-p1', 'nisa-p2', 'nisa-p3', 'nisa-p1-val', 'nisa-p2-val', 'nisa-p3-val');
             handleRatioSliders('mochikabu-p1', 'mochikabu-p2', 'mochikabu-p3', 'mochikabu-p1-val', 'mochikabu-p2-val', 'mochikabu-p3-val');
 
             const levSlider = document.getElementById('leverage-ratio');
@@ -458,7 +500,8 @@
                 updateOutputMetrics();
             });
 
-            const inputs = ['target-asset', 'tokutei-init', 'tokutei-monthly', 'tokutei-rate', 
+            const inputs = ['target-asset', 'start-age', 'usd-jpy', 'price-spy', 'price-qqq',
+                           'tokutei-init', 'tokutei-monthly', 'tokutei-rate', 
                            'dc-init', 'dc-monthly', 'dc-rate', 
                            'nisa-init', 'nisa-monthly', 'nisa-rate', 'nisa-years',
                            'mochikabu-init', 'mochikabu-monthly', 'mochikabu-rate-early'];
@@ -467,11 +510,21 @@
             });
         }
 
-        // コア・シミュレーションエンジンの実行
         function runSimulation() {
-            const startAge = 53;
+            // パッチ：開始年齢を動的に取得可能に
+            const startAge = Math.max(40, Math.min(80, parseInt(document.getElementById('start-age').value) || 53));
             const endAge = 85;
+            
+            // 時間軸スライダーのmin値を動的に更新
+            const ageSlider = document.getElementById('age-slider');
+            ageSlider.min = startAge;
+            document.getElementById('slider-label-start').innerText = startAge + "歳";
+            if (parseInt(ageSlider.value) < startAge) {
+                ageSlider.value = startAge;
+            }
+
             const targetAsset = parseFloat(document.getElementById('target-asset').value) || 15000;
+            const fxRate = parseFloat(document.getElementById('usd-jpy').value) || 150;
 
             const tInit = parseFloat(document.getElementById('tokutei-init').value) || 0;
             const tMonthly = parseFloat(document.getElementById('tokutei-monthly').value) || 0;
@@ -492,9 +545,18 @@
 
             const levRatioSetting = (parseFloat(document.getElementById('leverage-ratio').value) || 0) / 100;
 
+            // 各部隊の比率係数
             const tP1 = (parseInt(document.getElementById('tokutei-p1').value) || 0) / 100;
             const tP2 = (parseInt(document.getElementById('tokutei-p2').value) || 0) / 100;
             const tP3 = (parseInt(document.getElementById('tokutei-p3').value) || 0) / 100;
+
+            const dcP1 = (parseInt(document.getElementById('dc-p1').value) || 0) / 100;
+            const dcP2 = (parseInt(document.getElementById('dc-p2').value) || 0) / 100;
+            const dcP3 = (parseInt(document.getElementById('dc-p3').value) || 0) / 100;
+
+            const nP1 = (parseInt(document.getElementById('nisa-p1').value) || 0) / 100;
+            const nP2 = (parseInt(document.getElementById('nisa-p2').value) || 0) / 100;
+            const nP3 = (parseInt(document.getElementById('nisa-p3').value) || 0) / 100;
 
             const mP1 = (parseInt(document.getElementById('mochikabu-p1').value) || 0) / 100;
             const mP2 = (parseInt(document.getElementById('mochikabu-p2').value) || 0) / 100;
@@ -503,7 +565,7 @@
             simulationData = {
                 ages: [], tokutei: [], dc: [], nisa: [], mochikabu: [],
                 fortress: [], total: [], loan: [], net: [], levPct: [],
-                funds: { sp500: [], nas100: [], selected: [], gold: [], earlyMochikabu: [] }
+                funds: { sp500: [], nas100: [], selected: [], earlyMochikabu: [] }
             };
 
             let currentTokutei = tInit;
@@ -539,7 +601,6 @@
                     }
                 }
 
-                // ① 野村要塞担保高 = 特定口座 ＋ 企業型DC ＋ 持株会(65歳以降合流)
                 let fortressVal = currentTokutei + currentDc;
                 if (age >= 65) {
                     fortressVal += currentMochikabu;
@@ -547,8 +608,6 @@
 
                 let mochikabuVal = currentMochikabu;
                 let nisaVal = currentNisa;
-
-                // ④ 総資産高 = 野村要塞担保高 ＋ NISA ＋ 持株会(64歳までの独立分)
                 let totalVal = currentTokutei + currentDc + nisaVal + mochikabuVal;
 
                 let loanVal = 0;
@@ -570,14 +629,20 @@
                 simulationData.net.push(netVal);
                 simulationData.levPct.push(levPctVal);
 
-                // ファンドブレイクダウン計算
+                // アセット動的ブレイクダウン
                 let sp500Amt = currentTokutei * tP1;
                 let nas100Amt = currentTokutei * tP2;
                 let selectedAmt = currentTokutei * tP3;
-                
-                sp500Amt += nisaVal * 0.4;
-                nas100Amt += nisaVal * 0.5;
-                let goldAmt = nisaVal * 0.1;
+
+                if (age <= 60) {
+                    sp500Amt += currentDc * dcP1;
+                    nas100Amt += currentDc * dcP2;
+                    selectedAmt += currentDc * dcP3;
+                }
+
+                sp500Amt += nisaVal * nP1;
+                nas100Amt += nisaVal * nP2;
+                selectedAmt += nisaVal * nP3;
 
                 if (age >= 65) {
                     sp500Amt += mochikabuVal * mP1;
@@ -588,7 +653,6 @@
                 simulationData.funds.sp500.push((sp500Amt / totalVal) * 100);
                 simulationData.funds.nas100.push((nas100Amt / totalVal) * 100);
                 simulationData.funds.selected.push((selectedAmt / totalVal) * 100);
-                simulationData.funds.gold.push((goldAmt / totalVal) * 100);
                 simulationData.funds.earlyMochikabu.push(age < 65 ? (mochikabuVal / totalVal) * 100 : 0);
             }
 
@@ -596,16 +660,13 @@
             drawChart();
         }
 
-        // メトリクス表示更新
         function updateOutputMetrics() {
             const ageSlider = document.getElementById('age-slider');
-            // パッチ：スライダー値を確実に数値変換
+            const startAge = parseInt(document.getElementById('start-age').value) || 53;
             const targetAge = parseInt(ageSlider.value) || 65;
             document.getElementById('age-display').innerText = targetAge;
 
-            const startAge = 53;
             const idx = targetAge - startAge;
-
             if (idx < 0 || idx >= simulationData.ages.length) return;
 
             const fort = simulationData.fortress[idx];
@@ -644,19 +705,17 @@
             const fSP = simulationData.funds.sp500[idx].toFixed(1);
             const fNAS = simulationData.funds.nas100[idx].toFixed(1);
             const fSEL = simulationData.funds.selected[idx].toFixed(1);
-            const fGLD = simulationData.funds.gold[idx].toFixed(1);
             const fEAR = simulationData.funds.earlyMochikabu[idx].toFixed(1);
 
-            let fundHtml = `<div>S&P500: <span class="font-mono text-blue-500">${fSP}%</span></div>
-                            <div>NASDAQ: <span class="font-mono text-purple-500">${fNAS}%</span></div>`;
+            // パッチ：指定なきゴールド表示を完全排除
+            let fundHtml = `<div>S&P500 (SPY系): <span class="font-mono text-blue-500">${fSP}%</span></div>
+                            <div>NASDAQ (QQQ系): <span class="font-mono text-purple-500">${fNAS}%</span></div>`;
             if (parseFloat(fSEL) > 0) fundHtml += `<div>Selected: <span class="font-mono text-amber-500">${fSEL}%</span></div>`;
-            if (parseFloat(fGLD) > 0) fundHtml += `<div>GOLD: <span class="font-mono text-emerald-500">${fGLD}%</span></div>`;
-            if (parseFloat(fEAR) > 0) fundHtml += `<div>自社株: <span class="font-mono text-slate-400">${fEAR}%</span></div>`;
+            if (parseFloat(fEAR) > 0) fundHtml += `<div>自社株(独立分): <span class="font-mono text-slate-400">${fEAR}%</span></div>`;
             
             document.getElementById('ind-fund-mix').innerHTML = fundHtml;
         }
 
-        // Plotly 描画
         function drawChart() {
             const isDark = document.documentElement.classList.contains('dark');
             
@@ -674,7 +733,7 @@
             const traceDc = {
                 x: simulationData.ages,
                 y: simulationData.dc,
-                name: '企業型DC/iDeCo',
+                name: '企業型DC部隊',
                 type: 'scatter',
                 mode: 'lines',
                 stackgroup: 'one',

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Operation Freedom Dashboard Ver.6.2</title>
+    <title>Operation Freedom Dashboard Ver.6.3</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist@2.24.1/plotly.min.js"></script>
     <style>
@@ -82,24 +82,30 @@
             border: 1px solid #cbd5e0;
         }
 
-        /* 👑 各要塞の個別スライダーは標準の綺麗なグレースタイル（v6.1リバート） */
+        /* 👑 各要塞の個別スライダーは標準の綺麗なグレースタイル */
         .fort-range::-webkit-slider-runnable-track { background: #e2e8f0; height: 8px; border-radius: 4px; }
         .fort-range::-moz-range-track { background: #e2e8f0; height: 8px; border-radius: 4px; }
         [data-theme="dark"] .fort-range::-webkit-slider-runnable-track { background: #2d3748; }
         [data-theme="dark"] .fort-range::-moz-range-track { background: #2d3748; }
 
-        /* 📍 共通スライダー下の注記コンテナ：レール幅（つまみの可動域）と完全同期させる計算 */
+        /* 📍 共通スライダー下の注記コンテナ：フォントサイズを小さくし、はみ出しを厳重回避 */
         .range-labels {
-            display: flex;
             position: relative;
             width: 100%;
-            padding: 0 7px; /* つまみの半径分のマージンを確保しズレを完全解消 */
-            margin-top: 5px;
-            font-size: 0.75rem;
+            height: 20px;
+            margin-top: 6px;
+            font-size: 0.7rem; /* フォントを小さくシャープに */
             font-weight: bold;
             color: #718096;
         }
-        .range-labels span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
+        .range-labels span { position: absolute; white-space: nowrap; }
+        /* 各ラベルの位置と、枠内へ収めるための微調整（53歳と90歳が絶対にはみ出さない設定） */
+        .lbl-53 { left: 0%; transform: translateX(0%); }
+        .lbl-60 { left: 18.92%; transform: translateX(-50%); }
+        .lbl-65 { left: 32.43%; transform: translateX(-50%); }
+        .lbl-73 { left: 54.05%; transform: translateX(-50%); }
+        .lbl-85 { left: 89.19%; transform: translateX(-50%); }
+        .lbl-90 { right: 0%; transform: translateX(0%); } /* 右端に吸着させて枠内へ */
         
         .advice-box { background-color: var(--advice-bg); border: 1px solid var(--advice-border); color: var(--advice-text); padding: 15px; border-radius: 8px; font-size: 0.9rem; }
         .phase-badge { padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; }
@@ -110,7 +116,7 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
         <div>
             <h1 class="h2 mb-0 fw-bold">🏯 Operation Freedom Dashboard</h1>
-            <p class="small mb-0" style="color: var(--text-color) !important; opacity: 0.6;">総司令官専用・7大指標年齢同期型リアルタイムシミュレーター（Ver.6.2）</p>
+            <p class="small mb-0" style="color: var(--text-color) !important; opacity: 0.6;">総司令官専用・7大指標年齢同期型リアルタイムシミュレーター（Ver.6.3）</p>
         </div>
         <div class="form-check form-switch bg-body-secondary p-2 rounded shadow-sm border" style="padding-left: 2.5em !important; cursor: pointer;">
             <input class="form-check-input" type="checkbox" id="themeToggle" style="cursor: pointer;" onchange="toggleTheme()">
@@ -134,12 +140,12 @@
         </datalist>
         
         <div class="range-labels">
-            <span style="left: 0%;">53歳(F7始)</span>
-            <span style="left: 18.92%;">60歳(B5始)</span>
-            <span style="left: 32.43%;">65歳(A8始)</span>
-            <span style="left: 54.05%;">73歳(S12始)</span>
-            <span style="left: 89.19%;">85歳(S12終)</span>
-            <span style="left: 100%;">90歳(C5終)</span>
+            <span class="lbl-53">53歳(F7始)</span>
+            <span class="lbl-60">60歳(B5始)</span>
+            <span class="lbl-65">65歳(A8始)</span>
+            <span class="lbl-73">73歳(S12始)</span>
+            <span class="lbl-85">85歳(S12終)</span>
+            <span class="lbl-90">90歳(C5終)</span>
         </div>
     </div>
 
@@ -647,14 +653,15 @@ function calculateAll() {
 
     globalResults = {};
 
+    // 🧠 【完璧なる数理ロジック再構築】
     for (let age = 53; age <= 90; age++) {
+        // 65歳時点の一斉合流
         if (age === 65) {
             v_tokutei += (v_mochikabu + v_dc);
             v_mochikabu = 0; v_dc = 0;
         }
 
-        ages.push(age); tokutei_data.push(v_tokutei); dc_data.push(v_dc); nisa_data.push(v_nisa); mochikabu_data.push(v_mochikabu); loan_data.push(v_loan);
-
+        // 先に現在の年齢時点の正確なスナップショットを記録（これで65歳未満のv_loan=0が保証される）
         let total_asset = v_tokutei + v_dc + v_nisa + v_mochikabu;
         let nomura_fort = v_tokutei; 
         
@@ -668,7 +675,7 @@ function calculateAll() {
             sel_amt += v_mochikabu * t_sel_ratio/100;
         }
 
-        // 🧠 【バグ修正】ここで全年齢におけるローン引き算を確実に通し、NaNの発生を完全根絶！
+        // この瞬間のデータを即時オブジェクトに完全隔離格納
         globalResults[age] = {
             total_asset: total_asset, 
             nomura_fort: nomura_fort, 
@@ -681,7 +688,15 @@ function calculateAll() {
             ratio_sel: total_asset > 0 ? (sel_amt / total_asset) * 100 : 0
         };
 
-        // 月次アキュムレーション計算
+        // チャートプロット用配列へ追加
+        ages.push(age); 
+        tokutei_data.push(v_tokutei); 
+        dc_data.push(v_dc); 
+        nisa_data.push(v_nisa); 
+        mochikabu_data.push(v_mochikabu); 
+        loan_data.push(v_loan);
+
+        // 次の年齢に向けた内部積立＆複利運用計算（12ヶ月ループ）
         for (let m = 0; m < 12; m++) {
             if (age >= 53 && age < 60) {
                 v_tokutei = (v_tokutei + mon_tokutei) * (1 + r_tokutei/12);
@@ -690,24 +705,26 @@ function calculateAll() {
                 if ((age - 53) * 12 + m < 24) { v_nisa = (v_nisa + (rem_nisa / 24)) * (1 + r_nisa/12); } 
                 else { v_nisa = v_nisa * (1 + r_nisa/12); }
             } else if (age >= 60 && age < 65) {
-                v_tokutei = v_tokutei * (1 + r_tokutei/12); v_dc = v_dc * (1 + r_dc/12);
+                v_tokutei = v_tokutei * (1 + r_tokutei/12); 
+                v_dc = v_dc * (1 + r_dc/12);
                 if (age < 65) v_mochikabu = v_mochikabu * (1 + r_mochikabu/12);
                 v_nisa = v_nisa * (1 + r_nisa/12);
             } else {
-                v_tokutei = v_tokutei * (1 + r_tokutei/12); v_nisa = v_nisa * (1 + r_nisa/12);
+                v_tokutei = v_tokutei * (1 + r_tokutei/12); 
+                v_nisa = v_nisa * (1 + r_nisa/12);
             }
         }
 
-        // 要塞ローン借入・金利計算
-        if (age >= 65 && age < 90) {
+        // 次の年齢に引き継ぐための要塞ローン借入・金利加算（65歳以降）
+        if (age >= 65) {
             let annual_draw = 0; let current_rate = 0;
             if (age >= 65 && age <= 72) {
                 annual_draw = loan_a8 * 12;
-                let pct = (age - 65) / (72 - 65);
+                let pct = (age - 65) / (72 - 65 || 1);
                 current_rate = (rate_a8_start + (rate_a8_end - rate_a8_start) * pct) / 100;
             } else if (age >= 73 && age <= 85) {
                 annual_draw = loan_s12 * 12;
-                let pct = (age - 73) / (85 - 73);
+                let pct = (age - 73) / (85 - 73 || 1);
                 current_rate = (rate_s12_start + (rate_s12_end - rate_s12_start) * pct) / 100;
             } else if (age >= 86 && age <= 90) {
                 annual_draw = 0; current_rate = rate_s12_end / 100;

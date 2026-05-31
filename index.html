@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Operation Freedom v7.10.0</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Operation Freedom v7.10.1</title>
     <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist@2.24.1/plotly.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
@@ -16,17 +16,17 @@
         .dark .custom-scrollbar::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
         .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); }
         
-        /* 年齢コントロール用の淡い5色フェーズグラデーションレール */
+        /* 年齢コントロール用の5色フェーズグラデーションレール */
         .phase-rail {
             position: relative;
             height: 12px;
             border-radius: 6px;
             background: linear-gradient(to right, 
-                rgba(59, 130, 246, 0.22) 0%, rgba(59, 130, 246, 0.22) 18.92%,      /* F7: 53-60歳 */
-                rgba(168, 85, 247, 0.22) 18.92%, rgba(168, 85, 247, 0.22) 32.43%,  /* B5: 60-65歳 */
-                rgba(244, 63, 94, 0.22) 32.43%, rgba(244, 63, 94, 0.22) 54.05%,   /* A8: 65-73歳 */
-                rgba(14, 165, 233, 0.22) 54.05%, rgba(14, 165, 233, 0.22) 86.49%,  /* S12: 73-85歳 */
-                rgba(100, 116, 139, 0.22) 86.49%, rgba(100, 116, 139, 0.22) 100%  /* C5: 85-90歳 */
+                rgba(59, 130, 246, 0.4) 0%, rgba(59, 130, 246, 0.4) 18.92%,       /* F7: 53-60歳 */
+                rgba(168, 85, 247, 0.4) 18.92%, rgba(168, 85, 247, 0.4) 32.43%,   /* B5: 60-65歳 */
+                rgba(244, 63, 94, 0.4) 32.43%, rgba(244, 63, 94, 0.4) 54.05%,     /* A8: 65-73歳 */
+                rgba(14, 165, 233, 0.4) 54.05%, rgba(14, 165, 233, 0.4) 86.49%,   /* S12: 73-85歳 */
+                rgba(100, 116, 139, 0.4) 86.49%, rgba(100, 116, 139, 0.4) 100%   /* C5: 85-90歳 */
             );
         }
 
@@ -84,7 +84,7 @@
             cursor: pointer;
             border: 2px solid #ffffff;
             box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            margin-top: -6px;
+            margin-top: 0px; /* 位置ズレ防止 */
         }
         .dark #age-slider::-webkit-slider-thumb {
             border: 2px solid #0f172a;
@@ -132,7 +132,7 @@
                 </div>
                 <div>
                     <h1 class="text-xl md:text-2xl font-black tracking-wider flex items-center gap-2">
-                        Operation Freedom <span class="text-xs bg-slate-100 dark:bg-slate-800 text-fortress-gold px-2 py-0.5 rounded-full border border-slate-200 dark:border-slate-700 font-bold">v7.10.0</span>
+                        Operation Freedom <span class="text-xs bg-slate-100 dark:bg-slate-800 text-fortress-gold px-2 py-0.5 rounded-full border border-slate-200 dark:border-slate-700 font-bold">v7.10.1</span>
                     </h1>
                     <p class="text-xs text-slate-500 dark:text-slate-400">(資産要塞シミュレーター)</p>
                 </div>
@@ -227,7 +227,7 @@
                     <div class="absolute top-0 left-0 w-1.5 h-full bg-purple-500"></div>
                     <h2 class="text-sm font-black tracking-wide text-slate-400 dark:text-slate-500 uppercase mb-4 flex justify-between items-center">
                         <span class="flex items-center gap-2.5"><i class="fa-solid fa-shield-halved text-purple-500 text-5xl"></i> 企業型DC部隊</span>
-                        <span class="text-xs bg-purple-50 dark:bg-purple-950/40 text-purple-500 px-2 py-0.5 rounded-md font-bold">60歳精算・合流</span>
+                        <span class="text-xs bg-purple-50 dark:bg-purple-950/40 text-purple-500 px-2 py-0.5 rounded-md font-bold">65歳精算・合流</span>
                     </h2>
                     <div class="space-y-4">
                         <div class="grid grid-cols-2 gap-3">
@@ -325,7 +325,7 @@
                         <div class="grid grid-cols-2 gap-3">
                             <div>
                                 <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1">現在評価額(万)</label>
-                                <input type="number" id="mochikabu-init" value="5750" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-sm font-bold text-amber-600 focus:outline-none focus:border-amber-500">
+                                <input type="number" id="mochikabu-init" value="800" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-sm font-bold text-amber-600 focus:outline-none focus:border-amber-500">
                             </div>
                             <div>
                                 <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1">毎月積立額(万)</label>
@@ -377,7 +377,7 @@
                             <div class="space-y-2">
                                 <div class="text-sm flex justify-between items-center font-bold">
                                     <span>毎月借入額: <span id="a8-val" class="font-black text-fortress-rose">60万円</span></span>
-                                endAge</div>
+                                </div>
                                 <input type="range" id="loan-a8" min="0" max="150" value="60" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-rose-thumb">
                             </div>
                             <div class="grid grid-cols-2 gap-3 pt-1">
@@ -443,7 +443,7 @@
                 <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
                     <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-chess-rook text-blue-500 text-3xl"></i> 野村要塞担保高</span>
                     <div class="text-base sm:text-lg font-black tracking-tight text-blue-500" id="ind-fortress">0 <span class="text-xs font-normal text-slate-400">万円</span></div>
-                    <span class="text-[9px] text-slate-400 block mt-1">特定+DC(60~)+持株(65~)</span>
+                    <span class="text-[9px] text-slate-400 block mt-1">特定+DC(65~)+持株(65~)</span>
                 </div>
                 <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
                     <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-leaf text-fortress-emerald text-3xl"></i> NISA資産高</span>
@@ -499,13 +499,13 @@
                     </div>
                 </div>
                 
-                <div class="w-11/12 mx-auto space-y-2 pt-2 relative pb-10">
-                    <div class="relative h-12 flex items-center">
-                        <div class="phase-rail shadow-inner absolute left-0 right-0 w-full z-0"></div>
-                        <input type="range" id="age-slider" min="53" max="90" value="65" class="w-transparent appearance-none cursor-pointer absolute left-0 right-0 w-full z-10 focus:outline-none">
+                <div class="w-11/12 mx-auto pt-2 relative pb-10">
+                    <div class="relative h-12 flex items-center bg-transparent">
+                        <div class="phase-rail shadow-inner absolute left-0 right-0 w-full z-0 pointer-events-none"></div>
+                        <input type="range" id="age-slider" min="53" max="90" value="65" class="w-full appearance-none cursor-pointer absolute left-0 right-0 z-10 focus:outline-none bg-transparent">
                     </div>
                     
-                    <div class="absolute w-full top-10 left-0 text-[10px] font-black text-slate-400 select-none pointer-events-none whitespace-nowrap">
+                    <div class="absolute w-full top-12 left-0 text-[10px] font-black text-slate-400 select-none pointer-events-none whitespace-nowrap">
                         <div class="absolute text-center -translate-x-1/2 text-slate-400" style="left: 0.0%;">53歳</div>
                         <div class="absolute text-center -translate-x-1/2 text-slate-400" style="left: 18.92%;">60歳</div>
                         <div class="absolute text-center -translate-x-1/2 text-slate-400" style="left: 32.43%;">65歳</div>
@@ -525,7 +525,7 @@
             <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm flex flex-col flex-1 min-h-[460px]">
                 <div class="flex justify-between items-center mb-3 shrink-0">
                     <h3 class="text-sm font-black tracking-wide text-slate-400 dark:text-slate-500 uppercase flex items-center gap-2">
-                        <i class="fa-solid fa-chart-bar text-blue-500 text-3xl"></i> 全軍要塞アセット推移シミュレーション (積み上げ棒グラフ形式)
+                        <i class="fa-solid fa-chart-bar text-blue-500 text-3xl"></i> 全軍要塞アセット推移シミュレーション (積み上げ総資産棒グラフ)
                     </h3>
                     <button id="btn-reset-zoom" class="text-xs bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 font-bold text-slate-600 dark:text-slate-300 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 transition flex items-center gap-1.5 shadow-sm">
                         <i class="fa-solid fa-rotate-left"></i> 表示リセット
@@ -540,11 +540,11 @@
                     </div>
                     <div class="p-2.5 rounded-xl bg-purple-50/60 dark:bg-purple-950/20 border border-purple-100 dark:border-purple-900/40">
                         <span class="font-black text-purple-500 block">🚀 B5 (60〜65歳)</span>
-                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">資産ブースト期：60歳での企業型DC精算を受け、楽天特定口座への一本化・移管を完遂して合流させる加速期。</p>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">資産ブースト期：企業型DCの拠出完了。65歳の「洗濯合流」に向けて複利運用のみを無拠出で継続する期間。</p>
                     </div>
                     <div class="p-2.5 rounded-xl bg-rose-50/60 dark:bg-rose-950/20 border border-rose-100 dark:border-rose-900/40">
                         <span class="font-black text-rose-500 block">🔥 A8 (65〜73歳)</span>
-                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">アクティブライフ期：持株会資産の合流。有価証券担保ローンによるハイブリッドレバで攻守を最大化。</p>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">アクティブライフ期：DC洗濯・持株合流による大結集。有価証券担保ローンによるハイブリッドレバで攻守最大化。</p>
                     </div>
                     <div class="p-2.5 rounded-xl bg-sky-50/60 dark:bg-sky-950/20 border border-sky-100 dark:border-sky-900/40">
                         <span class="font-black text-sky-500 block">💧 S12 (73〜85歳)</span>
@@ -564,7 +564,7 @@
     <footer class="mt-8 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 py-5 transition-colors duration-200">
         <div class="max-w-[1600px] mx-auto px-4 text-center text-xs text-slate-400 dark:text-slate-500 space-y-1">
             <p>Operation Freedom | Strategic Absolute Fortress Financial Model</p>
-            <p class="font-bold">Engine Optimized Ver 7.10.0 (Multi-Asset Specific Dynamic Compounding Engine Stabilized + Persistent Memory Mode)</p>
+            <p class="font-bold">Engine Optimized Ver 7.10.1 (iDeCo Wash Mechanism at 65 & Stacked Bar Chart Mode Integrated)</p>
         </div>
     </footer>
 
@@ -573,7 +573,6 @@
         const startAge = 53; 
         const endAge = 90;
 
-        // 保存対象となる全インプット・スライダーのID配列
         const statefulInputIds = [
             'target-asset', 'warning-threshold', 'age-slider',
             'tokutei-init', 'tokutei-monthly', 'tokutei-r1', 'tokutei-r2', 'tokutei-r3', 'tokutei-p1', 'tokutei-p2', 'tokutei-p3',
@@ -587,7 +586,7 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             initTheme();
-            loadSavedState(); // 起動時に前回の保存状態をロード
+            loadSavedState(); 
             setupEventListeners();
             syncLayoutHeight();
             runSimulation();
@@ -595,7 +594,6 @@
             window.addEventListener('resize', syncLayoutHeight);
         });
 
-        // ローカルストレージから値を読み込む関数
         function loadSavedState() {
             const saved = localStorage.getItem('operation_freedom_state');
             if (saved) {
@@ -607,10 +605,9 @@
                         }
                     });
                 } catch (e) {
-                    console.error("記憶データの読み込みに失敗したため、初期値で起動します。", e);
+                    console.error("記憶データの読み込みに失敗しました。", e);
                 }
             }
-            // 各種パーセンテージ表記テキストを初期同期
             const configs = [
                 {p:'tokutei', v1:'tokutei-p1-val', v2:'tokutei-p2-val', v3:'tokutei-p3-val'},
                 {p:'dc', v1:'dc-p1-val', v2:'dc-p2-val', v3:'dc-p3-val'},
@@ -624,7 +621,6 @@
             });
         }
 
-        // 現在の入力状態をすべてローカルストレージに保存する関数
         function saveCurrentState() {
             const state = {};
             statefulInputIds.forEach(id => {
@@ -846,10 +842,18 @@
                 for (let m = 0; m < 12; m++) {
                     currentTokutei = currentTokutei * (1 + tWeightedRateMonth) + (tMonthly / 12);
 
+                    // 53歳〜60歳まで拠出。60歳〜65歳までは拠出ゼロで複利運用のみ継続。
                     if (age < 60) {
                         currentDc = currentDc * (1 + dcWeightedRateMonth) + (dcMonthly / 12);
-                    } else if (age === 60 && m === 0) {
-                        currentTokutei += currentDc;
+                    } else if (age >= 60 && age < 65) {
+                        currentDc = currentDc * (1 + dcWeightedRateMonth);
+                    } else if (age === 65 && m === 0) {
+                        // 65歳時に一度売却し、退職所得控除（2200万適用）後に特定口座へブレンド合流
+                        let tax = 0;
+                        if (currentDc > 2200) {
+                            tax = (currentDc - 2200) * 0.5 * 0.20315;
+                        }
+                        currentTokutei += (currentDc - tax);
                         currentDc = 0;
                     }
 
@@ -887,6 +891,7 @@
                     }
                 }
 
+                // 65歳以降はDCは特定に吸収されて0になり、持株会も要塞の担保となる
                 let fortressVal = currentTokutei + currentDc;
                 if (age >= 65) fortressVal += currentMochikabu;
 
@@ -983,14 +988,14 @@
         function drawChart() {
             const isDark = document.documentElement.classList.contains('dark');
             
-            // typeを 'bar' (積み上げ棒グラフ)に変更
+            // 各年齢毎に綺麗な太い1本の柱になるように積み上げ棒グラフのデータを形成
             const traces = [
                 { x: simulationData.ages, y: simulationData.tokutei, name: '特定口座部隊', type: 'bar', marker: { color: isDark ? 'rgba(59, 130, 246, 0.65)' : 'rgba(59, 130, 246, 0.8)' } },
                 { x: simulationData.ages, y: simulationData.dc, name: '企業型DC部隊', type: 'bar', marker: { color: isDark ? 'rgba(168, 85, 247, 0.65)' : 'rgba(168, 85, 247, 0.8)' } },
                 { x: simulationData.ages, y: simulationData.mochikabu, name: '持株会資産', type: 'bar', marker: { color: isDark ? 'rgba(245, 158, 11, 0.55)' : 'rgba(245, 158, 11, 0.7)' } },
                 { x: simulationData.ages, y: simulationData.nisa, name: 'NISA温存バッファ', type: 'bar', marker: { color: isDark ? 'rgba(16, 185, 129, 0.65)' : 'rgba(16, 185, 129, 0.8)' } },
                 
-                // 折れ線レイヤー (積み上げ棒の上にオーバーレイ)
+                // 積み上がった総資産の柱の上にオーバーレイ表示する折れ線レイヤー
                 { x: simulationData.ages, y: simulationData.net, name: '🛡️ 実質純資産高', type: 'scatter', mode: 'lines+markers', line: { color: '#14B8A6', width: 3 }, marker: { size: 4 } },
                 { x: simulationData.ages, y: simulationData.loan, name: '🚨 担保ローン残高', type: 'scatter', mode: 'lines', line: { color: '#F43F5E', width: 2.5, dash: 'dot' } }
             ];
@@ -1000,7 +1005,7 @@
                 plot_bgcolor: isDark ? '#0F172A' : '#ffffff',
                 font: { family: 'Noto Sans JP, sans-serif', color: isDark ? '#E2E8F0' : '#334155', size: 11 },
                 hovermode: 'x unified',
-                barmode: 'stacked', // 積み上げ表現を設定
+                barmode: 'stacked', // ここで確実に積み上げモードを適用
                 margin: { l: 60, r: 25, t: 15, b: 40 },
                 showlegend: true,
                 legend: { orientation: 'h', y: -0.15, x: 0.5, xanchor: 'center', font: { size: 10 } },

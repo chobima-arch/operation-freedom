@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Operation Freedom v7.10.2</title>
+    <title>Operation Freedom v7.11.0</title>
     <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist@2.24.1/plotly.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -101,7 +101,7 @@
                 </div>
                 <div>
                     <h1 class="text-xl md:text-2xl font-black tracking-wider flex items-center gap-2">
-                        Operation Freedom <span class="text-xs bg-slate-100 dark:bg-slate-800 text-fortress-gold px-2 py-0.5 rounded-full border border-slate-200 dark:border-slate-700 font-bold">v7.10.2</span>
+                        Operation Freedom <span class="text-xs bg-slate-100 dark:bg-slate-800 text-fortress-gold px-2 py-0.5 rounded-full border border-slate-200 dark:border-slate-700 font-bold">v7.11.0</span>
                     </h1>
                     <p class="text-xs text-slate-500 dark:text-slate-400">(資産要塞シミュレーター)</p>
                 </div>
@@ -152,13 +152,13 @@
                     <div class="absolute top-0 left-0 w-1.5 h-full bg-blue-500"></div>
                     <h2 class="text-sm font-black tracking-wide text-slate-400 dark:text-slate-500 uppercase mb-4 flex justify-between items-center">
                         <span class="flex items-center gap-2.5"><i class="fa-solid fa-vault text-blue-500 text-5xl"></i> 特定口座部隊</span>
-                        <span class="text-xs bg-blue-50 dark:bg-blue-950/40 text-blue-500 px-2 py-0.5 rounded-md font-bold">野村要塞中核</span>
+                        <span class="text-xs bg-blue-50 dark:bg-blue-950/40 text-blue-500 px-2 py-0.5 rounded-md font-bold">楽天証券集約中核</span>
                     </h2>
                     <div class="space-y-4">
                         <div class="grid grid-cols-2 gap-3">
                             <div>
                                 <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1">初期資産額 (万)</label>
-                                <input type="number" id="tokutei-init" value="1700" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-sm font-bold text-blue-500 focus:outline-none focus:border-blue-500">
+                                <input type="number" id="tokutei-init" value="7300" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-sm font-bold text-blue-500 focus:outline-none focus:border-blue-500">
                             </div>
                             <div>
                                 <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1">毎月追撃額(万)</label>
@@ -195,18 +195,18 @@
                 <div class="bg-white dark:bg-slate-950 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden">
                     <div class="absolute top-0 left-0 w-1.5 h-full bg-purple-500"></div>
                     <h2 class="text-sm font-black tracking-wide text-slate-400 dark:text-slate-500 uppercase mb-4 flex justify-between items-center">
-                        <span class="flex items-center gap-2.5"><i class="fa-solid fa-shield-halved text-purple-500 text-5xl"></i> 企業型DC部隊</span>
-                        <span class="text-xs bg-purple-50 dark:bg-purple-950/40 text-purple-500 px-2 py-0.5 rounded-md font-bold">65歳精算・合流</span>
+                        <span class="flex items-center gap-2.5"><i class="fa-solid fa-shield-halved text-purple-500 text-5xl"></i> 企業型DC/iDeCo部隊</span>
+                        <span class="text-xs bg-purple-50 dark:bg-purple-950/40 text-purple-500 px-2 py-0.5 rounded-md font-bold">60歳精算・特定合流</span>
                     </h2>
                     <div class="space-y-4">
                         <div class="grid grid-cols-2 gap-3">
                             <div>
                                 <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1">初期資産額 (万)</label>
-                                <input type="number" id="dc-init" value="3400" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-sm font-bold text-purple-500 focus:outline-none focus:border-purple-500">
+                                <input type="number" id="dc-init" value="7300" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-sm font-bold text-purple-500 focus:outline-none focus:border-purple-500">
                             </div>
                             <div>
                                 <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1">毎月積立額(万)</label>
-                                <input type="number" id="dc-monthly" value="5.5" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-sm font-bold focus:outline-none focus:border-purple-500">
+                                <input type="number" id="dc-monthly" value="0" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-sm font-bold focus:outline-none focus:border-purple-500">
                             </div>
                         </div>
                         <div class="pt-2 border-t border-slate-100 dark:border-slate-800 space-y-2">
@@ -246,39 +246,39 @@
                         <div class="grid grid-cols-2 gap-3">
                             <div>
                                 <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1">初期資産額 (万)</label>
-                                <input type="number" id="nisa-init" value="1600" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-sm font-bold text-fortress-emerald focus:outline-none focus:border-fortress-emerald">
+                                <input type="number" id="nisa-init" value="5800" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-sm font-bold text-fortress-emerald focus:outline-none focus:border-fortress-emerald">
                             </div>
                             <div>
                                 <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1">毎月枠埋め(万)</label>
-                                <input type="number" id="nisa-monthly" value="30" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-sm font-bold focus:outline-none focus:border-fortress-emerald">
+                                <input type="number" id="nisa-monthly" value="0" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-sm font-bold focus:outline-none focus:border-fortress-emerald">
                             </div>
                         </div>
                         <div>
                             <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1">枠完了まで(年)</label>
-                            <input type="number" id="nisa-years" value="3" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-sm font-bold focus:outline-none focus:border-fortress-emerald">
+                            <input type="number" id="nisa-years" value="2" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-sm font-bold focus:outline-none focus:border-fortress-emerald">
                         </div>
                         <div class="pt-2 border-t border-slate-100 dark:border-slate-800 space-y-2">
-                            <span class="text-xs font-bold text-slate-400 block">ファンド配分比率 ＆ 想定年率</span>
+                            <span class="text-xs font-bold text-slate-400 block">ファンド配分比率 ＆ 想定年率 (Nasdaq100主軸)</span>
                             <div class="space-y-2">
                                 <div class="flex justify-between items-center text-xs">
-                                    <span>S&P500 (<span id="nisa-p1-val">40%</span>)</span>
+                                    <span>S&P500 (<span id="nisa-p1-val">10%</span>)</span>
                                     <div class="flex items-center gap-1">年率<input type="number" id="nisa-r1" value="7.0" step="0.1" class="w-14 bg-slate-50 dark:bg-slate-900 border text-right rounded px-1 py-0.5 font-bold">%</div>
                                 </div>
-                                <input type="range" id="nisa-p1" min="0" max="100" value="40" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-thumb">
+                                <input type="range" id="nisa-p1" min="0" max="100" value="10" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-thumb">
                             </div>
                             <div class="space-y-2">
                                 <div class="flex justify-between items-center text-xs">
-                                    <span>NASDAQ100 (<span id="nisa-p2-val">50%</span>)</span>
-                                    <div class="flex items-center gap-1">年率<input type="number" id="nisa-r2" value="9.0" step="0.1" class="w-14 bg-slate-50 dark:bg-slate-900 border text-right rounded px-1 py-0.5 font-bold">%</div>
+                                    <span>NASDAQ100 (<span id="nisa-p2-val">90%</span>)</span>
+                                    <div class="flex items-center gap-1">年率<input type="number" id="nisa-r2" value="9.5" step="0.1" class="w-14 bg-slate-50 dark:bg-slate-900 border text-right rounded px-1 py-0.5 font-bold">%</div>
                                 </div>
-                                <input type="range" id="nisa-p2" min="0" max="100" value="50" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-thumb">
+                                <input type="range" id="nisa-p2" min="0" max="100" value="90" class="w-full h-1 bg-slate-200 hobbies-range-thumb appearance-none cursor-pointer accent-emerald-thumb">
                             </div>
                             <div class="space-y-2">
                                 <div class="flex justify-between items-center text-xs">
-                                    <span>Selected Fund (<span id="nisa-p3-val">10%</span>)</span>
+                                    <span>Selected Fund (<span id="nisa-p3-val">0%</span>)</span>
                                     <div class="flex items-center gap-1">年率<input type="number" id="nisa-r3" value="10.0" step="0.1" class="w-14 bg-slate-50 dark:bg-slate-900 border text-right rounded px-1 py-0.5 font-bold">%</div>
                                 </div>
-                                <input type="range" id="nisa-p3" min="0" max="100" value="10" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-thumb">
+                                <input type="range" id="nisa-p3" min="0" max="100" value="0" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-thumb">
                             </div>
                         </div>
                     </div>
@@ -288,7 +288,7 @@
                     <div class="absolute top-0 left-0 w-1.5 h-full bg-amber-500"></div>
                     <h2 class="text-sm font-black tracking-wide text-slate-400 dark:text-slate-500 uppercase mb-4 flex justify-between items-center">
                         <span class="flex items-center gap-2.5"><i class="fa-solid fa-building text-amber-500 text-5xl"></i> 持株会部隊</span>
-                        <span class="text-xs bg-amber-50 dark:bg-amber-950/40 text-amber-500 px-2 py-0.5 rounded-md font-bold">65歳信託合流</span>
+                        <span class="text-xs bg-amber-50 dark:bg-amber-950/40 text-amber-500 px-2 py-0.5 rounded-md font-bold">60歳楽天移管・65歳結集</span>
                     </h2>
                     <div class="space-y-4">
                         <div class="grid grid-cols-2 gap-3">
@@ -302,12 +302,12 @@
                             </div>
                         </div>
                         <div class="flex items-center justify-between text-xs bg-slate-50 dark:bg-slate-900 p-2 rounded-xl border border-slate-200 dark:border-slate-800">
-                            <span>65歳前：独立想定自社株年率</span>
+                            <span>60歳前：自社株想定年率</span>
                             <div class="flex items-center gap-1"><input type="number" id="mochikabu-rate-early" value="4.0" step="0.1" class="w-14 bg-white dark:bg-slate-950 border text-right rounded px-1 py-0.5 font-bold">%</div>
                         </div>
                         
                         <div class="pt-3 border-t border-slate-100 dark:border-slate-800 space-y-2">
-                            <span class="text-xs font-bold text-amber-600 dark:text-amber-400 block"><i class="fa-solid fa-gears"></i> 65歳以降：特定合流後比率 ＆ 想定年率</span>
+                            <span class="text-xs font-bold text-amber-600 dark:text-amber-400 block"><i class="fa-solid fa-gears"></i> 60歳以降：特定移管後比率 ＆ 想定年率</span>
                             <div class="space-y-2">
                                 <div class="flex justify-between items-center text-xs">
                                     <span>S&P500 (<span id="mochikabu-p1-val">50%</span>)</span>
@@ -337,12 +337,12 @@
                     <div class="absolute top-0 left-0 w-1.5 h-full bg-fortress-rose"></div>
                     <h2 class="text-sm font-black tracking-wide text-slate-400 dark:text-slate-500 uppercase mb-3 flex justify-between items-center">
                         <span class="flex items-center gap-2.5"><i class="fa-solid fa-scale-balanced text-fortress-rose text-5xl"></i> 有価証券担保ローン設定</span>
-                        <span class="text-xs bg-rose-50 dark:bg-rose-950/40 text-fortress-rose px-2 py-0.5 rounded-md font-bold">フェーズ独立制御</span>
+                        <span class="text-xs bg-rose-50 dark:bg-rose-950/40 text-fortress-rose px-2 py-0.5 rounded-md font-bold">備考欄登録済アセット</span>
                     </h2>
                     
                     <div class="space-y-5 divide-y divide-slate-100 dark:divide-slate-800/60">
                         <div class="space-y-3 pt-2">
-                            <span class="text-xs font-black text-rose-500 block">打撃部隊 Active8 (A8: 65〜73歳)</span>
+                            <span class="text-xs font-black text-rose-500 block">打撃部隊 Active8 (A8: 65〜73歳) [年間720万 / 目標月60万]</span>
                             <div class="space-y-2">
                                 <div class="text-sm flex justify-between items-center font-bold">
                                     <span>毎月借入額: <span id="a8-val" class="font-black text-fortress-rose">60万円</span></span>
@@ -362,7 +362,7 @@
                         </div>
 
                         <div class="space-y-3 pt-4">
-                            <span class="text-xs font-black text-sky-500 block">潜行部隊 Slow12 (S12: 73〜85歳)</span>
+                            <span class="text-xs font-black text-sky-500 block">潜行部隊 Slow12 (S12: 73〜85歳) [合法的ステルス生活期]</span>
                             <div class="space-y-2">
                                 <div class="text-sm flex justify-between items-center font-bold">
                                     <span>毎月借入額: <span id="s12-val" class="font-black text-fortress-rose">45万円</span></span>
@@ -410,19 +410,19 @@
             
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 shrink-0">
                 <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
-                    <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-chess-rook text-blue-500 text-3xl"></i> 野村要塞担保高</span>
+                    <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-chess-rook text-blue-500 text-3xl"></i> 要塞担保高(特定/楽天)</span>
                     <div class="text-base sm:text-lg font-black tracking-tight text-blue-500" id="ind-fortress">0 <span class="text-xs font-normal text-slate-400">万円</span></div>
-                    <span class="text-[9px] text-slate-400 block mt-1">特定+DC(65~)+持株(65~)</span>
+                    <span class="text-[9px] text-slate-400 block mt-1">特定口座＋DC(60~合流)＋持株(60~)</span>
                 </div>
                 <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
                     <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-leaf text-fortress-emerald text-3xl"></i> NISA資産高</span>
                     <div class="text-base sm:text-lg font-black tracking-tight text-fortress-emerald" id="ind-nisa">0 <span class="text-xs font-normal text-slate-400">万円</span></div>
-                    <span class="text-[9px] text-slate-400 block mt-1">完全非課税・暴落バッファ</span>
+                    <span class="text-[9px] text-slate-400 block mt-1">完全インデックス・非常時バッファ</span>
                 </div>
                 <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
                     <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-building text-amber-500 text-3xl"></i> 持株会評価額</span>
                     <div class="text-base sm:text-lg font-black tracking-tight text-amber-500" id="ind-mochikabu">0 <span class="text-xs font-normal text-slate-400">万円</span></div>
-                    <span class="text-[9px] text-slate-400 block mt-1">65歳以降は特定口座合流運用</span>
+                    <span class="text-[9px] text-slate-400 block mt-1">60歳以降は楽天特定口座合流</span>
                 </div>
                 <div class="bg-white dark:bg-slate-950 border border-fortress-gold p-4 rounded-2xl shadow-sm bg-gradient-to-br from-transparent to-fortress-gold/5">
                     <span class="text-sm font-black text-fortress-gold block mb-1 flex items-center gap-2"><i class="fa-solid fa-crown text-3xl"></i> 総資産高</span>
@@ -438,7 +438,7 @@
                 <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
                     <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation text-fortress-rose text-3xl"></i> 担保ローン残高</span>
                     <div class="text-base sm:text-lg font-black tracking-tight text-fortress-rose" id="ind-loan">0 <span class="text-xs font-normal text-slate-400">万円</span></div>
-                    <span class="text-[9px] text-slate-400 block mt-1">累積借入残高 (複利計算ベース)</span>
+                    <span class="text-[9px] text-slate-400 block mt-1">累積借入残高 (複利計算)</span>
                 </div>
                 
                 <div id="leverage-box" class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm transition-all duration-200">
@@ -494,7 +494,7 @@
             <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm flex flex-col flex-1 min-h-[460px]">
                 <div class="flex justify-between items-center mb-3 shrink-0">
                     <h3 class="text-sm font-black tracking-wide text-slate-400 dark:text-slate-500 uppercase flex items-center gap-2">
-                        <i class="fa-solid fa-chart-bar text-blue-500 text-3xl"></i> 全軍要塞アセット推移シミュレーション (積み上げ総資産棒グラフ)
+                        <i class="fa-solid fa-chart-bar text-blue-500 text-3xl"></i> 全軍配備図形式：資金要塞アセット推移 (完全積み上げ総資産柱モデル)
                     </h3>
                     <button id="btn-reset-zoom" class="text-xs bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 font-bold text-slate-600 dark:text-slate-300 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 transition flex items-center gap-1.5 shadow-sm">
                         <i class="fa-solid fa-rotate-left"></i> 表示リセット
@@ -506,23 +506,23 @@
                 <div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 grid grid-cols-1 md:grid-cols-5 gap-2 text-xs">
                     <div class="p-2.5 rounded-xl bg-blue-50/60 dark:bg-blue-950/20 border border-blue-100 dark:border-blue-900/40">
                         <span class="font-black text-blue-500 block">🛡️ F7 (53〜60歳)</span>
-                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">資産ベース創生期：強固な基礎となるNISA枠の早期完遂と中核資産の最大化を図る。</p>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">資産ベース創生期：特定口座と並行し、NISA温存バッファ枠5800万の運用体制を整える。</p>
                     </div>
                     <div class="p-2.5 rounded-xl bg-purple-50/60 dark:bg-purple-950/20 border border-purple-100 dark:border-purple-900/40">
                         <span class="font-black text-purple-500 block">🚀 B5 (60〜65歳)</span>
-                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">資産ブースト期：企業型DCの拠出完了。65歳の「洗濯合流」に向けて複利運用のみを無拠出で継続する期間。</p>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">資産ブースト期：60歳でiDeCo/持株会を精算し楽天特定口座へ集約。無拠出複利で大結集へ繋ぐ。</p>
                     </div>
                     <div class="p-2.5 rounded-xl bg-rose-50/60 dark:bg-rose-950/20 border border-rose-100 dark:border-rose-900/40">
                         <span class="font-black text-rose-500 block">🔥 A8 (65〜73歳)</span>
-                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">アクティブライフ期：DC洗濯・持株合流による大結集。有価証券担保ローンによるハイブリッドレバで攻守最大化。</p>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">アクティブライフ期：大坂城目標5700~5800万ベースに、有価証券担保ローン月60万のハイブリッドレバ実運用強化。</p>
                     </div>
                     <div class="p-2.5 rounded-xl bg-sky-50/60 dark:bg-sky-950/20 border border-sky-100 dark:border-sky-900/40">
                         <span class="font-black text-sky-500 block">💧 S12 (73〜85歳)</span>
-                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">スローライフ期：合法的ステルス出口戦略。高い担保高を背景に安全かつ安定的な取り崩しを継続する潜行期。</p>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">スローライフ期：出口戦略「合法的ステルス生活」。高担保を背景にローン月45万で安定的に取り崩す潜行期。</p>
                     </div>
                     <div class="p-2.5 rounded-xl bg-slate-100/60 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700/40">
                         <span class="font-black text-slate-500 dark:text-slate-400 block">🏁 C5 (85〜90歳)</span>
-                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">エンドロール期：借入規模を段階的に縮小。資産要塞を綺麗にソフトランディングさせ、終活体制を確実に整える。</p>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">エンドロール期：借入規模を縮小(月35万)。要塞資産を綺麗にソフトランディングさせ、相続税圧縮と終活を完了。</p>
                     </div>
                 </div>
             </div>
@@ -534,7 +534,7 @@
     <footer class="mt-8 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 py-5 transition-colors duration-200">
         <div class="max-w-[1600px] mx-auto px-4 text-center text-xs text-slate-400 dark:text-slate-500 space-y-1">
             <p>Operation Freedom | Strategic Absolute Fortress Financial Model</p>
-            <p class="font-bold">Engine Optimized Ver 7.10.2 (Plotly HTML Bold Axis & Strict Bar Stack Layout Patch Applied)</p>
+            <p class="font-bold">Engine Optimized Ver 7.11.0 (Strict Bar StackGroup & Spline Smooth Overlay Applied)</p>
         </div>
     </footer>
 
@@ -812,15 +812,12 @@
                 for (let m = 0; m < 12; m++) {
                     currentTokutei = currentTokutei * (1 + tWeightedRateMonth) + (tMonthly / 12);
 
+                    // 60歳でiDeCo/企業型DCを精算し、特定口座へ合流するシナリオ
                     if (age < 60) {
                         currentDc = currentDc * (1 + dcWeightedRateMonth) + (dcMonthly / 12);
-                    } else if (age >= 60 && age < 65) {
-                        currentDc = currentDc * (1 + dcWeightedRateMonth);
-                    } else if (age === 65 && m === 0) {
+                    } else if (age === 60 && m === 0) {
                         let tax = 0;
-                        if (currentDc > 2200) {
-                            tax = (currentDc - 2200) * 0.5 * 0.20315;
-                        }
+                        if (currentDc > 2200) { tax = (currentDc - 2200) * 0.5 * 0.20315; }
                         currentTokutei += (currentDc - tax);
                         currentDc = 0;
                     }
@@ -831,10 +828,14 @@
                         currentNisa = currentNisa * (1 + nisaWeightedRateMonth);
                     }
 
-                    if (age < 65) {
+                    // 60歳で持株会を楽天特定へ移管合流するシナリオ
+                    if (age < 60) {
                         currentMochikabu = currentMochikabu * (1 + mRateEarly / 12) + (mMonthly / 12);
-                    } else {
-                        currentMochikabu = currentMochikabu * (1 + mochikabuPostWeightedRateMonth);
+                    } else if (age === 60 && m === 0) {
+                        currentTokutei += currentMochikabu;
+                        currentMochikabu = 0;
+                    } else if (age >= 60) {
+                        currentMochikabu = 0;
                     }
 
                     let mBorrow = 0;
@@ -859,9 +860,7 @@
                     }
                 }
 
-                let fortressVal = currentTokutei + currentDc;
-                if (age >= 65) fortressVal += currentMochikabu;
-
+                let fortressVal = currentTokutei + currentDc + currentMochikabu;
                 let totalVal = currentTokutei + currentDc + currentNisa + currentMochikabu;
                 let netVal = totalVal - currentLoan;
                 let pct = fortressVal > 0 ? (currentLoan / fortressVal) * 100 : 0;
@@ -876,17 +875,9 @@
                 simulationData.net.push(netVal);
                 simulationData.levPct.push(pct);
 
-                let sp500Amt = currentTokutei * tP1 + currentDc * dcP1 + currentNisa * nP1;
-                let nas100Amt = currentTokutei * tP2 + currentDc * dcP2 + currentNisa * nP2;
-                let selectedAmt = currentTokutei * tP3 + currentDc * dcP3 + currentNisa * nP3;
-
-                if (age >= 65) {
-                    sp500Amt += currentMochikabu * mP1;
-                    nas100Amt += currentMochikabu * mP2;
-                    selectedAmt += currentMochikabu * mP3;
-                } else {
-                    selectedAmt += currentMochikabu; 
-                }
+                let sp500Amt = currentTokutei * tP1 + currentDc * dcP1 + currentNisa * nP1 + currentMochikabu * mP1;
+                let nas100Amt = currentTokutei * tP2 + currentDc * dcP2 + currentNisa * nP2 + currentMochikabu * mP2;
+                let selectedAmt = currentTokutei * tP3 + currentDc * dcP3 + currentNisa * nP3 + currentMochikabu * mP3;
 
                 simulationData.funds.sp500.push((sp500Amt / totalVal) * 100);
                 simulationData.funds.nas100.push((nas100Amt / totalVal) * 100);
@@ -956,16 +947,16 @@
             const isDark = document.documentElement.classList.contains('dark');
             const axisFontColor = isDark ? '#E2E8F0' : '#1E293B';
             
-            // 4つのBarアセットが確実に年齢軸の縦一列に隙間なくスタックされるよう配置
+            // 【最重要】「stackgroup: 'assets'」を定義することで、折れ線グラフが混ざってもBar単一の極太積み上げ柱を絶対維持
             const traces = [
-                { x: simulationData.ages, y: simulationData.tokutei, name: '特定口座部隊', type: 'bar', marker: { color: isDark ? 'rgba(59, 130, 246, 0.7)' : 'rgba(59, 130, 246, 0.85)' } },
-                { x: simulationData.ages, y: simulationData.dc, name: '企業型DC部隊', type: 'bar', marker: { color: isDark ? 'rgba(168, 85, 247, 0.7)' : 'rgba(168, 85, 247, 0.85)' } },
-                { x: simulationData.ages, y: simulationData.mochikabu, name: '持株会資産', type: 'bar', marker: { color: isDark ? 'rgba(245, 158, 11, 0.6)' : 'rgba(245, 158, 11, 0.75)' } },
-                { x: simulationData.ages, y: simulationData.nisa, name: 'NISA温存バッファ', type: 'bar', marker: { color: isDark ? 'rgba(16, 185, 129, 0.7)' : 'rgba(16, 185, 129, 0.85)' } },
+                { x: simulationData.ages, y: simulationData.tokutei, name: '特定口座部隊(楽天)', type: 'bar', stackgroup: 'assets', marker: { color: isDark ? 'rgba(59, 130, 246, 0.75)' : 'rgba(59, 130, 246, 0.88)' } },
+                { x: simulationData.ages, y: simulationData.dc, name: '企業型DC/iDeCo部隊', type: 'bar', stackgroup: 'assets', marker: { color: isDark ? 'rgba(168, 85, 247, 0.75)' : 'rgba(168, 85, 247, 0.88)' } },
+                { x: simulationData.ages, y: simulationData.mochikabu, name: '持株会資産', type: 'bar', stackgroup: 'assets', marker: { color: isDark ? 'rgba(245, 158, 11, 0.65)' : 'rgba(245, 158, 11, 0.78)' } },
+                { x: simulationData.ages, y: simulationData.nisa, name: 'NISA温存バッファ', type: 'bar', stackgroup: 'assets', marker: { color: isDark ? 'rgba(16, 185, 129, 0.75)' : 'rgba(16, 185, 129, 0.88)' } },
                 
-                // 折れ線と点線を積み上げ柱の前面に完全にオーバーレイ配置
-                { x: simulationData.ages, y: simulationData.net, name: '🛡️ 実質純資産高', type: 'scatter', mode: 'lines+markers', line: { color: '#14B8A6', width: 3.5 }, marker: { size: 5 } },
-                { x: simulationData.ages, y: simulationData.loan, name: '🚨 担保ローン残高', type: 'scatter', mode: 'lines', line: { color: '#F43F5E', width: 3, dash: 'dot' } }
+                // 折れ線は点(markers)を排除、完全に滑らかな線(shape: 'spline')でオーバーレイ
+                { x: simulationData.ages, y: simulationData.net, name: '🛡️ 実質純資産高', type: 'scatter', mode: 'lines', line: { color: '#14B8A6', width: 4, shape: 'spline' } },
+                { x: simulationData.ages, y: simulationData.loan, name: '🚨 担保ローン残高', type: 'scatter', mode: 'lines', line: { color: '#F43F5E', width: 3.5, dash: 'dot', shape: 'spline' } }
             ];
 
             const layout = {
@@ -973,13 +964,11 @@
                 plot_bgcolor: isDark ? '#0F172A' : '#ffffff',
                 font: { family: 'Noto Sans JP, sans-serif', color: isDark ? '#E2E8F0' : '#334155', size: 11 },
                 hovermode: 'x unified',
-                barmode: 'stacked', 
-                bargap: 0.15, // 棒をしっかり太くして1本の力強い柱に見せる調整
+                bargap: 0.05, // 棒をしっかり密着させて極太い大坂城の城壁・柱にする
                 margin: { l: 75, r: 25, t: 20, b: 45 },
                 showlegend: true,
                 legend: { orientation: 'h', y: -0.22, x: 0.5, xanchor: 'center', font: { size: 10 } },
                 
-                // 軸タイトルを「<b>」による強固なHTML太字化 ＆ 目盛りフォントサイズ・太さを最大化
                 xaxis: { 
                     title: { text: '<b>年齢 (歳)</b>', font: { size: 14, color: axisFontColor } }, 
                     tickfont: { size: 12, font: 'Noto Sans JP', color: axisFontColor },
@@ -995,11 +984,11 @@
                 },
                 
                 shapes: [
-                    { type: 'rect', xref: 'x', yref: 'paper', x0: 52.5, x1: 60, y0: 0, y1: 1, fillcolor: 'rgba(59, 130, 246, 0.08)', line: { width: 0 } },
-                    { type: 'rect', xref: 'x', yref: 'paper', x0: 60, x1: 65, y0: 0, y1: 1, fillcolor: 'rgba(168, 85, 247, 0.08)', line: { width: 0 } },
-                    { type: 'rect', xref: 'x', yref: 'paper', x0: 65, x1: 73, y0: 0, y1: 1, fillcolor: 'rgba(244, 63, 94, 0.08)', line: { width: 0 } },
-                    { type: 'rect', xref: 'x', yref: 'paper', x0: 73, x1: 85, y0: 0, y1: 1, fillcolor: 'rgba(14, 165, 233, 0.08)', line: { width: 0 } },
-                    { type: 'rect', xref: 'x', yref: 'paper', x0: 85, x1: 90.5, y0: 0, y1: 1, fillcolor: 'rgba(100, 116, 139, 0.08)', line: { width: 0 } }
+                    { type: 'rect', xref: 'x', yref: 'paper', x0: 52.5, x1: 60, y0: 0, y1: 1, fillcolor: 'rgba(59, 130, 246, 0.06)', line: { width: 0 } },
+                    { type: 'rect', xref: 'x', yref: 'paper', x0: 60, x1: 65, y0: 0, y1: 1, fillcolor: 'rgba(168, 85, 247, 0.06)', line: { width: 0 } },
+                    { type: 'rect', xref: 'x', yref: 'paper', x0: 65, x1: 73, y0: 0, y1: 1, fillcolor: 'rgba(244, 63, 94, 0.06)', line: { width: 0 } },
+                    { type: 'rect', xref: 'x', yref: 'paper', x0: 73, x1: 85, y0: 0, y1: 1, fillcolor: 'rgba(14, 165, 233, 0.06)', line: { width: 0 } },
+                    { type: 'rect', xref: 'x', yref: 'paper', x0: 85, x1: 90.5, y0: 0, y1: 1, fillcolor: 'rgba(100, 116, 139, 0.06)', line: { width: 0 } }
                 ]
             };
 

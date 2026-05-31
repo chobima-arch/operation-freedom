@@ -84,7 +84,7 @@
             cursor: pointer;
             border: 2px solid #ffffff;
             box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            margin-top: 0px; /* 位置ズレ防止 */
+            margin-top: 0px;
         }
         .dark #age-slider::-webkit-slider-thumb {
             border: 2px solid #0f172a;
@@ -842,13 +842,11 @@
                 for (let m = 0; m < 12; m++) {
                     currentTokutei = currentTokutei * (1 + tWeightedRateMonth) + (tMonthly / 12);
 
-                    // 53歳〜60歳まで拠出。60歳〜65歳までは拠出ゼロで複利運用のみ継続。
                     if (age < 60) {
                         currentDc = currentDc * (1 + dcWeightedRateMonth) + (dcMonthly / 12);
                     } else if (age >= 60 && age < 65) {
                         currentDc = currentDc * (1 + dcWeightedRateMonth);
                     } else if (age === 65 && m === 0) {
-                        // 65歳時に一度売却し、退職所得控除（2200万適用）後に特定口座へブレンド合流
                         let tax = 0;
                         if (currentDc > 2200) {
                             tax = (currentDc - 2200) * 0.5 * 0.20315;
@@ -891,7 +889,6 @@
                     }
                 }
 
-                // 65歳以降はDCは特定に吸収されて0になり、持株会も要塞の担保となる
                 let fortressVal = currentTokutei + currentDc;
                 if (age >= 65) fortressVal += currentMochikabu;
 
@@ -988,14 +985,14 @@
         function drawChart() {
             const isDark = document.documentElement.classList.contains('dark');
             
-            // 各年齢毎に綺麗な太い1本の柱になるように積み上げ棒グラフのデータを形成
+            // 各部隊アセットを年齢軸上で1本の柱に積み上げる設定
             const traces = [
                 { x: simulationData.ages, y: simulationData.tokutei, name: '特定口座部隊', type: 'bar', marker: { color: isDark ? 'rgba(59, 130, 246, 0.65)' : 'rgba(59, 130, 246, 0.8)' } },
                 { x: simulationData.ages, y: simulationData.dc, name: '企業型DC部隊', type: 'bar', marker: { color: isDark ? 'rgba(168, 85, 247, 0.65)' : 'rgba(168, 85, 247, 0.8)' } },
                 { x: simulationData.ages, y: simulationData.mochikabu, name: '持株会資産', type: 'bar', marker: { color: isDark ? 'rgba(245, 158, 11, 0.55)' : 'rgba(245, 158, 11, 0.7)' } },
                 { x: simulationData.ages, y: simulationData.nisa, name: 'NISA温存バッファ', type: 'bar', marker: { color: isDark ? 'rgba(16, 185, 129, 0.65)' : 'rgba(16, 185, 129, 0.8)' } },
                 
-                // 積み上がった総資産の柱の上にオーバーレイ表示する折れ線レイヤー
+                // 積み上げ棒の上に実質純資産とローン残高をレイヤー重ね書き
                 { x: simulationData.ages, y: simulationData.net, name: '🛡️ 実質純資産高', type: 'scatter', mode: 'lines+markers', line: { color: '#14B8A6', width: 3 }, marker: { size: 4 } },
                 { x: simulationData.ages, y: simulationData.loan, name: '🚨 担保ローン残高', type: 'scatter', mode: 'lines', line: { color: '#F43F5E', width: 2.5, dash: 'dot' } }
             ];
@@ -1005,12 +1002,25 @@
                 plot_bgcolor: isDark ? '#0F172A' : '#ffffff',
                 font: { family: 'Noto Sans JP, sans-serif', color: isDark ? '#E2E8F0' : '#334155', size: 11 },
                 hovermode: 'x unified',
-                barmode: 'stacked', // ここで確実に積み上げモードを適用
-                margin: { l: 60, r: 25, t: 15, b: 40 },
+                barmode: 'stacked', // 確実に積み上げモードを実行
+                margin: { l: 65, r: 25, t: 15, b: 40 },
                 showlegend: true,
-                legend: { orientation: 'h', y: -0.15, x: 0.5, xanchor: 'center', font: { size: 10 } },
-                xaxis: { title: '年齢 (歳)', gridcolor: isDark ? '#334155' : '#E2E8F0', linecolor: isDark ? '#475569' : '#CBD5E1', dtick: 2 },
-                yaxis: { title: '資産評価額 (万円)', gridcolor: isDark ? '#334155' : '#E2E8F0', linecolor: isDark ? '#475569' : '#CBD5E1' },
+                legend: { orientation: 'h', y: -0.18, x: 0.5, xanchor: 'center', font: { size: 10 } },
+                
+                // X軸・Y軸のタイトルおよび目盛り数値を力強い「太字（Bold）」に強化設定
+                xaxis: { 
+                    title: { text: '年齢 (歳)', font: { weight: 'bold', size: 13 } }, 
+                    tickfont: { weight: 'bold' },
+                    gridcolor: isDark ? '#334155' : '#E2E8F0', 
+                    linecolor: isDark ? '#475569' : '#CBD5E1', 
+                    dtick: 2 
+                },
+                yaxis: { 
+                    title: { text: '資産評価額 (万円)', font: { weight: 'bold', size: 13 } }, 
+                    tickfont: { weight: 'bold' },
+                    gridcolor: isDark ? '#334155' : '#E2E8F0', 
+                    linecolor: isDark ? '#475569' : '#CBD5E1' 
+                },
                 
                 shapes: [
                     { type: 'rect', xref: 'x', yref: 'paper', x0: 52.5, x1: 60, y0: 0, y1: 1, fillcolor: 'rgba(59, 130, 246, 0.08)', line: { width: 0 } },

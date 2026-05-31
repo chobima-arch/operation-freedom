@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Operation Freedom v7.12.0</title>
+    <title>Operation Freedom v7.12.1</title>
     <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist@2.24.1/plotly.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -101,7 +101,7 @@
                 </div>
                 <div>
                     <h1 class="text-xl md:text-2xl font-black tracking-wider flex items-center gap-2">
-                        Operation Freedom <span class="text-xs bg-slate-100 dark:bg-slate-800 text-fortress-gold px-2 py-0.5 rounded-full border border-slate-200 dark:border-slate-700 font-bold">v7.12.0</span>
+                        Operation Freedom <span class="text-xs bg-slate-100 dark:bg-slate-800 text-fortress-gold px-2 py-0.5 rounded-full border border-slate-200 dark:border-slate-700 font-bold">v7.12.1</span>
                     </h1>
                     <p class="text-xs text-slate-500 dark:text-slate-400">(資産要塞シミュレーター)</p>
                 </div>
@@ -196,7 +196,7 @@
                     <div class="absolute top-0 left-0 w-1.5 h-full bg-purple-500"></div>
                     <h2 class="text-sm font-black tracking-wide text-slate-400 dark:text-slate-500 uppercase mb-4 flex justify-between items-center">
                         <span class="flex items-center gap-2.5"><i class="fa-solid fa-shield-halved text-purple-500 text-5xl"></i> 企業型DC/iDeCo部隊</span>
-                        <span class="text-xs bg-purple-50 dark:bg-purple-950/40 text-purple-500 px-2 py-0.5 rounded-md font-bold">60歳精算・特定合流</span>
+                        <span class="text-xs bg-purple-50 dark:bg-purple-950/40 text-purple-500 px-2 py-0.5 rounded-md font-bold">65歳精算・特定合流</span>
                     </h2>
                     <div class="space-y-4">
                         <div class="grid grid-cols-2 gap-3">
@@ -386,7 +386,7 @@
                             <div class="space-y-2">
                                 <div class="text-sm flex justify-between items-center font-bold">
                                     <span>毎月借入額: <span id="c5-val" class="font-black text-fortress-rose">35万円</span></span>
-                                endAge
+                                </div>
                                 <input type="range" id="loan-c5" min="0" max="150" value="35" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-rose-thumb">
                             </div>
                             <div class="grid grid-cols-2 gap-3 pt-1">
@@ -412,7 +412,7 @@
                 <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
                     <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-chess-rook text-blue-500 text-3xl"></i> 要塞担保高(特定/楽天)</span>
                     <div class="text-base sm:text-lg font-black tracking-tight text-blue-500" id="ind-fortress">0 <span class="text-xs font-normal text-slate-400">万円</span></div>
-                    <span class="text-[9px] text-slate-400 block mt-1">特定口座＋DC(60~合流)＋持株(60~)</span>
+                    <span class="text-[9px] text-slate-400 block mt-1">特定口座＋DC(65~合流)＋持株(60~)</span>
                 </div>
                 <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
                     <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-leaf text-fortress-emerald text-3xl"></i> NISA資産高</span>
@@ -431,8 +431,8 @@
                 </div>
 
                 <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
-                    <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-shield-halved text-teal-500 text-3xl"></i> 実質純資産高</span>
-                    <div class="text-base sm:text-lg font-black tracking-tight text-teal-500" id="ind-net">0 <span class="text-xs font-normal text-slate-400">万円</span></div>
+                    <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-shield-halved text-[rgb(181,148,16)] text-3xl"></i> 実質純資産高</span>
+                    <div class="text-base sm:text-lg font-black tracking-tight text-[rgb(181,148,16)]" id="ind-net">0 <span class="text-xs font-normal text-slate-400">万円</span></div>
                     <span class="text-[9px] text-slate-400 block mt-1">総資産 - ローン残高</span>
                 </div>
                 <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
@@ -510,11 +510,11 @@
                     </div>
                     <div class="p-2.5 rounded-xl bg-purple-50/60 dark:bg-purple-950/20 border border-purple-100 dark:border-purple-900/40">
                         <span class="font-black text-purple-500 block">🚀 B5 (60〜65歳)</span>
-                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">資産ブースト期：60歳でiDeCo/持株会を精算し楽天特定口座へ集約。無拠出複利で大結集へ繋ぐ。</p>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">資産ブースト期：60歳で持株会を楽天特定口座へ集約。DCは運用を維持し、複利の力で大結集へ繋ぐ。</p>
                     </div>
                     <div class="p-2.5 rounded-xl bg-rose-50/60 dark:bg-rose-950/20 border border-rose-100 dark:border-rose-900/40">
                         <span class="font-black text-rose-500 block">🔥 A8 (65〜73歳)</span>
-                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">アクティブライフ期：大坂城目標5700~5800万ベースに、有価証券担保ローン月60万のハイブリッドレバ実運用強化。</p>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">アクティブライフ期：65歳でiDeCo精算合流。有価証券担保ローン月60万のハイブリッドレバ実運用強化。</p>
                     </div>
                     <div class="p-2.5 rounded-xl bg-sky-50/60 dark:bg-sky-950/20 border border-sky-100 dark:border-sky-900/40">
                         <span class="font-black text-sky-500 block">💧 S12 (73〜85歳)</span>
@@ -534,7 +534,7 @@
     <footer class="mt-8 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 py-5 transition-colors duration-200">
         <div class="max-w-[1600px] mx-auto px-4 text-center text-xs text-slate-400 dark:text-slate-500 space-y-1">
             <p>Operation Freedom | Strategic Absolute Fortress Financial Model</p>
-            <p class="font-bold">Engine Optimized Ver 7.12.0 (Official Bar Stack Mode & Exact OffsetGroup Matching Applied)</p>
+            <p class="font-bold">Engine Optimized Ver 7.12.1 (Official Bar Stack Mode & Exact OffsetGroup Matching Applied)</p>
         </div>
     </footer>
 
@@ -807,14 +807,15 @@
 
             for (let age = startAge; age <= endAge; age++) {
                 simulationData.ages.push(age);
-                simulationData.stringAges.push(age + "歳"); // Plotly自動分散を完全拒絶するカテゴリー化文字列
+                simulationData.stringAges.push(age + "歳");
 
                 for (let m = 0; m < 12; m++) {
                     currentTokutei = currentTokutei * (1 + tWeightedRateMonth) + (tMonthly / 12);
 
-                    if (age < 60) {
+                    // 【訂正】DC/iDeCoの特定口座合流・精算を「65歳」へ変更
+                    if (age < 65) {
                         currentDc = currentDc * (1 + dcWeightedRateMonth) + (dcMonthly / 12);
-                    } else if (age === 60 && m === 0) {
+                    } else if (age === 65 && m === 0) {
                         let tax = 0;
                         if (currentDc > 2200) { tax = (currentDc - 2200) * 0.5 * 0.20315; }
                         currentTokutei += (currentDc - tax);
@@ -945,18 +946,14 @@
             const isDark = document.documentElement.classList.contains('dark');
             const axisFontColor = isDark ? '#E2E8F0' : '#1E293B';
             
-            // 【完全勝利の絶対条件】
-            // 1. 各Barのデータに共通の「offsetgroup: 'fortress'」を設定し、同じX位置に完全結合させる
-            // 2. レイアウト側の「barmode: 'stack'」により、同じoffsetgroup内のBarだけが1本に積み上がる
-            // 3. X軸に数値ではなく「文字列(stringAges)」を渡すことで、Plotlyの自動回避分散ロジックを完全遮断する
             const traces = [
                 { x: simulationData.stringAges, y: simulationData.tokutei, name: '特定口座部隊(楽天)', type: 'bar', offsetgroup: 'fortress', marker: { color: isDark ? 'rgba(59, 130, 246, 0.75)' : 'rgba(59, 130, 246, 0.88)' } },
                 { x: simulationData.stringAges, y: simulationData.dc, name: '企業型DC/iDeCo部隊', type: 'bar', offsetgroup: 'fortress', marker: { color: isDark ? 'rgba(168, 85, 247, 0.75)' : 'rgba(168, 85, 247, 0.88)' } },
                 { x: simulationData.stringAges, y: simulationData.mochikabu, name: '持株会資産', type: 'bar', offsetgroup: 'fortress', marker: { color: isDark ? 'rgba(245, 158, 11, 0.65)' : 'rgba(245, 158, 11, 0.78)' } },
                 { x: simulationData.stringAges, y: simulationData.nisa, name: 'NISA温存バッファ', type: 'bar', offsetgroup: 'fortress', marker: { color: isDark ? 'rgba(16, 185, 129, 0.75)' : 'rgba(16, 185, 129, 0.88)' } },
                 
-                // 折れ線は平滑化された美しい一本の軌道(shape: 'spline')、プロット点は完全排除
-                { x: simulationData.stringAges, y: simulationData.net, name: '🛡️ 実質純資産高', type: 'scatter', mode: 'lines', line: { color: '#14B8A6', width: 4, shape: 'spline' } },
+                // 【訂正】実質純資産高の線色をゴールド系（#B59410）に変更し、NISAの緑との混同を完全回避
+                { x: simulationData.stringAges, y: simulationData.net, name: '🛡️ 実質純資産高', type: 'scatter', mode: 'lines', line: { color: '#B59410', width: 4, shape: 'spline' } },
                 { x: simulationData.stringAges, y: simulationData.loan, name: '🚨 担保ローン残高', type: 'scatter', mode: 'lines', line: { color: '#F43F5E', width: 3.5, dash: 'dot', shape: 'spline' } }
             ];
 
@@ -965,8 +962,8 @@
                 plot_bgcolor: isDark ? '#0F172A' : '#ffffff',
                 font: { family: 'Noto Sans JP, sans-serif', color: isDark ? '#E2E8F0' : '#334155', size: 11 },
                 hovermode: 'x unified',
-                barmode: 'stack', // 必須：同一offsetgroupのBarを垂直積み上げ
-                bargap: 0.05,     // 隙間を極限まで縮めて、極太い大坂城の城壁を再現
+                barmode: 'stack',
+                bargap: 0.43,     // 【訂正】棒グラフの太さを現在の約6割へスマートに絞り込み
                 margin: { l: 75, r: 25, t: 20, b: 45 },
                 showlegend: true,
                 legend: { orientation: 'h', y: -0.22, x: 0.5, xanchor: 'center', font: { size: 10 } },
@@ -976,7 +973,7 @@
                     tickfont: { size: 12, font: 'Noto Sans JP', color: axisFontColor },
                     gridcolor: isDark ? '#334155' : '#E2E8F0', 
                     linecolor: isDark ? '#475569' : '#CBD5E1',
-                    type: 'category' // 文字列の並び順通りに正確に1グリッド1年齢として扱う
+                    type: 'category'
                 },
                 yaxis: { 
                     title: { text: '<b>資産評価額 (万円)</b>', font: { size: 14, color: axisFontColor } }, 

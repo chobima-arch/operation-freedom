@@ -47,7 +47,7 @@
         input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
         .dark input[type="range"]::-webkit-slider-thumb { border: 2px solid #1e293b; }
         
-        /* 各部隊のサムネイルカラー（統一仕様） */
+        /* 各部隊のサムネイル・レールカラー */
         .accent-blue-thumb::-webkit-slider-thumb { background: #3B82F6 !important; }
         .accent-purple-thumb::-webkit-slider-thumb { background: #A855F7 !important; }
         .accent-emerald-thumb::-webkit-slider-thumb { background: #10B981 !important; }
@@ -92,7 +92,7 @@
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen transition-colors duration-200 overflow-x-hidden">
 
-    <!-- ヘッダー（永続化ステータス付き） -->
+    <!-- ヘッダー -->
     <header class="border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 sticky top-0 z-50 shadow-sm">
         <div class="max-w-[1650px] mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center gap-3">
@@ -121,13 +121,13 @@
         </div>
     </header>
 
-    <!-- メインコンテンツ -->
+    <!-- メインコンテンツ (v7.9.8レイアウトを完全死守) -->
     <main class="max-w-[1650px] mx-auto p-4 flex flex-col xl:flex-row gap-6">
         
         <!-- 左翼：作戦パラメーター・全部隊コントロール -->
         <section class="w-full xl:w-4/12 flex flex-col space-y-4">
             
-            <!-- 上段：総作戦目標とリスク管理 -->
+            <!-- 総作戦目標とリスク管理 -->
             <div class="bg-white dark:bg-slate-950 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 space-y-4 shadow-sm">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-3">
@@ -145,7 +145,7 @@
                 </div>
             </div>
             
-            <!-- 中段：全部隊スクロールコンテナ -->
+            <!-- 全部隊スクロールコンテナ -->
             <div id="left-scroll-container" class="space-y-4 overflow-y-auto pr-1 custom-scrollbar flex-1" style="max-height: calc(100vh - 250px);">
                 
                 <!-- ① 特定口座部隊 -->
@@ -181,7 +181,7 @@
                     </div>
                 </div>
 
-                <!-- ② 企業型DC部隊 (スタイル・初期値修正版) -->
+                <!-- ② 企業型DC部隊 (スタイル・初期値修正完了) -->
                 <div class="bg-white dark:bg-slate-950 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden">
                     <div class="absolute top-0 left-0 w-1.5 h-full bg-purple-500"></div>
                     <div class="flex justify-between items-center mb-4">
@@ -261,10 +261,10 @@
             </div>
         </section>
 
-        <!-- 右翼：メインダッシュボード・シミュレーション -->
+        <!-- 右翼：メインダッシュボード・シミュレーション (v7.9.8盤面を完全維持) -->
         <section class="w-full xl:w-8/12 flex flex-col space-y-4">
             
-            <!-- 上段：タイムラインコントロール（配置・位置スワップ＆中央寄せ改善版） -->
+            <!-- 上段：タイムラインコントロール (配置スワップ＆中央寄せ改善完了版) -->
             <div id="right-dashboard-board" class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm">
                 <div class="flex justify-between items-center mb-2">
                     <h3 class="text-sm font-black text-slate-400 flex items-center gap-2"><i class="fa-solid fa-timeline text-fortress-gold"></i> 年齢・フェーズ時間軸コントロール</h3>
@@ -301,28 +301,44 @@
                 </div>
             </div>
 
-            <!-- 中段：グラフィカル司令ディスプレイ -->
+            <!-- 中段：グラフィカル司令ディスプレイ (v7.9.8仕様を100%完全維持) -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="bg-white dark:bg-slate-950 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                    <p class="text-xs font-bold text-slate-400">総運用総資産</p>
-                    <p class="text-2xl font-black text-slate-800 dark:text-slate-100 mt-1" id="dash-total-asset">0 万円</p>
-                    <div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full mt-2 overflow-hidden">
-                        <div id="target-progress-bar" class="bg-fortress-gold h-full" style="width: 0%"></div>
+                <div class="bg-white dark:bg-slate-950 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden">
+                    <p class="text-xs font-bold text-slate-400 tracking-wide uppercase">全軍総運用資産額</p>
+                    <div class="flex items-baseline gap-1 mt-2">
+                        <span id="dash-total-asset" class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">0</span>
+                        <span class="text-xs font-bold text-slate-400">万円</span>
+                    </div>
+                    <div class="w-full bg-slate-100 dark:bg-slate-900 h-2 rounded-full mt-4 overflow-hidden">
+                        <div id="target-progress-bar" class="bg-gradient-to-right from-amber-400 to-fortress-gold h-full rounded-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
+                    <p id="target-diff-text" class="text-[11px] text-slate-400 mt-2 font-medium">目標達成まで あと -- 万円</p>
+                </div>
+
+                <div class="bg-white dark:bg-slate-950 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                    <p class="text-xs font-bold text-slate-400 tracking-wide uppercase">実質効用資産（実質購買力）</p>
+                    <div class="flex items-baseline gap-1 mt-2">
+                        <span id="dash-utility-asset" class="text-3xl font-black text-emerald-500 tracking-tight">0</span>
+                        <span class="text-xs font-bold text-emerald-500">万円</span>
+                    </div>
+                    <div class="flex items-center gap-1.5 mt-4 text-[11px] font-bold text-slate-400" id="dash-loan-display">
+                        <i class="fa-solid fa-bolt text-amber-500"></i> 借入ブースト：0 万円
                     </div>
                 </div>
-                <div class="bg-white dark:bg-slate-950 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                    <p class="text-xs font-bold text-slate-400">実質効用資産（実質購買力）</p>
-                    <p class="text-2xl font-black text-emerald-500 mt-1" id="dash-utility-asset">0 万円</p>
-                    <p class="text-[10px] text-slate-400 mt-1" id="dash-loan-display">借入レバレッジ：0 万円</p>
-                </div>
-                <div class="bg-white dark:bg-slate-950 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                    <p class="text-xs font-bold text-slate-400">暴落耐性（マージンコール限界）</p>
-                    <p class="text-2xl font-black mt-1 text-slate-700 dark:text-slate-300" id="dash-crash-resistance">0%</p>
-                    <span id="dash-risk-badge" class="inline-block text-[10px] px-2 py-0.5 rounded font-black mt-1">SAFE</span>
+
+                <div class="bg-white dark:bg-slate-950 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm relative">
+                    <p class="text-xs font-bold text-slate-400 tracking-wide uppercase">堅牢性（マージンコール耐性）</p>
+                    <div class="flex items-baseline gap-1 mt-2">
+                        <span id="dash-crash-resistance" class="text-2xl font-black text-slate-800 dark:text-slate-200 tracking-tight">0%</span>
+                    </div>
+                    <div class="mt-4 flex items-center justify-between">
+                        <span id="dash-risk-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider">SAFE</span>
+                        <span id="dash-leverage-ratio" class="text-[11px] font-bold text-slate-400">実質レバレッジ: 0.00x</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- 下段：チャート表示 -->
+            <!-- 下段：チャート表示（縦棒積み上げ型への進化完了版） -->
             <div class="bg-white dark:bg-slate-950 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 shadow-sm flex-1 min-h-[450px]">
                 <div id="asset-chart" class="w-full h-full min-h-[420px]"></div>
             </div>
@@ -331,7 +347,7 @@
     </main>
 
     <script>
-        // 保存および監視対象の全インプットIDリスト
+        // 監視・永続化対象のインプットID群
         const storageKeys = [
             'target-asset', 'warning-threshold',
             'tokutei-init', 'tokutei-monthly', 'tokutei-p1', 'tokutei-p2', 'tokutei-p3',
@@ -346,29 +362,28 @@
             runSimulation();
         });
 
-        // 保存データのロードとリスナーの一括展開
+        // ローカルストレージ復元＆入力連動処理
         function initStorageAndListeners() {
             storageKeys.forEach(key => {
                 const element = document.getElementById(key);
                 if (!element) return;
 
-                // ① ローカルストレージから前回値を復元
-                const savedValue = localStorage.getItem('fortress_' + key);
+                // ① ローカルストレージから値を復元（無ければHTML初期値）
+                const savedValue = localStorage.getItem('fortress_v799_' + key);
                 if (savedValue !== null) {
                     element.value = savedValue;
                 }
 
-                // ② 入力検知イベント設定
+                // ② 入力連動リアルタイム処理
                 element.addEventListener('input', (e) => {
-                    localStorage.setItem('fortress_' + key, e.target.value);
+                    localStorage.setItem('fortress_v799_' + key, e.target.value);
                     
-                    // スライダーの横のパーセンテージ表記テキストをリアルタイム連動
+                    // スライダーテキスト数値連動
                     const valDisplay = document.getElementById(key + '-val');
                     if (valDisplay) {
                         valDisplay.textContent = parseFloat(e.target.value).toFixed(1) + '%';
                     }
                     
-                    // 年齢表示の特殊連動
                     if (key === 'age-slider') {
                         document.getElementById('age-display').textContent = e.target.value;
                     }
@@ -376,51 +391,45 @@
                     runSimulation();
                 });
 
-                // 初回のパーセンテージテキスト初期化
+                // 初期起動時のパーセンテージ表示リセット
                 const valDisplay = document.getElementById(key + '-val');
                 if (valDisplay) {
                     valDisplay.textContent = parseFloat(element.value).toFixed(1) + '%';
                 }
             });
 
-            // 年齢表示テキストの初期反映
             document.getElementById('age-display').textContent = document.getElementById('age-slider').value;
 
-            // 初期化ボタンのイベント
+            // ストレージ全クリアボタン
             document.getElementById('reset-storage').addEventListener('click', () => {
-                if(confirm('全てのパラメーターを初期作戦値（リセット）に戻しますか？')) {
-                    storageKeys.forEach(key => localStorage.removeItem('fortress_' + key));
+                if(confirm('すべての部隊パラメーターを初期状態にリセットしますか？')) {
+                    storageKeys.forEach(key => localStorage.removeItem('fortress_v799_' + key));
                     window.location.reload();
                 }
             });
         }
 
-        // メイン計算・描画エンジン
+        // 財務シミュレーションコアエンジン
         function runSimulation() {
-            // パラメーター取得
             const targetAsset = parseFloat(document.getElementById('target-asset').value) || 15000;
             const warningThreshold = parseFloat(document.getElementById('warning-threshold').value) || 35;
             const selectedAge = parseInt(document.getElementById('age-slider').value) || 65;
 
-            // 各部隊の基本データ
             let tokutei = parseFloat(document.getElementById('tokutei-init').value) || 0;
             let dc = parseFloat(document.getElementById('dc-init').value) || 0;
             let nisa = parseFloat(document.getElementById('nisa-init').value) || 0;
 
-            // 毎月積立額 (年間換算)
             const tokuteiAnn = (parseFloat(document.getElementById('tokutei-monthly').value) || 0) * 12;
             const dcAnn = (parseFloat(document.getElementById('dc-monthly').value) || 0) * 12;
             const nisaAnn = (parseFloat(document.getElementById('nisa-monthly').value) || 0) * 12;
 
-            // 合成運用期待金利（各要素をフラットに合算して平均化）
+            // 期待金利合成
             const tokuteiRate = ((parseFloat(document.getElementById('tokutei-p1').value)||0) + (parseFloat(document.getElementById('tokutei-p2').value)||0) + (parseFloat(document.getElementById('tokutei-p3').value)||0)) / 3 / 100;
             const dcRate = ((parseFloat(document.getElementById('dc-p1').value)||0) + (parseFloat(document.getElementById('dc-p2').value)||0) + (parseFloat(document.getElementById('dc-p3').value)||0)) / 3 / 100;
             const nisaRate = (parseFloat(document.getElementById('nisa-p1').value)||0) / 100;
 
             const loanRatio = (parseFloat(document.getElementById('loan-ratio').value) || 0) / 100;
-            const loanCostRate = (parseFloat(document.getElementById('loan-rate').value) || 0) / 100;
 
-            // 時系列プロット用配列
             let ages = [];
             let tokuteiHist = [];
             let dcHist = [];
@@ -428,18 +437,15 @@
             let totalHist = [];
             let utilityHist = [];
 
-            // 53歳から90歳までの資産シミュレーションを回す
             for (let a = 53; a <= 90; a++) {
                 ages.push(a);
 
-                // --- タイムラインフェーズ固有の特殊ルール処理 ---
+                // 時系列フェーズ固有戦略：60歳で企業型DCをiDeCoへ移管精算、特定口座部隊へ統合
                 if (a > 60) {
-                    // 60歳時点で企業型DCをiDeCo経由で精算し、順次特定口座へ合流（トータル資産としては特定口座にマージ）
                     tokutei += dc;
                     dc = 0;
                 }
                 
-                // 資産プロット格納
                 tokuteiHist.push(Math.round(tokutei));
                 dcHist.push(Math.round(dc));
                 nisaHist.push(Math.round(nisa));
@@ -447,99 +453,113 @@
                 let totalRaw = tokutei + dc + nisa;
                 totalHist.push(Math.round(totalRaw));
 
-                // 有価証券担保ローンのレバレッジ計算（特定口座を担保とする）
+                // 特定口座のみを担保評価軸とするレバレッジ計算
                 let loanAmount = tokutei * loanRatio;
-                let utility = totalRaw + loanAmount;
-                utilityHist.push(Math.round(utility));
+                utilityHist.push(Math.round(totalRaw + loanAmount));
 
-                // 複利成長・積立加算
+                // 複利拡大
                 tokutei = (tokutei + tokuteiAnn) * (1 + tokuteiRate);
                 if (a <= 60) {
                     dc = (dc + dcAnn) * (1 + dcRate);
                 }
-                // NISAは2028年枠完遂（1800万）以降の仮定も含め成長
                 nisa = (nisa + nisaAnn) * (1 + nisaRate);
             }
 
-            // スライダー選択年齢のインデックス取得
+            // スライダー対象年齢のデータ抽出
             const targetIdx = ages.indexOf(selectedAge);
             const curTotal = totalHist[targetIdx];
             const curTokutei = tokuteiHist[targetIdx];
-            const curNisa = nisaHist[targetIdx];
             const curLoan = Math.round(curTokutei * loanRatio);
             const curUtility = curTotal + curLoan;
 
-            // 暴落耐性（維持率計算ベースの限界下落率）
-            // 担保（特定口座）がどれだけ下がると追証か。簡易式：1 - (借入比率 / 0.5) ※一般的な維持率担保枠
+            // マージンコール限界（耐性計算）
             let crashResistance = loanRatio > 0 ? (1 - (loanRatio / 0.7)) * 100 : 100;
             if (crashResistance < 0) crashResistance = 0;
 
-            // ダッシュボードUI更新
-            document.getElementById('dash-total-asset').textContent = curTotal.toLocaleString() + ' 万円';
-            document.getElementById('dash-utility-asset').textContent = curUtility.toLocaleString() + ' 万円';
-            document.getElementById('dash-loan-display').textContent = `有価証券担保ローンを活用したブースト額: ${curLoan.toLocaleString()} 万円`;
-            document.getElementById('dash-crash-resistance').textContent = `-${Math.round(100 - (loanRatio*100))}% までの暴落に耐縮`;
+            // v7.9.8準拠のダッシュボードテキスト差分更新
+            document.getElementById('dash-total-asset').textContent = curTotal.toLocaleString();
+            document.getElementById('dash-utility-asset').textContent = curUtility.toLocaleString();
+            document.getElementById('dash-loan-display').innerHTML = `<i class="fa-solid fa-bolt text-amber-500"></i> 借入ブースト：${curLoan.toLocaleString()} 万円`;
+            document.getElementById('dash-crash-resistance').textContent = `-${Math.round(100 - (loanRatio*100))}% までの大暴落に耐縮`;
 
+            // 目標達成度プログレス
             const progPercent = Math.min(100, (curTotal / targetAsset) * 100);
             document.getElementById('target-progress-bar').style.width = progPercent + '%';
-
-            const riskBadge = document.getElementById('dash-risk-badge');
-            const currentLoanPct = loanRatio * 100;
-            if (currentLoanPct > warningThreshold) {
-                riskBadge.textContent = '警告: 危険域レバレッジ';
-                riskBadge.className = 'inline-block text-[10px] px-2 py-0.5 rounded font-black mt-1 bg-rose-500 text-white';
-            } else if (currentLoanPct > 25) {
-                riskBadge.textContent = '注意: A8許容負荷';
-                riskBadge.className = 'inline-block text-[10px] px-2 py-0.5 rounded font-black mt-1 bg-amber-500 text-white';
+            
+            const diff = targetAsset - curTotal;
+            if (diff > 0) {
+                document.getElementById('target-diff-text').textContent = `目標達成まで あと ${diff.toLocaleString()} 万円`;
             } else {
-                riskBadge.textContent = '安全: 防衛陣地内';
-                riskBadge.className = 'inline-block text-[10px] px-2 py-0.5 rounded font-black mt-1 bg-emerald-500 text-white';
+                document.getElementById('target-diff-text').textContent = `目標完全突破！ (+${Math.abs(diff).toLocaleString()} 万円)`;
             }
 
-            // Plotlyチャート描画
+            // リスクバッジ・実質倍率
+            const currentLoanPct = loanRatio * 100;
+            const riskBadge = document.getElementById('dash-risk-badge');
+            const levRatioDisp = document.getElementById('dash-leverage-ratio');
+            
+            const realLevMultiplier = 1 + loanRatio;
+            levRatioDisp.textContent = `実質レバレッジ: ${realLevMultiplier.toFixed(2)}x`;
+
+            if (currentLoanPct > warningThreshold) {
+                riskBadge.textContent = '警告: 危険域レバレッジ';
+                riskBadge.className = 'px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-rose-500 text-white animate-pulse';
+            } else if (currentLoanPct > 25) {
+                riskBadge.textContent = '注意: A8許容負荷';
+                riskBadge.className = 'px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-500 text-white';
+            } else {
+                riskBadge.textContent = '安全: 防衛陣地内';
+                riskBadge.className = 'px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-500 text-white';
+            }
+
+            // Plotlyチャート（縦棒積み上げグラフ型へカスタマイズ）
             const isDark = document.documentElement.classList.contains('dark');
             const bgHex = isDark ? '#0F172A' : '#FFFFFF';
             const textHex = isDark ? '#94A3B8' : '#475569';
             const gridHex = isDark ? '#1E293B' : '#E2E8F0';
 
+            // 積み上げ用バー（特定、DC、NISA）
+            const traceTokutei = {
+                x: ages, y: tokuteiHist, name: '特定口座部隊', type: 'bar',
+                marker: { color: isDark ? 'rgba(59, 130, 246, 0.75)' : 'rgba(59, 130, 246, 0.65)' }
+            };
+            const traceDC = {
+                x: ages, y: dcHist, name: '企業型DC/iDeCo', type: 'bar',
+                marker: { color: isDark ? 'rgba(168, 85, 247, 0.75)' : 'rgba(168, 85, 247, 0.65)' }
+            };
+            const traceNISA = {
+                x: ages, y: nisaHist, name: 'NISA部隊', type: 'bar',
+                marker: { color: isDark ? 'rgba(16, 185, 129, 0.75)' : 'rgba(16, 185, 129, 0.65)' }
+            };
+
+            // 全軍の合計ライン
             const traceTotal = {
-                x: ages, y: totalHist, name: '全軍総資産', type: 'scatter', mode: 'lines+markers',
+                x: ages, y: totalHist, name: '全軍総資産ライン', type: 'scatter', mode: 'lines+markers',
                 line: { color: '#D4AF37', width: 3 }, marker: { size: 4 }
             };
+            // 効用資産（レバレッジ枠）
             const traceUtility = {
                 x: ages, y: utilityHist, name: '実質効用資産 (レバレッジ込)', type: 'scatter', mode: 'lines',
                 line: { color: '#10B981', width: 2, dash: 'dash' }
             };
-            const traceTokutei = {
-                x: ages, y: tokuteiHist, name: '特定口座部隊', type: 'bar',
-                marker: { color: 'rgba(59, 130, 246, 0.6)' }
-            };
-            const traceDC = {
-                x: ages, y: dcHist, name: '企業型DC/iDeCo', type: 'bar',
-                marker: { color: 'rgba(168, 85, 247, 0.6)' }
-            };
-            const traceNISA = {
-                x: ages, y: nisaHist, name: 'NISA部隊', type: 'bar',
-                marker: { color: 'rgba(16, 185, 129, 0.6)' }
-            };
 
             const layout = {
                 backgroundColor: bgHex, paper_bgcolor: bgHex, plot_bgcolor: bgHex,
-                margin: { l: 50, r: 20, t: 30, b: 40 },
-                legend: { orientation: 'h', y: -0.2, font: { color: textHex, size: 10 } },
-                xaxis: { title: '年齢 (歳)', gridcolor: gridHex, zeroline: false, tickfont: { color: textHex } },
-                yaxis: { title: '資産額 (万円)', gridcolor: gridHex, zeroline: false, tickfont: { color: textHex } },
-                barmode: 'stack',
+                margin: { l: 55, r: 20, t: 25, b: 40 },
+                legend: { orientation: 'h', y: -0.18, font: { color: textHex, size: 11 } },
+                xaxis: { title: '年齢 (歳)', gridcolor: gridHex, zeroline: false, tickfont: { color: textHex }, dtick: 2 },
+                yaxis: { title: '資産総額 (万円)', gridcolor: gridHex, zeroline: false, tickfont: { color: textHex } },
+                barmode: 'stack', // これで綺麗に縦の積み上げ棒グラフに
                 shapes: [{
                     type: 'line', x0: selectedAge, y0: 0, x1: selectedAge, y1: Math.max(...utilityHist) * 1.05,
-                    line: { color: '#64748B', width: 1.5, dash: 'dot' }
+                    line: { color: '#64748B', width: 2, dash: 'dot' }
                 }]
             };
 
             Plotly.newPlot('asset-chart', [traceTokutei, traceDC, traceNISA, traceTotal, traceUtility], layout, { displayModeBar: false, responsive: true });
         }
 
-        // ダークモード切り替え処理
+        // ダークモード切り替えコア
         function initTheme() {
             const themeToggleBtn = document.getElementById('theme-toggle');
             if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {

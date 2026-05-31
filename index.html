@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>野村担保要塞シミュレーター Ver 7.13.0</title>
-    <!-- Plotly.js CDN -->
     <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
     <style>
         body {
@@ -157,7 +156,6 @@
     <div class="subtitle">三菱信託DC・野村持株会の65歳洗濯ルート、およびSBI独立NISAバッファを完全統合したレバレッジ監視システム</div>
 
     <div class="grid-layout">
-        <!-- サイドバー設定エリア -->
         <div class="sidebar">
             <div class="section-title" style="margin-top:0;">【1】初期資産（53歳時点）</div>
             <div class="input-group">
@@ -236,9 +234,7 @@
             </div>
         </div>
 
-        <!-- メイン表示エリア -->
         <div class="main-content">
-            <!-- 年齢選択スライダー -->
             <div class="slider-container">
                 <div class="slider-title">
                     <span>🔍 任意の年齢の安全性を監視・コントロール</span>
@@ -247,7 +243,6 @@
                 <input type="range" id="age-slider" class="slider-input" min="53" max="90" value="65">
             </div>
 
-            <!-- KPIスタッツインジケーター -->
             <div class="stats-container">
                 <div class="card">
                     <div class="card-title">🏯 野村要塞担保高 (特定口座)</div>
@@ -277,10 +272,8 @@
                 </div>
             </div>
 
-            <!-- チャット描画エリア -->
             <div id="chart-div"></div>
 
-            <!-- データテーブルエリア -->
             <div class="table-container">
                 <div class="section-title" style="margin-top:0;">📋 【全軍配備図形式】年齢別 資金一覧詳細データ</div>
                 <table id="data-table">
@@ -298,8 +291,7 @@
                         </tr>
                     </thead>
                     <tbody id="table-body">
-                        <!-- JSで動的に挿入 -->
-                    </tbody>
+                        </tbody>
                 </table>
             </div>
         </div>
@@ -367,13 +359,13 @@ function runSimulation() {
 
         arr_loan[i] = arr_loan[i-1] * (1 + loan_rate) + currentBorrow;
 
-        // --- ① 三菱信託DCロジック ---
+        // --- ① 三菱信託DCロジック（65歳まで温存・運用継続） ---
         if (prevAge < 60) {
             arr_dc[i] = arr_dc[i-1] * (1 + r_dc) + add_dc;
         } else if (prevAge >= 60 && prevAge < 65) {
-            arr_dc[i] = arr_dc[i-1] * (1 + r_dc); // 拠出なし、運用継続
+            arr_dc[i] = arr_dc[i-1] * (1 + r_dc); // 👈 追加拠出なし・複利運用のみ継続！
         } else {
-            arr_dc[i] = 0; // 65歳以降は洗濯されて特定口座へ
+            arr_dc[i] = 0; // 65歳以降は洗濯されて特定口座へ合流のため0
         }
 
         // --- ② 野村持株会ロジック ---
@@ -382,7 +374,7 @@ function runSimulation() {
         } else if (prevAge >= 60 && prevAge < 65) {
             arr_mochikabu[i] = arr_mochikabu[i-1] * (1 + r_mochikabu); // 運用のみ
         } else {
-            arr_mochikabu[i] = 0; // 65歳以降は洗濯されて特定口座へ
+            arr_mochikabu[i] = 0; // 65歳以降は洗濯されて特定口座へ合流のため0
         }
 
         // --- ③ SBI NISAロジック (3年間で枠を埋め、以降死ぬまで独立複利) ---
@@ -396,7 +388,7 @@ function runSimulation() {
         if (prevAge < 65) {
             arr_tokutei[i] = arr_tokutei[i-1] * (1 + r_tokutei) + add_tokutei;
         } else if (prevAge === 65) {
-            // 【65歳：全軍集結・リバランス】
+            // 【65歳：全軍集結・リバランス発生】
             let dc_before_tax = arr_dc[i-1] * (1 + r_dc);
             let mochikabu_before_tax = arr_mochikabu[i-1] * (1 + r_mochikabu);
 
@@ -413,7 +405,7 @@ function runSimulation() {
             let mochikabu_cash = mochikabu_before_tax * 0.80;
 
             let tokutei_base = arr_tokutei[i-1] * (1 + r_tokutei) + add_tokutei;
-            arr_tokutei[i] = tokutei_base + dc_cash + mochikabu_cash;
+            arr_tokutei[i] = tokutei_base + dc_cash + mochikabu_cash; // 👈 65歳でドカンと一括合流
         } else {
             arr_tokutei[i] = arr_tokutei[i-1] * (1 + r_tokutei);
         }
@@ -508,7 +500,7 @@ function drawChart() {
     };
     const traceNet = { 
         x: simData.ages, y: simData.net, name: '実質純資産高', 
-        type: 'scatter', mode: 'lines', line: {color: '#00ffff', width: 4} // 👈 緑と被らない「鮮やかなシアン」に固定
+        type: 'scatter', mode: 'lines', line: {color: '#00ffff', width: 4} // 👈 緑(NISA)と被らない鮮やかな「シアン（水色）」へ変更！
     };
 
     const data = [traceTokutei, traceDc, traceMochikabu, traceNisa, traceLoan, traceNet];
@@ -516,7 +508,7 @@ function drawChart() {
     const layout = {
         title: `【全軍配備図形式】野村要塞資産マックス集結 & ローン推移シミュレーション (現在: ${selectedAge}歳時点)`,
         barmode: 'stack',
-        bargap: 0.4, // 👈 隙間を広げて、棒グラフの太さを元の「6割」へスリム化調整
+        bargap: 0.4, // 👈 隙間を広げて、棒グラフの太さを元の「6割」へスリム化調整！
         template: 'plotly_dark',
         paper_bgcolor: '#1e1e1e',
         plot_bgcolor: '#1e1e1e',
@@ -549,7 +541,7 @@ function renderTable() {
         `;
         tbody.appendChild(tr);
     }
-    updateDashboard(); // 初期ハイライト用
+    updateDashboard();
 }
 
 // イベントリスナー紐付け

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Operation Freedom v7.10.1</title>
+    <title>Operation Freedom v7.10.2</title>
     <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist@2.24.1/plotly.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -16,7 +16,6 @@
         .dark .custom-scrollbar::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
         .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); }
         
-        /* 年齢コントロール用の5色フェーズグラデーションレール */
         .phase-rail {
             position: relative;
             height: 12px;
@@ -30,7 +29,6 @@
             );
         }
 
-        /* スライダーつまみのスタイル統一 */
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
@@ -47,21 +45,7 @@
             border: 2px solid #1e293b;
             background: #94a3b8;
         }
-        input[type="range"]::-moz-range-thumb {
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: #475569;
-            cursor: pointer;
-            border: 2px solid #ffffff;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-        }
-        .dark input[type="range"]::-moz-range-thumb {
-            border: 2px solid #1e293b;
-            background: #94a3b8;
-        }
         
-        /* 部隊ボックス用のカラフルなつまみ制御 */
         .accent-blue-thumb::-webkit-slider-thumb { background: #3B82F6 !important; }
         .accent-blue-thumb::-moz-range-thumb { background: #3B82F6 !important; }
         .accent-purple-thumb::-webkit-slider-thumb { background: #A855F7 !important; }
@@ -73,7 +57,6 @@
         .accent-rose-thumb::-webkit-slider-thumb { background: #F43F5E !important; }
         .accent-rose-thumb::-moz-range-thumb { background: #F43F5E !important; }
 
-        /* 年齢コントロールスライダー専用のゴールドつまみ設定 */
         #age-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
@@ -86,21 +69,7 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.3);
             margin-top: 0px;
         }
-        .dark #age-slider::-webkit-slider-thumb {
-            border: 2px solid #0f172a;
-        }
-        #age-slider::-moz-range-thumb {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: #D4AF37 !important;
-            cursor: pointer;
-            border: 2px solid #ffffff;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-        }
-        .dark #age-slider::-moz-range-thumb {
-            border: 2px solid #0f172a;
-        }
+        .dark #age-slider::-webkit-slider-thumb { border: 2px solid #0f172a; }
     </style>
     <script>
         tailwind.config = {
@@ -132,7 +101,7 @@
                 </div>
                 <div>
                     <h1 class="text-xl md:text-2xl font-black tracking-wider flex items-center gap-2">
-                        Operation Freedom <span class="text-xs bg-slate-100 dark:bg-slate-800 text-fortress-gold px-2 py-0.5 rounded-full border border-slate-200 dark:border-slate-700 font-bold">v7.10.1</span>
+                        Operation Freedom <span class="text-xs bg-slate-100 dark:bg-slate-800 text-fortress-gold px-2 py-0.5 rounded-full border border-slate-200 dark:border-slate-700 font-bold">v7.10.2</span>
                     </h1>
                     <p class="text-xs text-slate-500 dark:text-slate-400">(資産要塞シミュレーター)</p>
                 </div>
@@ -479,7 +448,7 @@
                 </div>
                 
                 <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
-                    <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-dark fa-dna text-slate-500 text-3xl"></i> コアファンド比率</span>
+                    <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-dna text-slate-500 text-3xl"></i> コアファンド比率</span>
                     <div class="text-sm font-bold space-y-1 text-slate-600 dark:text-slate-300 mt-0.5" id="ind-fund-mix">
                         <div>S&P500: --%</div>
                         <div>NASDAQ100: --%</div>
@@ -506,12 +475,12 @@
                     </div>
                     
                     <div class="absolute w-full top-12 left-0 text-[10px] font-black text-slate-400 select-none pointer-events-none whitespace-nowrap">
-                        <div class="absolute text-center -translate-x-1/2 text-slate-400" style="left: 0.0%;">53歳</div>
-                        <div class="absolute text-center -translate-x-1/2 text-slate-400" style="left: 18.92%;">60歳</div>
-                        <div class="absolute text-center -translate-x-1/2 text-slate-400" style="left: 32.43%;">65歳</div>
-                        <div class="absolute text-center -translate-x-1/2 text-slate-400" style="left: 54.05%;">73歳</div>
-                        <div class="absolute text-center -translate-x-1/2 text-slate-400" style="left: 86.49%;">85歳</div>
-                        <div class="absolute text-center -translate-x-full text-slate-400 pr-1" style="left: 100%;">90歳</div>
+                        <div class="absolute text-center -translate-x-1/2" style="left: 0.0%;">53歳</div>
+                        <div class="absolute text-center -translate-x-1/2" style="left: 18.92%;">60歳</div>
+                        <div class="absolute text-center -translate-x-1/2" style="left: 32.43%;">65歳</div>
+                        <div class="absolute text-center -translate-x-1/2" style="left: 54.05%;">73歳</div>
+                        <div class="absolute text-center -translate-x-1/2" style="left: 86.49%;">85歳</div>
+                        <div class="absolute text-center -translate-x-full pr-1" style="left: 100%;">90歳</div>
                         
                         <div class="absolute text-center -translate-x-1/2 text-blue-500 font-bold text-[11px]" style="left: 9.46%; top: 16px;">F7</div>
                         <div class="absolute text-center -translate-x-1/2 text-purple-500 font-bold text-[11px]" style="left: 25.68%; top: 16px;">B5</div>
@@ -531,6 +500,7 @@
                         <i class="fa-solid fa-rotate-left"></i> 表示リセット
                     </button>
                 </div>
+                
                 <div id="asset-chart" class="w-full flex-1 min-h-[380px]"></div>
                 
                 <div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 grid grid-cols-1 md:grid-cols-5 gap-2 text-xs">
@@ -564,7 +534,7 @@
     <footer class="mt-8 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 py-5 transition-colors duration-200">
         <div class="max-w-[1600px] mx-auto px-4 text-center text-xs text-slate-400 dark:text-slate-500 space-y-1">
             <p>Operation Freedom | Strategic Absolute Fortress Financial Model</p>
-            <p class="font-bold">Engine Optimized Ver 7.10.1 (iDeCo Wash Mechanism at 65 & Stacked Bar Chart Mode Integrated)</p>
+            <p class="font-bold">Engine Optimized Ver 7.10.2 (Plotly HTML Bold Axis & Strict Bar Stack Layout Patch Applied)</p>
         </div>
     </footer>
 
@@ -984,17 +954,18 @@
 
         function drawChart() {
             const isDark = document.documentElement.classList.contains('dark');
+            const axisFontColor = isDark ? '#E2E8F0' : '#1E293B';
             
-            // 各部隊アセットを年齢軸上で1本の柱に積み上げる設定
+            // 4つのBarアセットが確実に年齢軸の縦一列に隙間なくスタックされるよう配置
             const traces = [
-                { x: simulationData.ages, y: simulationData.tokutei, name: '特定口座部隊', type: 'bar', marker: { color: isDark ? 'rgba(59, 130, 246, 0.65)' : 'rgba(59, 130, 246, 0.8)' } },
-                { x: simulationData.ages, y: simulationData.dc, name: '企業型DC部隊', type: 'bar', marker: { color: isDark ? 'rgba(168, 85, 247, 0.65)' : 'rgba(168, 85, 247, 0.8)' } },
-                { x: simulationData.ages, y: simulationData.mochikabu, name: '持株会資産', type: 'bar', marker: { color: isDark ? 'rgba(245, 158, 11, 0.55)' : 'rgba(245, 158, 11, 0.7)' } },
-                { x: simulationData.ages, y: simulationData.nisa, name: 'NISA温存バッファ', type: 'bar', marker: { color: isDark ? 'rgba(16, 185, 129, 0.65)' : 'rgba(16, 185, 129, 0.8)' } },
+                { x: simulationData.ages, y: simulationData.tokutei, name: '特定口座部隊', type: 'bar', marker: { color: isDark ? 'rgba(59, 130, 246, 0.7)' : 'rgba(59, 130, 246, 0.85)' } },
+                { x: simulationData.ages, y: simulationData.dc, name: '企業型DC部隊', type: 'bar', marker: { color: isDark ? 'rgba(168, 85, 247, 0.7)' : 'rgba(168, 85, 247, 0.85)' } },
+                { x: simulationData.ages, y: simulationData.mochikabu, name: '持株会資産', type: 'bar', marker: { color: isDark ? 'rgba(245, 158, 11, 0.6)' : 'rgba(245, 158, 11, 0.75)' } },
+                { x: simulationData.ages, y: simulationData.nisa, name: 'NISA温存バッファ', type: 'bar', marker: { color: isDark ? 'rgba(16, 185, 129, 0.7)' : 'rgba(16, 185, 129, 0.85)' } },
                 
-                // 積み上げ棒の上に実質純資産とローン残高をレイヤー重ね書き
-                { x: simulationData.ages, y: simulationData.net, name: '🛡️ 実質純資産高', type: 'scatter', mode: 'lines+markers', line: { color: '#14B8A6', width: 3 }, marker: { size: 4 } },
-                { x: simulationData.ages, y: simulationData.loan, name: '🚨 担保ローン残高', type: 'scatter', mode: 'lines', line: { color: '#F43F5E', width: 2.5, dash: 'dot' } }
+                // 折れ線と点線を積み上げ柱の前面に完全にオーバーレイ配置
+                { x: simulationData.ages, y: simulationData.net, name: '🛡️ 実質純資産高', type: 'scatter', mode: 'lines+markers', line: { color: '#14B8A6', width: 3.5 }, marker: { size: 5 } },
+                { x: simulationData.ages, y: simulationData.loan, name: '🚨 担保ローン残高', type: 'scatter', mode: 'lines', line: { color: '#F43F5E', width: 3, dash: 'dot' } }
             ];
 
             const layout = {
@@ -1002,22 +973,23 @@
                 plot_bgcolor: isDark ? '#0F172A' : '#ffffff',
                 font: { family: 'Noto Sans JP, sans-serif', color: isDark ? '#E2E8F0' : '#334155', size: 11 },
                 hovermode: 'x unified',
-                barmode: 'stacked', // 確実に積み上げモードを実行
-                margin: { l: 65, r: 25, t: 15, b: 40 },
+                barmode: 'stacked', 
+                bargap: 0.15, // 棒をしっかり太くして1本の力強い柱に見せる調整
+                margin: { l: 75, r: 25, t: 20, b: 45 },
                 showlegend: true,
-                legend: { orientation: 'h', y: -0.18, x: 0.5, xanchor: 'center', font: { size: 10 } },
+                legend: { orientation: 'h', y: -0.22, x: 0.5, xanchor: 'center', font: { size: 10 } },
                 
-                // X軸・Y軸のタイトルおよび目盛り数値を力強い「太字（Bold）」に強化設定
+                // 軸タイトルを「<b>」による強固なHTML太字化 ＆ 目盛りフォントサイズ・太さを最大化
                 xaxis: { 
-                    title: { text: '年齢 (歳)', font: { weight: 'bold', size: 13 } }, 
-                    tickfont: { weight: 'bold' },
+                    title: { text: '<b>年齢 (歳)</b>', font: { size: 14, color: axisFontColor } }, 
+                    tickfont: { size: 12, font: 'Noto Sans JP', color: axisFontColor },
                     gridcolor: isDark ? '#334155' : '#E2E8F0', 
                     linecolor: isDark ? '#475569' : '#CBD5E1', 
                     dtick: 2 
                 },
                 yaxis: { 
-                    title: { text: '資産評価額 (万円)', font: { weight: 'bold', size: 13 } }, 
-                    tickfont: { weight: 'bold' },
+                    title: { text: '<b>資産評価額 (万円)</b>', font: { size: 14, color: axisFontColor } }, 
+                    tickfont: { size: 12, font: 'Noto Sans JP', color: axisFontColor },
                     gridcolor: isDark ? '#334155' : '#E2E8F0', 
                     linecolor: isDark ? '#475569' : '#CBD5E1' 
                 },

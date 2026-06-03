@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Operation Freedom v7.12.2</title>
-    <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist@2.24.1a/plotly.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist@2.24.1/plotly.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -855,7 +855,7 @@
                     }
 
                     if (mBorrow > 0 || currentLoan > 0) {
-                        currentLoan = currentLoan * (1 + mRate) + mBorrow;
+                        currentLoan = currentLoan * (1 + mRate) + Number(mBorrow);
                     }
                 }
 

@@ -510,11 +510,11 @@
                     </div>
                     <div class="p-2.5 rounded-xl bg-purple-50/60 dark:bg-purple-950/20 border border-purple-100 dark:border-purple-900/40">
                         <span class="font-black text-purple-500 block">🚀 B5 (60〜65歳)</span>
-                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">資産ブースト期：60歳で持株会を楽天特定口座へ集約。DCは運用を維持し、複利の力で大結集へ繋ぐ。</p>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">資産ブースト期：60歳で持株会野村特定口座へ集約。DCは運用を維持し、複利の力で大結集へ繋ぐ。</p>
                     </div>
                     <div class="p-2.5 rounded-xl bg-rose-50/60 dark:bg-rose-950/20 border border-rose-100 dark:border-rose-900/40">
                         <span class="font-black text-rose-500 block">🔥 A8 (65〜73歳)</span>
-                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">アクティブライフ期：65歳でiDeCo精算合流。有価証券担保ローン月60万のハイブリッドレバ実運用強化。</p>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">アクティブライフ期：65歳でDC精算合流。有価証券担保ローン月60万のハイブリッドレバ実運用強化開始。</p>
                     </div>
                     <div class="p-2.5 rounded-xl bg-sky-50/60 dark:bg-sky-950/20 border border-sky-100 dark:border-sky-900/40">
                         <span class="font-black text-sky-500 block">💧 S12 (73〜85歳)</span>
@@ -947,8 +947,8 @@
             const axisFontColor = isDark ? '#E2E8F0' : '#1E293B';
             
             const traces = [
-                { x: simulationData.stringAges, y: simulationData.tokutei, name: '特定口座部隊(楽天)', type: 'bar', offsetgroup: 'fortress', marker: { color: isDark ? 'rgba(59, 130, 246, 0.75)' : 'rgba(59, 130, 246, 0.88)' } },
-                { x: simulationData.stringAges, y: simulationData.dc, name: '企業型DC/iDeCo部隊', type: 'bar', offsetgroup: 'fortress', marker: { color: isDark ? 'rgba(168, 85, 247, 0.75)' : 'rgba(168, 85, 247, 0.88)' } },
+                { x: simulationData.stringAges, y: simulationData.tokutei, name: '特定口座部隊', type: 'bar', offsetgroup: 'fortress', marker: { color: isDark ? 'rgba(59, 130, 246, 0.75)' : 'rgba(59, 130, 246, 0.88)' } },
+                { x: simulationData.stringAges, y: simulationData.dc, name: '企業型DC部隊', type: 'bar', offsetgroup: 'fortress', marker: { color: isDark ? 'rgba(168, 85, 247, 0.75)' : 'rgba(168, 85, 247, 0.88)' } },
                 { x: simulationData.stringAges, y: simulationData.mochikabu, name: '持株会資産', type: 'bar', offsetgroup: 'fortress', marker: { color: isDark ? 'rgba(245, 158, 11, 0.65)' : 'rgba(245, 158, 11, 0.78)' } },
                 { x: simulationData.stringAges, y: simulationData.nisa, name: 'NISA温存バッファ', type: 'bar', offsetgroup: 'fortress', marker: { color: isDark ? 'rgba(16, 185, 129, 0.75)' : 'rgba(16, 185, 129, 0.88)' } },
                 

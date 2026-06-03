@@ -855,7 +855,7 @@
                     }
 
                     if (mBorrow > 0 || currentLoan > 0) {
-                        currentLoan = currentLoan * (1 + mRate) + parseFloat(mBorrow);
+                        currentLoan = currentLoan * (1 + mRate) + Number(mBorrow);
                     }
                 }
 

@@ -408,22 +408,7 @@
 
         <section id="right-dashboard-board" class="w-full xl:w-8/12 flex flex-col space-y-4">
             
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 shrink-0">
-                <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
-                    <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-chess-rook text-blue-500 text-3xl"></i> 要塞担保高(野村特定口座)</span>
-                    <div class="text-base sm:text-lg font-black tracking-tight text-blue-500" id="ind-fortress">0 <span class="text-xs font-normal text-slate-400">万円</span></div>
-                    <span class="text-[9px] text-slate-400 block mt-1">特定口座＋DC(65~合流)＋持株(60~)</span>
-                </div>
-                <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
-                    <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-leaf text-fortress-emerald text-3xl"></i> NISA資産高</span>
-                    <div class="text-base sm:text-lg font-black tracking-tight text-fortress-emerald" id="ind-nisa">0 <span class="text-xs font-normal text-slate-400">万円</span></div>
-                    <span class="text-[9px] text-slate-400 block mt-1">完全インデックス・非常時バッファ</span>
-                </div>
-                <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
-                    <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-building text-amber-500 text-3xl"></i> 持株会評価額</span>
-                    <div class="text-base sm:text-lg font-black tracking-tight text-amber-500" id="ind-mochikabu">0 <span class="text-xs font-normal text-slate-400">万円</span></div>
-                    <span class="text-[9px] text-slate-400 block mt-1">60歳以降は楽天特定口座合流</span>
-                </div>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 shrink-0">
                 <div class="bg-white dark:bg-slate-950 border border-fortress-gold p-4 rounded-2xl shadow-sm bg-gradient-to-br from-transparent to-fortress-gold/5">
                     <span class="text-sm font-black text-fortress-gold block mb-1 flex items-center gap-2"><i class="fa-solid fa-crown text-3xl"></i> 総資産高</span>
                     <div class="text-lg sm:text-xl font-black tracking-tight text-slate-900 dark:text-white" id="ind-total">0 <span class="text-xs font-normal text-slate-400">万円</span></div>
@@ -431,30 +416,55 @@
                 </div>
 
                 <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
-                    <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-shield-halved text-[rgb(181,148,16)] text-3xl"></i> 実質純資産高</span>
+                    <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-scale-balanced text-[rgb(181,148,16)] text-3xl"></i> 実質純資産高</span>
                     <div class="text-base sm:text-lg font-black tracking-tight text-[rgb(181,148,16)]" id="ind-net">0 <span class="text-xs font-normal text-slate-400">万円</span></div>
                     <span class="text-[9px] text-slate-400 block mt-1">総資産 - ローン残高</span>
                 </div>
-                <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
-                    <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation text-fortress-rose text-3xl"></i> 担保ローン残高</span>
-                    <div class="text-base sm:text-lg font-black tracking-tight text-fortress-rose" id="ind-loan">0 <span class="text-xs font-normal text-slate-400">万円</span></div>
-                    <span class="text-[9px] text-slate-400 block mt-1">累積借入残高 (複利計算)</span>
-                </div>
-                
+
                 <div id="leverage-box" class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm transition-all duration-200">
-                    <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-percent text-purple-500 text-3xl"></i> 担保ローン割合</span>
-                    <div class="text-base sm:text-lg font-black tracking-tight text-purple-500" id="ind-leverage-pct">0.0 <span class="text-xs font-normal text-slate-400">%</span></div>
+                    <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation text-fortress-rose text-3xl"></i> 担保ローン残高(割合)</span>
+                    <div class="text-base sm:text-lg font-black tracking-tight text-fortress-rose">
+                        <span id="ind-loan">0</span> <span class="text-xs font-normal text-slate-400">万</span>
+                        <span class="text-slate-300 dark:text-slate-700 mx-1">/</span>
+                        <span id="ind-leverage-pct" class="text-purple-500">0.0</span> <span class="text-xs font-normal text-slate-400 text-purple-500">%</span>
+                    </div>
                     <span class="text-[9px] text-slate-400 block mt-1" id="leverage-status-text">ローン残高 ÷ 要塞担保高</span>
                 </div>
-                
+
                 <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
-                    <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-dna text-slate-500 text-3xl"></i> コアファンド比率</span>
-                    <div class="text-sm font-bold space-y-1 text-slate-600 dark:text-slate-300 mt-0.5" id="ind-fund-mix">
+                    <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-building-columns text-slate-500 text-3xl"></i> コアファンド比率</span>
+                    <div class="text-sm font-bold space-y-0.5 text-slate-600 dark:text-slate-300 mt-0.5" id="ind-fund-mix">
                         <div>S&P500: --%</div>
                         <div>NASDAQ100: --%</div>
                         <div>Selected Fund: --%</div>
                     </div>
                 </div>
+
+                <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
+                    <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-chess-rook text-blue-500 text-3xl"></i> 要塞担保高(特定口座)</span>
+                    <div class="text-base sm:text-lg font-black tracking-tight text-blue-500" id="ind-fortress">0 <span class="text-xs font-normal text-slate-400">万円</span></div>
+                    <span class="text-[9px] text-slate-400 block mt-1">特定口座＋DC(65~合流)＋持株(60~)</span>
+                </div>
+
+                <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
+                    <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-shield-halved text-purple-500 text-3xl"></i> DC/iDeCo資産高</span>
+                    <div class="text-base sm:text-lg font-black tracking-tight text-purple-500" id="ind-dc">0 <span class="text-xs font-normal text-slate-400">万円</span></div>
+                    <span class="text-[9px] text-slate-400 block mt-1">65歳で清算し、要塞特定口座へ合流</span>
+                </div>
+
+                <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
+                    <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-leaf text-fortress-emerald text-3xl"></i> NISA資産高</span>
+                    <div class="text-base sm:text-lg font-black tracking-tight text-fortress-emerald" id="ind-nisa">0 <span class="text-xs font-normal text-slate-400">万円</span></div>
+                    <span class="text-[9px] text-slate-400 block mt-1">完全インデックス・非常時バッファ</span>
+                </div>
+                
+                <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
+                    <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-building text-amber-500 text-3xl"></i> 持株会評価額</span>
+                    <div class="text-base sm:text-lg font-black tracking-tight text-amber-500" id="ind-mochikabu">0 <span class="text-xs font-normal text-slate-400">万円</span></div>
+                    <span class="text-[9px] text-slate-400 block mt-1">60歳以降は楽天特定口座合流</span>
+                </div>
+            </div>
+
             </div>
 
             <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm space-y-4 shrink-0 flex flex-col items-center">

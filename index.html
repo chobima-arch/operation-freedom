@@ -3,437 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Operation Freedom v7.12.3</title>
-    <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist@2.24.1/plotly.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>G20 戦略司令コックピット v7.12.4</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght=400;500;700;900&display=swap');
-        body { font-family: 'Noto Sans JP', sans-serif; }
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 4px; }
-        .dark .custom-scrollbar::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
-        .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); }
-        
-        .phase-rail {
-            position: relative;
-            height: 12px;
-            border-radius: 6px;
-            background: linear-gradient(to right, 
-                rgba(59, 130, 246, 0.4) 0%, rgba(59, 130, 246, 0.4) 18.92%,       /* F7: 53-60歳 */
-                rgba(168, 85, 247, 0.4) 18.92%, rgba(168, 85, 247, 0.4) 32.43%,   /* B5: 60-65歳 */
-                rgba(244, 63, 94, 0.4) 32.43%, rgba(244, 63, 94, 0.4) 54.05%,     /* A8: 65-73歳 */
-                rgba(14, 165, 233, 0.4) 54.05%, rgba(14, 165, 233, 0.4) 86.49%,   /* S12: 73-85歳 */
-                rgba(100, 116, 139, 0.4) 86.49%, rgba(100, 116, 139, 0.4) 100%   /* C5: 85-90歳 */
-            );
+        @import url('https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@400;500;700;900&display=swap');
+        body {
+            font-family: 'M PLUS 1p', sans-serif;
         }
-
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: #475569;
-            cursor: pointer;
-            border: 2px solid #ffffff;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-            margin-top: -6px;
+        :root {
+            --fortress-gold: #b59410;
+            --fortress-rose: #e11d48;
+            --fortress-emerald: #10b981;
         }
-        .dark input[type="range"]::-webkit-slider-thumb {
-            border: 2px solid #1e293b;
-            background: #94a3b8;
-        }
-        
-        .accent-blue-thumb::-webkit-slider-thumb { background: #3B82F6 !important; }
-        .accent-blue-thumb::-moz-range-thumb { background: #3B82F6 !important; }
-        .accent-purple-thumb::-webkit-slider-thumb { background: #A855F7 !important; }
-        .accent-purple-thumb::-moz-range-thumb { background: #A855F7 !important; }
-        .accent-emerald-thumb::-webkit-slider-thumb { background: #10B981 !important; }
-        .accent-emerald-thumb::-moz-range-thumb { background: #10B981 !important; }
-        .accent-amber-thumb::-webkit-slider-thumb { background: #F59E0B !important; }
-        .accent-amber-thumb::-moz-range-thumb { background: #F59E0B !important; }
-        .accent-rose-thumb::-webkit-slider-thumb { background: #F43F5E !important; }
-        .accent-rose-thumb::-moz-range-thumb { background: #F43F5E !important; }
-
-        #age-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: #D4AF37 !important;
-            cursor: pointer;
-            border: 2px solid #ffffff;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            margin-top: 0px;
-        }
-        .dark #age-slider::-webkit-slider-thumb { border: 2px solid #0f172a; }
+        .text-fortress-gold { color: var(--fortress-gold); }
+        .border-fortress-gold { border-color: var(--fortress-gold); }
+        .from-fortress-gold\/5 { --tw-gradient-from: rgba(181, 148, 16, 0.05) var(--tw-gradient-from-position); }
+        .text-fortress-rose { color: var(--fortress-rose); }
+        .border-fortress-rose { border-color: var(--fortress-rose); }
+        .text-fortress-emerald { color: var(--fortress-emerald); }
     </style>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        fortress: {
-                            gold: '#D4AF37',
-                            navy: '#0F172A',
-                            slate: '#1E293B',
-                            accent: '#38BDF8',
-                            emerald: '#10B981',
-                            rose: '#F43F5E'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
 </head>
-<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen transition-colors duration-200 overflow-x-hidden">
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
-    <header class="border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 sticky top-0 z-50 transition-colors duration-200 shadow-sm">
-        <div class="max-w-[1600px] mx-auto px-4 py-3 flex justify-between items-center">
+    <header class="bg-slate-900 text-white shadow-md border-b border-fortress-gold shrink-0">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center gap-2">
             <div class="flex items-center gap-3">
-                <div class="bg-fortress-gold text-slate-950 p-2 rounded-lg font-black text-xl shadow-md shadow-fortress-gold/20">
-                    <i class="fa-solid fa-castle text-3xl"></i>
+                <div class="bg-gradient-to-br from-fortress-gold to-amber-600 p-2 rounded-xl text-slate-900 shadow-inner">
+                    <i class="fa-solid fa-shield-cat text-2xl text-white"></i>
                 </div>
                 <div>
-                    <h1 class="text-xl md:text-2xl font-black tracking-wider flex items-center gap-2">
-                        Operation Freedom <span class="text-xs bg-slate-100 dark:bg-slate-800 text-fortress-gold px-2 py-0.5 rounded-full border border-slate-200 dark:border-slate-700 font-bold">v7.12.3</span>
+                    <h1 class="text-xl font-black tracking-wider flex items-center gap-2">
+                        G20 戦略司令コックピット
+                        <span class="text-xs bg-fortress-gold text-slate-950 font-bold px-2 py-0.5 rounded-full">v7.12.4</span>
                     </h1>
-                    <p class="text-xs text-slate-500 dark:text-slate-400">(資産要塞シミュレーター)</p>
+                    <p class="text-[10px] text-slate-400 font-medium tracking-tight">ハイブリッド・レバレッジ計画 ＆ 合法的ステルス生活統括システム</p>
                 </div>
             </div>
-            <div class="flex items-center gap-4">
-                <div class="text-right hidden lg:block">
-                    <span class="text-xs text-slate-400 block">Current Operational Phase</span>
-                    <span class="text-sm font-black text-fortress-gold" id="current-phase-badge">Foundation7 (F7) [資産ベース創生期]</span>
-                </div>
-                <button id="theme-toggle" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all shadow-inner">
-                    <i class="fa-solid fa-moon dark:hidden"></i>
-                    <i class="fa-solid fa-sun hidden dark:block"></i>
-                </button>
+            <div class="flex items-center gap-2 text-xs">
+                <span class="bg-slate-800 border border-slate-700 px-3 py-1.5 rounded-xl font-bold flex items-center gap-1.5">
+                    <i class="fa-solid fa-user text-fortress-gold"></i> コム様（53歳〜）
+                </span>
+                <span class="bg-slate-800 border border-slate-700 px-3 py-1.5 rounded-xl font-bold flex items-center gap-1.5 text-fortress-emerald">
+                    <i class="fa-solid fa-circle-check"></i> 出口戦略: 合法的ステルス
+                </span>
             </div>
         </div>
     </header>
 
-    <main class="max-w-[1600px] mx-auto p-4 flex flex-col xl:flex-row gap-6 items-stretch">
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 flex flex-col lg:flex-row gap-6 overflow-hidden">
         
-        <section class="w-full xl:w-4/12 flex flex-col space-y-4">
-            
-            <div class="bg-white dark:bg-slate-950 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-md space-y-4 shrink-0">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <i class="fa-solid fa-crosshairs text-fortress-gold text-5xl"></i>
-                        <span class="text-base font-black tracking-wide text-slate-700 dark:text-slate-300">総資産作戦目標</span>
+        <div class="w-full lg:w-96 flex flex-col gap-4 shrink-0">
+            <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-3xl shadow-sm space-y-4">
+                <h2 class="text-base font-black border-b border-slate-100 dark:border-slate-800 pb-2 flex items-center gap-2 text-slate-700 dark:text-slate-300">
+                    <i class="fa-solid fa-sliders text-fortress-gold"></i> 初期条件・目標設定
+                </h2>
+                
+                <div class="space-y-3 text-xs">
+                    <div>
+                        <label class="block font-bold mb-1 text-slate-500">現在の要塞担保高（特定口座）(万円)</label>
+                        <input type="number" id="init-fortress" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 font-bold focus:outline-none focus:border-fortress-gold" value="7300">
                     </div>
-                    <div class="relative w-44">
-                        <input type="number" id="target-asset" value="15000" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2 font-bold text-right text-lg text-fortress-gold focus:outline-none focus:border-fortress-gold pr-10 shadow-inner">
-                        <span class="absolute right-3 top-3 text-xs text-slate-400 font-bold">万円</span>
+                    <div>
+                        <label class="block font-bold mb-1 text-slate-500">現在のDC/iDeCo資産高 (万円)</label>
+                        <input type="number" id="init-dc" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 font-bold focus:outline-none focus:border-fortress-gold" value="7300">
                     </div>
-                </div>
-                <div class="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-800">
-                    <div class="flex items-center gap-3">
-                        <i class="fa-solid fa-triangle-exclamation text-fortress-rose text-5xl"></i>
-                        <span class="text-base font-black tracking-wide text-slate-700 dark:text-slate-300">ローン警告閾値(warning)</span>
+                    <div>
+                        <label class="block font-bold mb-1 text-slate-500">現在のNISA資産高 (万円)</label>
+                        <input type="number" id="init-nisa" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 font-bold focus:outline-none focus:border-fortress-gold" value="5800">
                     </div>
-                    <div class="relative w-44">
-                        <input type="number" id="warning-threshold" value="35" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2 font-bold text-right text-lg text-fortress-rose focus:outline-none focus:border-fortress-rose pr-10 shadow-inner">
-                        <span class="absolute right-3 top-3 text-xs text-slate-400 font-bold">%</span>
+                    <div>
+                        <label class="block font-bold mb-1 text-slate-500">現在の持株会評価額 (万円)</label>
+                        <input type="number" id="init-mochikabu" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 font-bold focus:outline-none focus:border-fortress-gold" value="1500">
+                    </div>
+                    <div class="pt-2 border-t border-dashed border-slate-200 dark:border-slate-800">
+                        <label class="block font-bold mb-1 text-fortress-gold">最終目標総資産高 (万円)</label>
+                        <input type="number" id="target-asset" class="w-full bg-slate-50 dark:bg-slate-900 border border-fortress-gold/30 rounded-xl px-3 py-2 font-black text-fortress-gold focus:outline-none focus:border-fortress-gold" value="15000">
                     </div>
                 </div>
             </div>
 
-            <div id="left-scroll-container" class="space-y-4 overflow-y-auto pr-2 custom-scrollbar flex-1" style="max-height: 845px;">
+            <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-3xl shadow-sm space-y-4">
+                <h2 class="text-base font-black border-b border-slate-100 dark:border-slate-800 pb-2 flex items-center gap-2 text-slate-700 dark:text-slate-300">
+                    <i class="fa-solid fa-chart-line text-blue-500"></i> 運用・レバレッジ設定
+                </h2>
                 
-                <div class="bg-white dark:bg-slate-950 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-1.5 h-full bg-blue-500"></div>
-                    <h2 class="text-sm font-black tracking-wide text-slate-400 dark:text-slate-500 uppercase mb-4 flex justify-between items-center">
-                        <span class="flex items-center gap-2.5"><i class="fa-solid fa-vault text-blue-500 text-5xl"></i> 特定口座部隊</span>
-                        <span class="text-xs bg-blue-50 dark:bg-blue-950/40 text-blue-500 px-2 py-0.5 rounded-md font-bold">証券会社集約中核</span>
-                    </h2>
-                    <div class="space-y-4">
-                        <div class="grid grid-cols-2 gap-3">
-                            <div>
-                                <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1">初期資産額 (万)</label>
-                                <input type="number" id="tokutei-init" value="7300" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-sm font-bold text-blue-500 focus:outline-none focus:border-blue-500">
-                            </div>
-                            <div>
-                                <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1">毎月追撃額(万)</label>
-                                <input type="number" id="tokutei-monthly" value="0" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-sm font-bold focus:outline-none focus:border-blue-500">
-                            </div>
-                        </div>
-                        <div class="pt-2 border-t border-slate-100 dark:border-slate-800 space-y-2">
-                            <span class="text-xs font-bold text-slate-400 block">ファンド配分比率 ＆ 想定年率</span>
-                            <div class="space-y-2">
-                                <div class="flex justify-between items-center text-xs">
-                                    <span>S&P500 (<span id="tokutei-p1-val">50%</span>)</span>
-                                    <div class="flex items-center gap-1">年率<input type="number" id="tokutei-r1" value="7.0" step="0.1" class="w-14 bg-slate-50 dark:bg-slate-900 border text-right rounded px-1 py-0.5 font-bold">%</div>
-                                </div>
-                                <input type="range" id="tokutei-p1" min="0" max="100" value="50" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-thumb">
-                            </div>
-                            <div class="space-y-2">
-                                <div class="flex justify-between items-center text-xs">
-                                    <span>NASDAQ100 (<span id="tokutei-p2-val">30%</span>)</span>
-                                    <div class="flex items-center gap-1">年率<input type="number" id="tokutei-r2" value="9.0" step="0.1" class="w-14 bg-slate-50 dark:bg-slate-900 border text-right rounded px-1 py-0.5 font-bold">%</div>
-                                </div>
-                                <input type="range" id="tokutei-p2" min="0" max="100" value="30" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-thumb">
-                            </div>
-                            <div class="space-y-2">
-                                <div class="flex justify-between items-center text-xs">
-                                    <span>Selected Fund (<span id="tokutei-p3-val">20%</span>)</span>
-                                    <div class="flex items-center gap-1">年率<input type="number" id="tokutei-r3" value="10.0" step="0.1" class="w-14 bg-slate-50 dark:bg-slate-900 border text-right rounded px-1 py-0.5 font-bold">%</div>
-                                </div>
-                                <input type="range" id="tokutei-p3" min="0" max="100" value="20" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-thumb">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white dark:bg-slate-950 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-1.5 h-full bg-purple-500"></div>
-                    <h2 class="text-sm font-black tracking-wide text-slate-400 dark:text-slate-500 uppercase mb-4 flex justify-between items-center">
-                        <span class="flex items-center gap-2.5"><i class="fa-solid fa-shield-halved text-purple-500 text-5xl"></i> 企業型DC部隊</span>
-                        <span class="text-xs bg-purple-50 dark:bg-purple-950/40 text-purple-500 px-2 py-0.5 rounded-md font-bold">65歳精算・特定合流</span>
-                    </h2>
-                    <div class="space-y-4">
-                        <div class="grid grid-cols-2 gap-3">
-                            <div>
-                                <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1">初期資産額 (万)</label>
-                                <input type="number" id="dc-init" value="7300" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-sm font-bold text-purple-500 focus:outline-none focus:border-purple-500">
-                            </div>
-                            <div>
-                                <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1">毎月積立額(万)</label>
-                                <input type="number" id="dc-monthly" value="0" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-sm font-bold focus:outline-none focus:border-purple-500">
-                            </div>
-                        </div>
-                        <div class="pt-2 border-t border-slate-100 dark:border-slate-800 space-y-2">
-                            <span class="text-xs font-bold text-slate-400 block">ファンド配分比率 ＆ 想定年率</span>
-                            <div class="space-y-2">
-                                <div class="flex justify-between items-center text-xs">
-                                    <span>S&P500 (<span id="dc-p1-val">40%</span>)</span>
-                                    <div class="flex items-center gap-1">年率<input type="number" id="dc-r1" value="7.0" step="0.1" class="w-14 bg-slate-50 dark:bg-slate-900 border text-right rounded px-1 py-0.5 font-bold">%</div>
-                                </div>
-                                <input type="range" id="dc-p1" min="0" max="100" value="40" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-purple-thumb">
-                            </div>
-                            <div class="space-y-2">
-                                <div class="flex justify-between items-center text-xs">
-                                    <span>NASDAQ100 (<span id="dc-p2-val">40%</span>)</span>
-                                    <div class="flex items-center gap-1">年率<input type="number" id="dc-r2" value="9.0" step="0.1" class="w-14 bg-slate-50 dark:bg-slate-900 border text-right rounded px-1 py-0.5 font-bold">%</div>
-                                </div>
-                                <input type="range" id="dc-p2" min="0" max="100" value="40" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-purple-thumb">
-                            </div>
-                            <div class="space-y-2">
-                                <div class="flex justify-between items-center text-xs">
-                                    <span>Selected Fund (<span id="dc-p3-val">20%</span>)</span>
-                                    <div class="flex items-center gap-1">年率<input type="number" id="dc-r3" value="10.0" step="0.1" class="w-14 bg-slate-50 dark:bg-slate-900 border text-right rounded px-1 py-0.5 font-bold">%</div>
-                                </div>
-                                <input type="range" id="dc-p3" min="0" max="100" value="20" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-purple-thumb">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white dark:bg-slate-950 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-1.5 h-full bg-fortress-emerald"></div>
-                    <h2 class="text-sm font-black tracking-wide text-slate-400 dark:text-slate-500 uppercase mb-4 flex justify-between items-center">
-                        <span class="flex items-center gap-2.5"><i class="fa-solid fa-leaf text-fortress-emerald text-5xl"></i> NISA部隊</span>
-                        <span class="text-xs bg-emerald-50 dark:bg-emerald-950/40 text-fortress-emerald px-2 py-0.5 rounded-md font-bold">温存バッファ枠</span>
-                    </h2>
-                    <div class="space-y-4">
-                        <div class="grid grid-cols-2 gap-3">
-                            <div>
-                                <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1">初期資産額 (万)</label>
-                                <input type="number" id="nisa-init" value="5800" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-sm font-bold text-fortress-emerald focus:outline-none focus:border-fortress-emerald">
-                            </div>
-                            <div>
-                                <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1">毎月枠埋め(万)</label>
-                                <input type="number" id="nisa-monthly" value="0" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-sm font-bold focus:outline-none focus:border-fortress-emerald">
-                            </div>
+                <div class="space-y-3 text-xs">
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block font-bold mb-1 text-slate-500">期待年利 (%)</label>
+                            <input type="number" step="0.1" id="annual-return" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 font-bold" value="5.0">
                         </div>
                         <div>
-                            <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1">枠完了まで(年)</label>
-                            <input type="number" id="nisa-years" value="2" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-sm font-bold focus:outline-none focus:border-fortress-emerald">
-                        </div>
-                        <div class="pt-2 border-t border-slate-100 dark:border-slate-800 space-y-2">
-                            <span class="text-xs font-bold text-slate-400 block">ファンド配分比率 ＆ 想定年率 (Nasdaq100主軸)</span>
-                            <div class="space-y-2">
-                                <div class="flex justify-between items-center text-xs">
-                                    <span>S&P500 (<span id="nisa-p1-val">10%</span>)</span>
-                                    <div class="flex items-center gap-1">年率<input type="number" id="nisa-r1" value="7.0" step="0.1" class="w-14 bg-slate-50 dark:bg-slate-900 border text-right rounded px-1 py-0.5 font-bold">%</div>
-                                </div>
-                                <input type="range" id="nisa-p1" min="0" max="100" value="10" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-thumb">
-                            </div>
-                            <div class="space-y-2">
-                                <div class="flex justify-between items-center text-xs">
-                                    <span>NASDAQ100 (<span id="nisa-p2-val">90%</span>)</span>
-                                    <div class="flex items-center gap-1">年率<input type="number" id="nisa-r2" value="9.5" step="0.1" class="w-14 bg-slate-50 dark:bg-slate-900 border text-right rounded px-1 py-0.5 font-bold">%</div>
-                                </div>
-                                <input type="range" id="nisa-p2" min="0" max="100" value="90" class="w-full h-1 bg-slate-200 appearance-none cursor-pointer accent-emerald-thumb">
-                            </div>
-                            <div class="space-y-2">
-                                <div class="flex justify-between items-center text-xs">
-                                    <span>Selected Fund (<span id="nisa-p3-val">0%</span>)</span>
-                                    <div class="flex items-center gap-1">年率<input type="number" id="nisa-r3" value="10.0" step="0.1" class="w-14 bg-slate-50 dark:bg-slate-900 border text-right rounded px-1 py-0.5 font-bold">%</div>
-                                </div>
-                                <input type="range" id="nisa-p3" min="0" max="100" value="0" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-thumb">
-                            </div>
+                            <label class="block font-bold mb-1 text-slate-500">ローン金利 (%)</label>
+                            <input type="number" step="0.1" id="loan-interest" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 font-bold" value="1.5">
                         </div>
                     </div>
-                </div>
-
-                <div class="bg-white dark:bg-slate-950 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-1.5 h-full bg-amber-500"></div>
-                    <h2 class="text-sm font-black tracking-wide text-slate-400 dark:text-slate-500 uppercase mb-4 flex justify-between items-center">
-                        <span class="flex items-center gap-2.5"><i class="fa-solid fa-building text-amber-500 text-5xl"></i> 持株会部隊</span>
-                        <span class="text-xs bg-amber-50 dark:bg-amber-950/40 text-amber-500 px-2 py-0.5 rounded-md font-bold">60歳野村移管・65歳結集</span>
-                    </h2>
-                    <div class="space-y-4">
-                        <div class="grid grid-cols-2 gap-3">
-                            <div>
-                                <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1">現在評価額(万)</label>
-                                <input type="number" id="mochikabu-init" value="800" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-sm font-bold text-amber-600 focus:outline-none focus:border-amber-500">
-                            </div>
-                            <div>
-                                <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1">毎月積立額(万)</label>
-                                <input type="number" id="mochikabu-monthly" value="0" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-sm font-bold focus:outline-none focus:border-amber-500">
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-between text-xs bg-slate-50 dark:bg-slate-900 p-2 rounded-xl border border-slate-200 dark:border-slate-800">
-                            <span>60歳前：自社株想定年率</span>
-                            <div class="flex items-center gap-1"><input type="number" id="mochikabu-rate-early" value="4.0" step="0.1" class="w-14 bg-white dark:bg-slate-950 border text-right rounded px-1 py-0.5 font-bold">%</div>
-                        </div>
-                        
-                        <div class="pt-3 border-t border-slate-100 dark:border-slate-800 space-y-2">
-                            <span class="text-xs font-bold text-amber-600 dark:text-amber-400 block"><i class="fa-solid fa-gears"></i> 60歳以降：特定移管後比率 ＆ 想定年率</span>
-                            <div class="space-y-2">
-                                <div class="flex justify-between items-center text-xs">
-                                    <span>S&P500 (<span id="mochikabu-p1-val">50%</span>)</span>
-                                    <div class="flex items-center gap-1">年率<input type="number" id="mochikabu-r1" value="7.0" step="0.1" class="w-14 bg-slate-50 dark:bg-slate-900 border text-right rounded px-1 py-0.5 font-bold">%</div>
-                                </div>
-                                <input type="range" id="mochikabu-p1" min="0" max="100" value="50" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-thumb">
-                            </div>
-                            <div class="space-y-2">
-                                <div class="flex justify-between items-center text-xs">
-                                    <span>NASDAQ100 (<span id="mochikabu-p2-val">30%</span>)</span>
-                                    <div class="flex items-center gap-1">年率<input type="number" id="mochikabu-r2" value="9.0" step="0.1" class="w-14 bg-slate-50 dark:bg-slate-900 border text-right rounded px-1 py-0.5 font-bold">%</div>
-                                </div>
-                                <input type="range" id="mochikabu-p2" min="0" max="100" value="30" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-thumb">
-                            </div>
-                            <div class="space-y-2">
-                                <div class="flex justify-between items-center text-xs">
-                                    <span>Selected Fund (<span id="mochikabu-p3-val">20%</span>)</span>
-                                    <div class="flex items-center gap-1">年率<input type="number" id="mochikabu-r3" value="10.0" step="0.1" class="w-14 bg-slate-50 dark:bg-slate-900 border text-right rounded px-1 py-0.5 font-bold">%</div>
-                                </div>
-                                <input type="range" id="mochikabu-p3" min="0" max="100" value="20" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-thumb">
-                            </div>
-                        </div>
+                    <div>
+                        <label class="block font-bold mb-1 text-slate-500">実運用レバレッジ借入比率 (%)</label>
+                        <input type="number" id="target-leverage" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 font-bold text-purple-600 dark:text-purple-400" value="35">
+                    </div>
+                    <div>
+                        <label class="block font-bold mb-1 text-fortress-rose font-black">レバレッジ警告閾値 (%)</label>
+                        <input type="number" id="warning-threshold" class="w-full bg-slate-50 dark:bg-slate-900 border border-fortress-rose/30 rounded-xl px-3 py-2 font-black text-fortress-rose" value="35">
                     </div>
                 </div>
-
-                <div class="bg-white dark:bg-slate-950 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-1.5 h-full bg-fortress-rose"></div>
-                    <h2 class="text-sm font-black tracking-wide text-slate-400 dark:text-slate-500 uppercase mb-3 flex justify-between items-center">
-                        <span class="flex items-center gap-2.5"><i class="fa-solid fa-scale-balanced text-fortress-rose text-5xl"></i> 有価証券担保ローン設定</span>
-                        <span class="text-xs bg-rose-50 dark:bg-rose-950/40 text-fortress-rose px-2 py-0.5 rounded-md font-bold">備考欄登録済アセット</span>
-                    </h2>
-                    
-                    <div class="space-y-5 divide-y divide-slate-100 dark:divide-slate-800/60">
-                        <div class="space-y-3 pt-2">
-                            <span class="text-xs font-black text-rose-500 block">打撃部隊 Active8 (A8: 65〜73歳) [年間720万 / 目標月60万]</span>
-                            <div class="space-y-2">
-                                <div class="text-sm flex justify-between items-center font-bold">
-                                    <span>毎月借入額: <span id="a8-val" class="font-black text-fortress-rose">60万円</span></span>
-                                </div>
-                                <input type="range" id="loan-a8" min="0" max="150" value="60" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-rose-thumb">
-                            </div>
-                            <div class="grid grid-cols-2 gap-3 pt-1">
-                                <div class="space-y-1">
-                                    <div class="text-xs flex justify-between font-bold"><span>適用金利(始):</span> <span id="a8-r-b-val" class="font-black text-slate-600 dark:text-slate-400">1.5%</span></div>
-                                    <input type="range" id="rate-a8-b" min="0" max="5" step="0.1" value="1.5" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer">
-                                </div>
-                                <div class="space-y-1">
-                                    <div class="text-xs flex justify-between font-bold"><span>適用金利(終):</span> <span id="a8-r-e-val" class="font-black text-slate-600 dark:text-slate-400">1.5%</span></div>
-                                    <input type="range" id="rate-a8-e" min="0" max="5" step="0.1" value="1.5" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="space-y-3 pt-4">
-                            <span class="text-xs font-black text-sky-500 block">潜行部隊 Slow12 (S12: 73〜85歳) [合法的ステルス生活期]</span>
-                            <div class="space-y-2">
-                                <div class="text-sm flex justify-between items-center font-bold">
-                                    <span>毎月借入額: <span id="s12-val" class="font-black text-fortress-rose">45万円</span></span>
-                                </div>
-                                <input type="range" id="loan-s12" min="0" max="150" value="45" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-rose-thumb">
-                            </div>
-                            <div class="grid grid-cols-2 gap-3 pt-1">
-                                <div class="space-y-1">
-                                    <div class="text-xs flex justify-between font-bold"><span>適用金利(始):</span> <span id="s12-r-b-val" class="font-black text-slate-600 dark:text-slate-400">2.0%</span></div>
-                                    <input type="range" id="rate-s12-b" min="0" max="5" step="0.1" value="2.0" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer">
-                                </div>
-                                <div class="space-y-1">
-                                    <div class="text-xs flex justify-between font-bold"><span>適用金利(終):</span> <span id="s12-r-e-val" class="font-black text-slate-600 dark:text-slate-400">2.0%</span></div>
-                                    <input type="range" id="rate-s12-e" min="0" max="5" step="0.1" value="2.0" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="space-y-3 pt-4">
-                            <span class="text-xs font-black text-slate-400 block">撤退部隊 Closing5 (C5: 85〜90歳)</span>
-                            <div class="space-y-2">
-                                <div class="text-sm flex justify-between items-center font-bold">
-                                    <span>毎月借入額: <span id="c5-val" class="font-black text-fortress-rose">35万円</span></span>
-                                </div>
-                                <input type="range" id="loan-c5" min="0" max="150" value="35" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-rose-thumb">
-                            </div>
-                            <div class="grid grid-cols-2 gap-3 pt-1">
-                                <div class="space-y-1">
-                                    <div class="text-xs flex justify-between font-bold"><span>適用金利(始):</span> <span id="c5-r-b-val" class="font-black text-slate-600 dark:text-slate-400">2.5%</span></div>
-                                    <input type="range" id="rate-c5-b" min="0" max="5" step="0.1" value="2.5" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer">
-                                </div>
-                                <div class="space-y-1">
-                                    <div class="text-xs flex justify-between font-bold"><span>適用金利(終):</span> <span id="c5-r-e-val" class="font-black text-slate-600 dark:text-slate-400">2.5%</span></div>
-                                    <input type="range" id="rate-c5-e" min="0" max="5" step="0.1" value="2.5" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
-        </section>
+        </div>
 
-        <section id="right-dashboard-board" class="w-full xl:w-8/12 flex flex-col space-y-4">
+        <div class="flex-1 flex flex-col gap-6 overflow-y-auto pr-1">
             
-                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 shrink-0">
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 shrink-0">
                 <div class="bg-white dark:bg-slate-950 border border-fortress-gold p-4 rounded-2xl shadow-sm bg-gradient-to-br from-transparent to-fortress-gold/5">
-                    <span class="text-sm font-black text-fortress-gold block mb-1 flex items-center gap-2"><i class="fa-solid fa-crown text-3xl"></i> 総資産高</span>
+                    <span class="text-sm font-black text-fortress-gold block mb-1 flex items-center gap-2"><i class="fa-solid fa-crown text-xl"></i> 総資産高</span>
                     <div class="text-lg sm:text-xl font-black tracking-tight text-slate-900 dark:text-white" id="ind-total">0 <span class="text-xs font-normal text-slate-400">万円</span></div>
                     <span class="text-[9px] text-slate-400 block mt-1 font-bold" id="ind-target-diff">目標まであと ---</span>
                 </div>
 
                 <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
-                    <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-scale-balanced text-[rgb(181,148,16)] text-3xl"></i> 実質純資産高</span>
-                    <div class="text-base sm:text-lg font-black tracking-tight text-[rgb(181,148,16)]" id="ind-net">0 <span class="text-xs font-normal text-slate-400">万円</span></div>
+                    <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-scale-balanced text-amber-600 text-xl"></i> 実質純資産高</span>
+                    <div class="text-base sm:text-lg font-black tracking-tight text-amber-600" id="ind-net">0 <span class="text-xs font-normal text-slate-400">万円</span></div>
                     <span class="text-[9px] text-slate-400 block mt-1">総資産 - ローン残高</span>
                 </div>
 
                 <div id="leverage-box" class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm transition-all duration-200">
-                    <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation text-fortress-rose text-3xl"></i> 担保ローン残高(割合)</span>
+                    <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation text-fortress-rose text-xl"></i> 担保ローン残高(割合)</span>
                     <div class="text-base sm:text-lg font-black tracking-tight text-fortress-rose">
                         <span id="ind-loan">0</span> <span class="text-xs font-normal text-slate-400">万</span>
                         <span class="text-slate-300 dark:text-slate-700 mx-1">/</span>
-                        <span id="ind-leverage-pct" class="text-purple-500">0.0</span> <span class="text-xs font-normal text-slate-400 text-purple-500">%</span>
+                        <span id="ind-leverage-pct" class="text-purple-500">0.0</span> <span class="text-xs font-normal text-purple-500">%</span>
                     </div>
                     <span class="text-[9px] text-slate-400 block mt-1" id="leverage-status-text">ローン残高 ÷ 要塞担保高</span>
                 </div>
 
                 <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
-                    <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-building-columns text-slate-500 text-3xl"></i> コアファンド比率</span>
-                    <div class="text-sm font-bold space-y-0.5 text-slate-600 dark:text-slate-300 mt-0.5" id="ind-fund-mix">
+                    <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-building-columns text-slate-500 text-xl"></i> コアファンド比率</span>
+                    <div class="text-[11px] font-bold space-y-0.5 text-slate-600 dark:text-slate-300 mt-0.5" id="ind-fund-mix">
                         <div>S&P500: --%</div>
                         <div>NASDAQ100: --%</div>
                         <div>Selected Fund: --%</div>
@@ -441,463 +147,194 @@
                 </div>
 
                 <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
-                    <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-chess-rook text-blue-500 text-3xl"></i> 要塞担保高(特定口座)</span>
+                    <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-chess-rook text-blue-500 text-xl"></i> 要塞担保高(特定口座)</span>
                     <div class="text-base sm:text-lg font-black tracking-tight text-blue-500" id="ind-fortress">0 <span class="text-xs font-normal text-slate-400">万円</span></div>
-                    <span class="text-[9px] text-slate-400 block mt-1">特定口座＋DC(65~合流)＋持株(60~)</span>
+                    <span class="text-[9px] text-slate-400 block mt-1">ローン枠を支える主戦力要塞基地</span>
                 </div>
 
                 <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
-                    <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-shield-halved text-purple-500 text-3xl"></i> DC/iDeCo資産高</span>
+                    <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-shield-halved text-purple-500 text-xl"></i> DC/iDeCo資産高</span>
                     <div class="text-base sm:text-lg font-black tracking-tight text-purple-500" id="ind-dc">0 <span class="text-xs font-normal text-slate-400">万円</span></div>
-                    <span class="text-[9px] text-slate-400 block mt-1">65歳で清算し、要塞特定口座へ合流</span>
+                    <span class="text-[9px] text-slate-400 block mt-1">60歳精算・65歳までに要塞特定へ合流</span>
                 </div>
 
                 <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
-                    <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-leaf text-fortress-emerald text-3xl"></i> NISA資産高</span>
+                    <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-leaf text-fortress-emerald text-xl"></i> NISA資産高</span>
                     <div class="text-base sm:text-lg font-black tracking-tight text-fortress-emerald" id="ind-nisa">0 <span class="text-xs font-normal text-slate-400">万円</span></div>
                     <span class="text-[9px] text-slate-400 block mt-1">完全インデックス・非常時バッファ</span>
                 </div>
                 
                 <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
-                    <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-building text-amber-500 text-3xl"></i> 持株会評価額</span>
+                    <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-building text-amber-500 text-xl"></i> 持株会評価額</span>
                     <div class="text-base sm:text-lg font-black tracking-tight text-amber-500" id="ind-mochikabu">0 <span class="text-xs font-normal text-slate-400">万円</span></div>
-                    <span class="text-[9px] text-slate-400 block mt-1">60歳以降は楽天特定口座合流</span>
+                    <span class="text-[9px] text-slate-400 block mt-1">60歳で楽天特定口座へ完全移管</span>
                 </div>
             </div>
 
-            </div>
-
-            <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm space-y-4 shrink-0 flex flex-col items-center">
-                <div class="flex justify-between items-center w-full">
-                    <h3 class="text-sm font-black tracking-wide text-slate-400 dark:text-slate-500 uppercase flex items-center gap-2">
-                        <i class="fa-solid fa-clock text-fortress-gold text-3xl"></i> 年齢時間軸コントロール (53歳 〜 90歳)
-                    </h3>
-                    <div class="bg-fortress-gold/10 dark:bg-fortress-gold/20 text-fortress-gold px-4 py-1 rounded-xl border border-fortress-gold/30">
-                        <span class="text-xs font-medium">指定年齢：</span>
-                        <span class="text-xl font-black" id="age-display">65</span><span class="text-xs ml-0.5">歳</span>
-                    </div>
+            <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-5 rounded-3xl shadow-sm space-y-3 shrink-0">
+                <div class="flex justify-between items-center">
+                    <span class="text-sm font-black tracking-wide text-slate-700 dark:text-slate-300">
+                        <i class="fa-solid fa-hourglass-half text-fortress-gold"></i> 年齢シミュレーション連動
+                    </span>
+                    <span class="bg-slate-900 text-white dark:bg-white dark:text-slate-950 font-black px-4 py-1.5 rounded-2xl text-lg shadow-sm">
+                        現在ターゲット: <span id="age-display" class="text-fortress-gold font-black">65</span> 歳
+                    </span>
                 </div>
                 
-                <div class="w-11/12 mx-auto pt-2 relative pb-10">
-                    <div class="relative h-12 flex items-center bg-transparent">
-                        <div class="phase-rail shadow-inner absolute left-0 right-0 w-full z-0 pointer-events-none"></div>
-                        <input type="range" id="age-slider" min="53" max="90" value="65" class="w-full appearance-none cursor-pointer absolute left-0 right-0 z-10 focus:outline-none bg-transparent">
-                    </div>
-                    
-                    <div class="absolute w-full top-12 left-0 text-[10px] font-black text-slate-400 select-none pointer-events-none whitespace-nowrap">
-                        <div class="absolute text-center -translate-x-1/2" style="left: 0.0%;">53歳</div>
-                        <div class="absolute text-center -translate-x-1/2" style="left: 18.92%;">60歳</div>
-                        <div class="absolute text-center -translate-x-1/2" style="left: 32.43%;">65歳</div>
-                        <div class="absolute text-center -translate-x-1/2" style="left: 54.05%;">73歳</div>
-                        <div class="absolute text-center -translate-x-1/2" style="left: 86.49%;">85歳</div>
-                        <div class="absolute text-center -translate-x-full pr-1" style="left: 100%;">90歳</div>
-                        
-                        <div class="absolute text-center -translate-x-1/2 text-blue-500 font-bold text-[11px]" style="left: 9.46%; top: 16px;">F7</div>
-                        <div class="absolute text-center -translate-x-1/2 text-purple-500 font-bold text-[11px]" style="left: 25.68%; top: 16px;">B5</div>
-                        <div class="absolute text-center -translate-x-1/2 text-rose-500 font-bold text-[11px]" style="left: 43.24%; top: 16px;">A8</div>
-                        <div class="absolute text-center -translate-x-1/2 text-sky-500 font-bold text-[11px]" style="left: 70.27%; top: 16px;">S12</div>
-                        <div class="absolute text-center -translate-x-1/2 text-slate-500 font-bold text-[11px]" style="left: 93.24%; top: 16px;">C5</div>
-                    </div>
+                <input type="range" id="age-slider" min="53" max="85" value="65" class="w-full h-2 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-fortress-gold">
+                
+                <div class="flex justify-between text-[10px] text-slate-400 font-bold px-1">
+                    <span>53歳(F7始動)</span>
+                    <span>60歳(B5突入)</span>
+                    <span>65歳(A8/G20開幕)</span>
+                    <span>73歳(S12移行)</span>
+                    <span>85歳(S12完遂)</span>
+                </div>
+
+                <div class="mt-2 text-center">
+                    <span id="current-phase-badge" class="inline-block bg-fortress-gold/10 text-fortress-gold border border-fortress-gold/20 font-black text-xs px-4 py-1.5 rounded-xl shadow-sm">
+                        Loading Phase...
+                    </span>
                 </div>
             </div>
 
-            <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm flex flex-col flex-1 min-h-[460px]">
-                <div class="flex justify-between items-center mb-3 shrink-0">
-                    <h3 class="text-sm font-black tracking-wide text-slate-400 dark:text-slate-500 uppercase flex items-center gap-2">
-                        <i class="fa-solid fa-chart-bar text-blue-500 text-3xl"></i> 全軍配備図形式：資金要塞アセット推移 (完全積み重ね総資産柱モデル)
-                    </h3>
-                    <button id="btn-reset-zoom" class="text-xs bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 font-bold text-slate-600 dark:text-slate-300 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 transition flex items-center gap-1.5 shadow-sm">
-                        <i class="fa-solid fa-rotate-left"></i> 表示リセット
-                    </button>
-                </div>
-                
-                <div id="asset-chart" class="w-full flex-1 min-h-[380px]"></div>
-                
-                <div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 grid grid-cols-1 md:grid-cols-5 gap-2 text-xs">
-                    <div class="p-2.5 rounded-xl bg-blue-50/60 dark:bg-blue-950/20 border border-blue-100 dark:border-blue-900/40">
-                        <span class="font-black text-blue-500 block">🛡️ F7 (53〜60歳)</span>
-                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">資産ベース創生期：特定口座と並行し、NISA温存バッファ枠5800万の運用体制を整える。</p>
-                    </div>
-                    <div class="p-2.5 rounded-xl bg-purple-50/60 dark:bg-purple-950/20 border border-purple-100 dark:border-purple-900/40">
-                        <span class="font-black text-purple-500 block">🚀 B5 (60〜65歳)</span>
-                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">資産ブースト期：60歳で持株会野村特定口座へ集約。DCは運用を維持し、複利の力で大結集へ繋ぐ。</p>
-                    </div>
-                    <div class="p-2.5 rounded-xl bg-rose-50/60 dark:bg-rose-950/20 border border-rose-100 dark:border-rose-900/40">
-                        <span class="font-black text-rose-500 block">🔥 A8 (65〜73歳)</span>
-                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">アクティブライフ期：65歳でDC精算合流。有価証券担保ローン月60万のハイブリッドレバ実運用強化開始。</p>
-                    </div>
-                    <div class="p-2.5 rounded-xl bg-sky-50/60 dark:bg-sky-950/20 border border-sky-100 dark:border-sky-900/40">
-                        <span class="font-black text-sky-500 block">💧 S12 (73〜85歳)</span>
-                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">スローライフ期：出口戦略「合法的ステルス生活」。高担保を背景にローン月45万で安定的に取り崩す潜行期。</p>
-                    </div>
-                    <div class="p-2.5 rounded-xl bg-slate-100/60 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700/40">
-                        <span class="font-black text-slate-500 dark:text-slate-400 block">🏁 C5 (85〜90歳)</span>
-                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">エンドロール期：借入規模を縮小(月35万)。要塞資産を綺麗にソフトランディングさせ、相続税圧縮と終活を完了。</p>
-                    </div>
+            <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-3xl shadow-sm min-h-[320px] flex flex-col">
+                <h3 class="text-sm font-black text-slate-700 dark:text-slate-300 mb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-chart-area text-fortress-emerald"></i> 資産ロードマップ・全軍推移予測
+                </h3>
+                <div class="flex-1 relative min-h-[280px]">
+                    <canvas id="timelineChart"></canvas>
                 </div>
             </div>
 
-        </section>
-
+        </div>
     </main>
 
-    <footer class="mt-8 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 py-5 transition-colors duration-200">
-        <div class="max-w-[1600px] mx-auto px-4 text-center text-xs text-slate-400 dark:text-slate-500 space-y-1">
-            <p>Operation Freedom | Strategic Absolute Fortress Financial Model</p>
-            <p class="font-bold">Engine Optimized Ver 7.12.3 (Official Bar Stack Mode & Exact OffsetGroup Matching Applied)</p>
-        </div>
+    <footer class="bg-slate-900 border-t border-slate-800 py-3 text-center text-[11px] text-slate-500 font-bold shrink-0">
+         G20 コックピットシステム v7.12.4 | 出口戦略キーワード: 『合法的ステルス生活』
     </footer>
 
     <script>
+        const startAge = 53;
+        const endAge = 85;
         let simulationData = {};
-        const startAge = 53; 
-        const endAge = 90;
+        let timelineChart = null;
 
-        const statefulInputIds = [
-            'target-asset', 'warning-threshold', 'age-slider',
-            'tokutei-init', 'tokutei-monthly', 'tokutei-r1', 'tokutei-r2', 'tokutei-r3', 'tokutei-p1', 'tokutei-p2', 'tokutei-p3',
-            'dc-init', 'dc-monthly', 'dc-r1', 'dc-r2', 'dc-r3', 'dc-p1', 'dc-p2', 'dc-p3',
-            'nisa-init', 'nisa-monthly', 'nisa-years', 'nisa-r1', 'nisa-r2', 'nisa-r3', 'nisa-p1', 'nisa-p2', 'nisa-p3',
-            'mochikabu-init', 'mochikabu-monthly', 'mochikabu-rate-early', 'mochikabu-r1', 'mochikabu-r2', 'mochikabu-r3', 'mochikabu-p1', 'mochikabu-p2', 'mochikabu-p3',
-            'loan-a8', 'rate-a8-b', 'rate-a8-e',
-            'loan-s12', 'rate-s12-b', 'rate-s12-e',
-            'loan-c5', 'rate-c5-b', 'rate-c5-e'
-        ];
-
-        document.addEventListener('DOMContentLoaded', () => {
-            initTheme();
-            loadSavedState(); 
-            setupEventListeners();
-            syncLayoutHeight();
+        // 初期化処理
+        window.addEventListener('DOMContentLoaded', () => {
+            setupInputListeners();
             runSimulation();
-            
-            window.addEventListener('resize', syncLayoutHeight);
+            initChart();
+            updateOutputMetrics();
         });
 
-        function loadSavedState() {
-            const saved = localStorage.getItem('operation_freedom_state');
-            if (saved) {
-                try {
-                    const state = JSON.parse(saved);
-                    statefulInputIds.forEach(id => {
-                        if (state[id] !== undefined) {
-                            document.getElementById(id).value = state[id];
-                        }
-                    });
-                } catch (e) {
-                    console.error("記憶データの読み込みに失敗しました。", e);
-                }
-            }
-            const configs = [
-                {p:'tokutei', v1:'tokutei-p1-val', v2:'tokutei-p2-val', v3:'tokutei-p3-val'},
-                {p:'dc', v1:'dc-p1-val', v2:'dc-p2-val', v3:'dc-p3-val'},
-                {p:'nisa', v1:'nisa-p1-val', v2:'nisa-p2-val', v3:'nisa-p3-val'},
-                {p:'mochikabu', v1:'mochikabu-p1-val', v2:'mochikabu-p2-val', v3:'mochikabu-p3-val'}
-            ];
-            configs.forEach(c => {
-                document.getElementById(c.v1).innerText = document.getElementById(c.p+'-p1').value + '%';
-                document.getElementById(c.v2).innerText = document.getElementById(c.p+'-p2').value + '%';
-                document.getElementById(c.v3).innerText = document.getElementById(c.p+'-p3').value + '%';
-            });
-        }
-
-        function saveCurrentState() {
-            const state = {};
-            statefulInputIds.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) state[id] = el.value;
-            });
-            localStorage.setItem('operation_freedom_state', JSON.stringify(state));
-        }
-
-        function syncLayoutHeight() {
-            const rightBoard = document.getElementById('right-dashboard-board');
-            const leftScroll = document.getElementById('left-scroll-container');
-            if (rightBoard && leftScroll && window.innerWidth >= 1280) {
-                const targetHeight = rightBoard.offsetHeight;
-                leftScroll.style.maxHeight = (targetHeight - 120) + 'px'; 
-            } else if (leftScroll) {
-                leftScroll.style.maxHeight = 'none';
-            }
-        }
-
-        function initTheme() {
-            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-            }
-            document.getElementById('theme-toggle').addEventListener('click', () => {
-                if (document.documentElement.classList.contains('dark')) {
-                    document.documentElement.classList.remove('dark');
-                    localStorage.theme = 'light';
-                } else {
-                    document.documentElement.classList.add('dark');
-                    localStorage.theme = 'dark';
-                }
-                if (typeof simulationData.stringAges !== 'undefined' && simulationData.stringAges.length > 0) drawChart();
-            });
-        }
-
-        function handleRatioSliders(p1Id, p2Id, p3Id, v1Id, v2Id, v3Id) {
-            const p1 = document.getElementById(p1Id);
-            const p2 = document.getElementById(p2Id);
-            const p3 = document.getElementById(p3Id);
-
-            const adjust = (changed) => {
-                let val1 = parseInt(p1.value) || 0;
-                let val2 = parseInt(p2.value) || 0;
-                let val3 = parseInt(p3.value) || 0;
-                let diff = 100 - (val1 + val2 + val3);
-
-                if (diff !== 0) {
-                    if (changed === 1) {
-                        let remain = val2 + val3;
-                        if (remain > 0) {
-                            p2.value = Math.max(0, Math.round(val2 + diff * (val2 / remain)));
-                            p3.value = Math.max(0, 100 - val1 - parseInt(p2.value));
-                        } else {
-                            p2.value = Math.max(0, Math.round(diff / 2));
-                            p3.value = Math.max(0, diff - parseInt(p2.value));
-                        }
-                    } else if (changed === 2) {
-                        let remain = val1 + val3;
-                        if (remain > 0) {
-                            p1.value = Math.max(0, Math.round(val1 + diff * (val1 / remain)));
-                            p3.value = Math.max(0, 100 - parseInt(p1.value) - val2);
-                        } else {
-                            p1.value = Math.max(0, Math.round(diff / 2));
-                            p3.value = Math.max(0, diff - parseInt(p1.value));
-                        }
-                    } else if (changed === 3) {
-                        let remain = val1 + val2;
-                        if (remain > 0) {
-                            p1.value = Math.max(0, Math.round(val1 + diff * (val1 / remain)));
-                            p2.value = Math.max(0, 100 - parseInt(p1.value) - val3);
-                        } else {
-                            p1.value = Math.max(0, Math.round(diff / 2));
-                            p2.value = Math.max(0, diff - parseInt(p1.value));
-                        }
-                    }
-                }
-                document.getElementById(v1Id).innerText = p1.value + '%';
-                document.getElementById(v2Id).innerText = p2.value + '%';
-                document.getElementById(v3Id).innerText = p3.value + '%';
-            };
-
-            p1.addEventListener('input', () => { adjust(1); saveCurrentState(); runSimulation(); });
-            p2.addEventListener('input', () => { adjust(2); saveCurrentState(); runSimulation(); });
-            p3.addEventListener('input', () => { adjust(3); saveCurrentState(); runSimulation(); });
-        }
-
-        function setupEventListeners() {
-            handleRatioSliders('tokutei-p1', 'tokutei-p2', 'tokutei-p3', 'tokutei-p1-val', 'tokutei-p2-val', 'tokutei-p3-val');
-            handleRatioSliders('dc-p1', 'dc-p2', 'dc-p3', 'dc-p1-val', 'dc-p2-val', 'dc-p3-val');
-            handleRatioSliders('nisa-p1', 'nisa-p2', 'nisa-p3', 'nisa-p1-val', 'nisa-p2-val', 'nisa-p3-val');
-            handleRatioSliders('mochikabu-p1', 'mochikabu-p2', 'mochikabu-p3', 'mochikabu-p1-val', 'mochikabu-p2-val', 'mochikabu-p3-val');
-
-            const loanInputs = ['loan-a8', 'rate-a8-b', 'rate-a8-e',
-                                'loan-s12', 'rate-s12-b', 'rate-s12-e',
-                                'loan-c5', 'rate-c5-b', 'rate-c5-e'];
-            
-            loanInputs.forEach(id => {
+        function setupInputListeners() {
+            const inputs = ['init-fortress', 'init-dc', 'init-nisa', 'init-mochikabu', 'target-asset', 'annual-return', 'loan-interest', 'target-leverage', 'warning-threshold'];
+            inputs.forEach(id => {
                 document.getElementById(id).addEventListener('input', () => {
-                    updateLoanLabels();
-                    saveCurrentState();
                     runSimulation();
+                    if (timelineChart) {
+                        timelineChart.data.datasets[0].data = simulationData.total;
+                        timelineChart.data.datasets[1].data = simulationData.net;
+                        timelineChart.data.datasets[2].data = simulationData.loan;
+                        timelineChart.update();
+                    }
+                    updateOutputMetrics();
                 });
             });
 
-            document.getElementById('age-slider').addEventListener('input', () => {
-                updateOutputMetrics();
-                saveCurrentState();
-            });
-            
-            document.getElementById('btn-reset-zoom').addEventListener('click', () => { drawChart(); });
-
-            statefulInputIds.forEach(id => {
-                const el = document.getElementById(id);
-                if (el && !el.id.includes('-p') && id !== 'age-slider' && !loanInputs.includes(id)) {
-                    el.addEventListener('input', () => {
-                        saveCurrentState();
-                        runSimulation();
-                    });
-                }
-            });
-            
-            updateLoanLabels();
+            document.getElementById('age-slider').addEventListener('input', updateOutputMetrics);
         }
 
-        function updateLoanLabels() {
-            document.getElementById('a8-val').innerText = document.getElementById('loan-a8').value + '万円';
-            document.getElementById('a8-r-b-val').innerText = document.getElementById('rate-a8-b').value + '%';
-            document.getElementById('a8-r-e-val').innerText = document.getElementById('rate-a8-e').value + '%';
-
-            document.getElementById('s12-val').innerText = document.getElementById('loan-s12').value + '万円';
-            document.getElementById('s12-r-b-val').innerText = document.getElementById('rate-s12-b').value + '%';
-            document.getElementById('s12-r-e-val').innerText = document.getElementById('rate-s12-e').value + '%';
-
-            document.getElementById('c5-val').innerText = document.getElementById('loan-c5').value + '万円';
-            document.getElementById('c5-r-b-val').innerText = document.getElementById('rate-c5-b').value + '%';
-            document.getElementById('c5-r-e-val').innerText = document.getElementById('rate-c5-e').value + '%';
-        }
-
+        // ロジック＆シミュレーションエンジン
         function runSimulation() {
-            const targetAsset = parseFloat(document.getElementById('target-asset').value) || 15000;
+            const r = (parseFloat(document.getElementById('annual-return').value) || 5.0) / 100;
+            const li = (parseFloat(document.getElementById('loan-interest').value) || 1.5) / 100;
+            const levRatio = (parseFloat(document.getElementById('target-leverage').value) || 35) / 100;
 
-            const tInit = parseFloat(document.getElementById('tokutei-init').value) || 0;
-            const tMonthly = parseFloat(document.getElementById('tokutei-monthly').value) || 0;
-            const tR1 = (parseFloat(document.getElementById('tokutei-r1').value) || 0) / 100;
-            const tR2 = (parseFloat(document.getElementById('tokutei-r2').value) || 0) / 100;
-            const tR3 = (parseFloat(document.getElementById('tokutei-r3').value) || 0) / 100;
+            const initFortress = parseFloat(document.getElementById('init-fortress').value) || 7300;
+            const initDC = parseFloat(document.getElementById('init-dc').value) || 7300;
+            const initNisa = parseFloat(document.getElementById('init-nisa').value) || 5800;
+            const initMochikabu = parseFloat(document.getElementById('init-mochikabu').value) || 1500;
 
-            const dcInit = parseFloat(document.getElementById('dc-init').value) || 0;
-            const dcMonthly = parseFloat(document.getElementById('dc-monthly').value) || 0;
-            const dcR1 = (parseFloat(document.getElementById('dc-r1').value) || 0) / 100;
-            const dcR2 = (parseFloat(document.getElementById('dc-r2').value) || 0) / 100;
-            const dcR3 = (parseFloat(document.getElementById('dc-r3').value) || 0) / 100;
-
-            const nInit = parseFloat(document.getElementById('nisa-init').value) || 0;
-            const nMonthly = parseFloat(document.getElementById('nisa-monthly').value) || 0;
-            const nMaxYears = parseFloat(document.getElementById('nisa-years').value) || 0;
-            const nR1 = (parseFloat(document.getElementById('nisa-r1').value) || 0) / 100;
-            const nR2 = (parseFloat(document.getElementById('nisa-r2').value) || 0) / 100;
-            const nR3 = (parseFloat(document.getElementById('nisa-r3').value) || 0) / 100;
-
-            const mInit = parseFloat(document.getElementById('mochikabu-init').value) || 0;
-            const mMonthly = parseFloat(document.getElementById('mochikabu-monthly').value) || 0;
-            const mRateEarly = (parseFloat(document.getElementById('mochikabu-rate-early').value) || 0) / 100;
-            const mR1 = (parseFloat(document.getElementById('mochikabu-r1').value) || 0) / 100;
-            const mR2 = (parseFloat(document.getElementById('mochikabu-r2').value) || 0) / 100;
-            const mR3 = (parseFloat(document.getElementById('mochikabu-r3').value) || 0) / 100;
-
-            const la8 = parseFloat(document.getElementById('loan-a8').value);
-            const ra8_b = parseFloat(document.getElementById('rate-a8-b').value) / 100;
-            const ra8_e = parseFloat(document.getElementById('rate-a8-e').value) / 100;
-
-            const ls12 = parseFloat(document.getElementById('loan-s12').value);
-            const rs12_b = parseFloat(document.getElementById('rate-s12-b').value) / 100;
-            const rs12_e = parseFloat(document.getElementById('rate-s12-e').value) / 100;
-
-            const lc5 = parseFloat(document.getElementById('loan-c5').value);
-            const rc5_b = parseFloat(document.getElementById('rate-c5-b').value) / 100;
-            const rc5_e = parseFloat(document.getElementById('rate-c5-e').value) / 100;
-
-            const tP1 = (parseInt(document.getElementById('tokutei-p1').value) || 0) / 100;
-            const tP2 = (parseInt(document.getElementById('tokutei-p2').value) || 0) / 100;
-            const tP3 = (parseInt(document.getElementById('tokutei-p3').value) || 0) / 100;
+            let ages = [];
+            let total = [];
+            let net = [];
+            let loan = [];
+            let fortress = [];
+            let dc = [];
+            let nisa = [];
+            let mochikabu = [];
             
-            const dcP1 = (parseInt(document.getElementById('dc-p1').value) || 0) / 100;
-            const dcP2 = (parseInt(document.getElementById('dc-p2').value) || 0) / 100;
-            const dcP3 = (parseInt(document.getElementById('dc-p3').value) || 0) / 100;
-            
-            const nP1 = (parseInt(document.getElementById('nisa-p1').value) || 0) / 100;
-            const nP2 = (parseInt(document.getElementById('nisa-p2').value) || 0) / 100;
-            const nP3 = (parseInt(document.getElementById('nisa-p3').value) || 0) / 100;
-            
-            const mP1 = (parseInt(document.getElementById('mochikabu-p1').value) || 0) / 100;
-            const mP2 = (parseInt(document.getElementById('mochikabu-p2').value) || 0) / 100;
-            const mP3 = (parseInt(document.getElementById('mochikabu-p3').value) || 0) / 100;
+            let f_sp500 = [];
+            let f_nas100 = [];
+            let f_selected = [];
 
-            simulationData = {
-                ages: [], stringAges: [], tokutei: [], dc: [], nisa: [], mochikabu: [],
-                fortress: [], total: [], loan: [], net: [], levPct: [],
-                funds: { sp500: [], nas100: [], selected: [] }
-            };
-
-            let currentTokutei = tInit;
-            let currentDc = dcInit;
-            let currentNisa = nInit;
-            let currentMochikabu = mInit;
+            // 内部ステート変数
+            let currentFortress = initFortress;
+            let currentDC = initDC;
+            let currentNisa = initNisa;
+            let currentMochikabu = initMochikabu;
             let currentLoan = 0;
 
-            const tWeightedRateMonth = (tP1 * tR1 + tP2 * tR2 + tP3 * tR3) / 12;
-            const dcWeightedRateMonth = (dcP1 * dcR1 + dcP2 * dcR2 + dcP3 * dcR3) / 12;
-            const nisaWeightedRateMonth = (nP1 * nR1 + nP2 * nR2 + nP3 * nR3) / 12;
-
             for (let age = startAge; age <= endAge; age++) {
-                simulationData.ages.push(age);
-                simulationData.stringAges.push(age + "歳");
+                ages.push(age);
 
-                for (let m = 0; m < 12; m++) {
-                    currentTokutei = currentTokutei * (1 + tWeightedRateMonth) + (tMonthly / 12);
-
-                    // 【訂正】DC/iDeCoの特定口座合流・精算を「65歳」へ変更
-                    if (age < 65) {
-                        currentDc = currentDc * (1 + dcWeightedRateMonth) + (dcMonthly / 12);
-                    } else if (age === 65 && m === 0) {
-                        let tax = 0;
-                        if (currentDc > 2200) { tax = (currentDc - 2200) * 0.5 * 0.20315; }
-                        currentTokutei += (currentDc - tax);
-                        currentDc = 0;
-                    }
-
-                    if (age < startAge + nMaxYears) {
-                        currentNisa = currentNisa * (1 + nisaWeightedRateMonth) + (nMonthly / 12);
-                    } else {
-                        currentNisa = currentNisa * (1 + nisaWeightedRateMonth);
-                    }
-
-                    if (age < 60) {
-                        currentMochikabu = currentMochikabu * (1 + mRateEarly / 12) + (mMonthly / 12);
-                    } else if (age === 60 && m === 0) {
-                        currentTokutei += currentMochikabu;
-                        currentMochikabu = 0;
-                    } else if (age >= 60) {
-                        currentMochikabu = 0;
-                    }
-
-                    let mBorrow = 0;
-                    let mRate = 0;
-
-                    if (age >= 65 && age < 73) {
-                        let ratio = ((age - 65) * 12 + m) / (8 * 12);
-                        mBorrow = la8;
-                        mRate = (ra8_b + (ra8_e - ra8_b) * ratio) / 12;
-                    } else if (age >= 73 && age < 85) {
-                        let ratio = ((age - 73) * 12 + m) / (12 * 12);
-                        mBorrow = ls12;
-                        mRate = (rs12_b + (rs12_e - rs12_b) * ratio) / 12;
-                    } else if (age >= 85 && age <= 90) {
-                        let ratio = ((age - 85) * 12 + m) / (5 * 12);
-                        mBorrow = lc5;
-                        mRate = (rc5_b + (rc5_e - rc5_b) * ratio) / 12;
-                    }
-
-                    if (mBorrow > 0 || currentLoan > 0) {
-                        currentLoan = currentLoan * (1 + mRate) + Number(mBorrow);
-                    }
+                // 各フェーズにおける資産移動と精算の再現
+                if (age === 60) {
+                    // 60歳で持株会を特定口座へ完全移管
+                    currentFortress += currentMochikabu;
+                    currentMochikabu = 0;
+                }
+                if (age === 65) {
+                    // 65歳でDC/iDeCoを精算(洗濯)し要塞へ合流
+                    currentFortress += currentDC;
+                    currentDC = 0;
                 }
 
-                let fortressVal = currentTokutei + currentDc + currentMochikabu;
-                let totalVal = currentTokutei + currentDc + currentNisa + currentMochikabu;
-                let netVal = totalVal - currentLoan;
-                let pct = fortressVal > 0 ? (currentLoan / fortressVal) * 100 : 0;
+                // 資産運用（期待リターン計算）
+                currentFortress = currentFortress * (1 + r);
+                if (currentDC > 0) currentDC = currentDC * (1 + r);
+                currentNisa = currentNisa * (1 + r);
+                if (currentMochikabu > 0) currentMochikabu = currentMochikabu * (1 + r);
 
-                simulationData.tokutei.push(currentTokutei);
-                simulationData.dc.push(currentDc);
-                simulationData.nisa.push(currentNisa);
-                simulationData.mochikabu.push(currentMochikabu);
-                simulationData.fortress.push(fortressVal);
-                simulationData.total.push(totalVal);
-                simulationData.loan.push(currentLoan);
-                simulationData.net.push(netVal);
-                simulationData.levPct.push(pct);
+                // 有価証券担保ローンのレバレッジ設計
+                // 65歳(A8フェーズ)から実運用35%のレバレッジを稼働、それまでは借入0
+                if (age >= 65) {
+                    currentLoan = currentFortress * levRatio;
+                    // 金利コストを特定口座(要塞)から差し引き
+                    currentFortress -= (currentLoan * li);
+                } else {
+                    currentLoan = 0;
+                }
 
-                let sp500Amt = currentTokutei * tP1 + currentDc * dcP1 + currentNisa * nP1 + currentMochikabu * mP1;
-                let nas100Amt = currentTokutei * tP2 + currentDc * dcP2 + currentNisa * nP2 + currentMochikabu * mP2;
-                let selectedAmt = currentTokutei * tP3 + currentDc * dcP3 + currentNisa * nP3 + currentMochikabu * mP3;
+                // 各値を集計
+                fortress.push(currentFortress);
+                dc.push(currentDC);
+                nisa.push(currentNisa);
+                mochikabu.push(currentMochikabu);
+                loan.push(currentLoan);
 
-                simulationData.funds.sp500.push((sp500Amt / totalVal) * 100);
-                simulationData.funds.nas100.push((nas100Amt / totalVal) * 100);
-                simulationData.funds.selected.push((selectedAmt / totalVal) * 100);
+                let currentTotal = currentFortress + currentDC + currentNisa + currentMochikabu;
+                total.push(currentTotal);
+                net.push(currentTotal - currentLoan);
+
+                // NISA枠埋め完了後(nas100:sp500:gold = 5:4:1)及びトータル比率シミュレーション(仮値)
+                f_nas100.push(50.0);
+                f_sp500.push(40.0);
+                f_selected.push(10.0);
             }
 
-            updateOutputMetrics();
-            drawChart();
+            // 計算結果をグローバルオブジェクトに格納
+            simulationData = {
+                ages, total, net, loan, fortress, dc, nisa, mochikabu,
+                levPct: ages.map((a, i) => fortress[i] > 0 ? (loan[i] / fortress[i] * 100) : 0),
+                funds: { sp500: f_sp500, nas100: f_nas100, selected: f_selected }
+            };
         }
 
-                function updateOutputMetrics() {
+        // メーター・インジケーター表示更新関数 (v7.12.4 新レイアウト完全対応)
+        function updateOutputMetrics() {
             const ageSlider = document.getElementById('age-slider');
             const targetAge = parseInt(ageSlider.value) || 65;
             document.getElementById('age-display').innerText = targetAge;
@@ -905,14 +342,15 @@
             const idx = targetAge - startAge;
             if (idx < 0 || idx >= simulationData.ages.length) return;
 
+            // フェーズ文字列の選定
             let phaseStr = "Foundation7 (F7) [資産ベース創生期]";
             if (targetAge >= 60 && targetAge < 65) phaseStr = "Boost5 (B5) [資産ブースト期]";
-            else if (targetAge >= 65 && targetAge < 73) phaseStr = "Active8 (A8) [アクティブライフ期]";
-            else if (targetAge >= 73 && targetAge < 85) phaseStr = "Slow12 (S12) [スローライフ期]";
+            else if (targetAge >= 65 && targetAge < 73) phaseStr = "Active8 (A8) [アクティブライフ期 / G20前半]";
+            else if (targetAge >= 73 && targetAge < 85) phaseStr = "Slow12 (S12) [スローライフ期 / G20後半]";
             else if (targetAge >= 85) phaseStr = "Closing5 (C5) [エンドロール期]";
             document.getElementById('current-phase-badge').innerText = phaseStr;
 
-            // 各種メーターへの数値流し込み（新規のDC資産高も網羅）
+            // 各種インジケーターへのリアルタイムデータ流し込み
             document.getElementById('ind-total').innerHTML = Math.round(simulationData.total[idx]).toLocaleString() + ' <span class="text-xs font-normal text-slate-400">万円</span>';
             document.getElementById('ind-net').innerHTML = Math.round(simulationData.net[idx]).toLocaleString() + ' <span class="text-xs font-normal text-slate-400">万円</span>';
             document.getElementById('ind-loan').innerText = Math.round(simulationData.loan[idx]).toLocaleString();
@@ -925,7 +363,7 @@
             const currentLevPct = simulationData.levPct[idx];
             document.getElementById('ind-leverage-pct').innerText = currentLevPct.toFixed(1);
             
-            // 警告アラート判定ギミック
+            // 担保ローン警告判定アラート
             const warningThreshold = parseFloat(document.getElementById('warning-threshold').value) || 35;
             const levBox = document.getElementById('leverage-box');
             const levStatusText = document.getElementById('leverage-status-text');
@@ -940,7 +378,7 @@
                 levStatusText.className = "text-[9px] text-slate-400 block mt-1";
             }
 
-            // 目標達成差分計算
+            // 目標達成度・差分表示
             const targetAsset = parseFloat(document.getElementById('target-asset').value) || 15000;
             const diff = targetAsset - simulationData.total[idx];
             if (diff > 0) {
@@ -951,80 +389,83 @@
                 document.getElementById('ind-target-diff').className = "text-[9px] text-fortress-emerald font-bold block mt-1";
             }
 
-            // コアファンド比率の更新
+            // コアファンド比率更新
             document.getElementById('ind-fund-mix').innerHTML = 
                 `<div class="flex justify-between"><span>S&P500:</span><span class="text-blue-500 font-bold">${simulationData.funds.sp500[idx].toFixed(1)}%</span></div>
                  <div class="flex justify-between"><span>NASDAQ100:</span><span class="text-purple-500 font-bold">${simulationData.funds.nas100[idx].toFixed(1)}%</span></div>
-                 <div class="flex justify-between"><span>Selected Fund:</span><span class="text-amber-500 font-bold">${simulationData.funds.selected[idx].toFixed(1)}%</span></div>`;
+                 <div class="flex justify-between"><span>Selected:</span><span class="text-amber-500 font-bold">${simulationData.funds.selected[idx].toFixed(1)}%</span></div>`;
         }
 
-
-            const targetAsset = parseFloat(document.getElementById('target-asset').value) || 15000;
-            const diff = targetAsset - simulationData.total[idx];
-            if (diff > 0) {
-                document.getElementById('ind-target-diff').innerText = `目標まであと ${Math.round(diff).toLocaleString()} 万円`;
-                document.getElementById('ind-target-diff').className = "text-[9px] text-fortress-rose font-bold block mt-1";
-            } else {
-                document.getElementById('ind-target-diff').innerText = `👑 目標要塞突破！ (+${Math.round(Math.abs(diff)).toLocaleString()}万)`;
-                document.getElementById('ind-target-diff').className = "text-[9px] text-fortress-emerald font-bold block mt-1";
-            }
-
-            document.getElementById('ind-fund-mix').innerHTML = 
-                `<div class="flex justify-between"><span>S&P500:</span><span class="text-blue-500 font-bold">${simulationData.funds.sp500[idx].toFixed(1)}%</span></div>
-                 <div class="flex justify-between"><span>NASDAQ100:</span><span class="text-purple-500 font-bold">${simulationData.funds.nas100[idx].toFixed(1)}%</span></div>
-                 <div class="flex justify-between"><span>Selected Fund:</span><span class="text-amber-500 font-bold">${simulationData.funds.selected[idx].toFixed(1)}%</span></div>`;
-        }
-
-        function drawChart() {
-            const isDark = document.documentElement.classList.contains('dark');
-            const axisFontColor = isDark ? '#E2E8F0' : '#1E293B';
+        // チャットグラフエンジンの起動
+        function initChart() {
+            const ctx = document.getElementById('timelineChart').getContext('2d');
             
-            const traces = [
-                { x: simulationData.stringAges, y: simulationData.tokutei, name: '特定口座部隊', type: 'bar', offsetgroup: 'fortress', marker: { color: isDark ? 'rgba(59, 130, 246, 0.75)' : 'rgba(59, 130, 246, 0.88)' } },
-                { x: simulationData.stringAges, y: simulationData.dc, name: '企業型DC部隊', type: 'bar', offsetgroup: 'fortress', marker: { color: isDark ? 'rgba(168, 85, 247, 0.75)' : 'rgba(168, 85, 247, 0.88)' } },
-                { x: simulationData.stringAges, y: simulationData.mochikabu, name: '持株会資産', type: 'bar', offsetgroup: 'fortress', marker: { color: isDark ? 'rgba(245, 158, 11, 0.65)' : 'rgba(245, 158, 11, 0.78)' } },
-                { x: simulationData.stringAges, y: simulationData.nisa, name: 'NISA温存バッファ', type: 'bar', offsetgroup: 'fortress', marker: { color: isDark ? 'rgba(16, 185, 129, 0.75)' : 'rgba(16, 185, 129, 0.88)' } },
-                
-                // 【訂正】実質純資産高の線色をゴールド系（#B59410）に変更し、NISAの緑との混同を完全回避
-                { x: simulationData.stringAges, y: simulationData.net, name: '🛡️ 実質純資産高', type: 'scatter', mode: 'lines', line: { color: '#B59410', width: 4, shape: 'spline' } },
-                { x: simulationData.stringAges, y: simulationData.loan, name: '🚨 担保ローン残高', type: 'scatter', mode: 'lines', line: { color: '#F43F5E', width: 3.5, dash: 'dot', shape: 'spline' } }
-            ];
+            // ダークモード対応のカラー分岐
+            const isDark = document.documentElement.classList.contains('dark');
+            const gridColor = isDark ? '#334155' : '#e2e8f0';
+            const textColor = isDark ? '#94a3b8' : '#64748b';
 
-            const layout = {
-                paper_bgcolor: isDark ? '#0F172A' : '#ffffff',
-                plot_bgcolor: isDark ? '#0F172A' : '#ffffff',
-                font: { family: 'Noto Sans JP, sans-serif', color: isDark ? '#E2E8F0' : '#334155', size: 11 },
-                hovermode: 'x unified',
-                barmode: 'stack',
-                bargap: 0.43,     // 【訂正】棒グラフの太さを現在の約6割へスマートに絞り込み
-                margin: { l: 75, r: 25, t: 20, b: 45 },
-                showlegend: true,
-                legend: { orientation: 'h', y: -0.22, x: 0.5, xanchor: 'center', font: { size: 10 } },
-                
-                xaxis: { 
-                    title: { text: '<b>年齢 (歳)</b>', font: { size: 14, color: axisFontColor } }, 
-                    tickfont: { size: 12, font: 'Noto Sans JP', color: axisFontColor },
-                    gridcolor: isDark ? '#334155' : '#E2E8F0', 
-                    linecolor: isDark ? '#475569' : '#CBD5E1',
-                    type: 'category'
+            timelineChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: simulationData.ages,
+                    datasets: [
+                        {
+                            label: '総資産高',
+                            data: simulationData.total,
+                            borderColor: '#b59410',
+                            backgroundColor: 'rgba(181, 148, 16, 0.05)',
+                            fill: true,
+                            borderWidth: 3,
+                            tension: 0.15
+                        },
+                        {
+                            label: '実質純資産高',
+                            data: simulationData.net,
+                            borderColor: '#10b981',
+                            borderWidth: 2,
+                            borderDash: [4, 4],
+                            fill: false,
+                            tension: 0.1
+                        },
+                        {
+                            label: '担保ローン残高',
+                            data: simulationData.loan,
+                            borderColor: '#e11d48',
+                            backgroundColor: 'rgba(225, 29, 72, 0.1)',
+                            fill: true,
+                            borderWidth: 2,
+                            tension: 0.1
+                        }
+                    ]
                 },
-                yaxis: { 
-                    title: { text: '<b>資産評価額 (万円)</b>', font: { size: 14, color: axisFontColor } }, 
-                    tickfont: { size: 12, font: 'Noto Sans JP', color: axisFontColor },
-                    gridcolor: isDark ? '#334155' : '#E2E8F0', 
-                    linecolor: isDark ? '#475569' : '#CBD5E1' 
-                },
-                
-                shapes: [
-                    { type: 'rect', xref: 'x', yref: 'paper', x0: -0.5, x1: 7, y0: 0, y1: 1, fillcolor: 'rgba(59, 130, 246, 0.06)', line: { width: 0 } },
-                    { type: 'rect', xref: 'x', yref: 'paper', x0: 7, x1: 12, y0: 0, y1: 1, fillcolor: 'rgba(168, 85, 247, 0.06)', line: { width: 0 } },
-                    { type: 'rect', xref: 'x', yref: 'paper', x0: 12, x1: 20, y0: 0, y1: 1, fillcolor: 'rgba(244, 63, 94, 0.06)', line: { width: 0 } },
-                    { type: 'rect', xref: 'x', yref: 'paper', x0: 20, x1: 32, y0: 0, y1: 1, fillcolor: 'rgba(14, 165, 233, 0.06)', line: { width: 0 } },
-                    { type: 'rect', xref: 'x', yref: 'paper', x0: 32, x1: 37.5, y0: 0, y1: 1, fillcolor: 'rgba(100, 116, 139, 0.06)', line: { width: 0 } }
-                ]
-            };
-
-            Plotly.newPlot('asset-chart', traces, layout, { responsive: true, displayModeBar: false });
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                font: { family: 'M PLUS 1p', weight: 'bold', size: 11 },
+                                color: textColor
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: gridColor },
+                            ticks: { font: { family: 'M PLUS 1p', weight: 'bold' }, color: textColor }
+                        },
+                        y: {
+                            grid: { color: gridColor },
+                            ticks: { 
+                                font: { family: 'M PLUS 1p' }, 
+                                color: textColor,
+                                callback: function(value) { return (value).toLocaleString() + '万'; }
+                            }
+                        }
+                    }
+                }
+            });
         }
     </script>
 </body>

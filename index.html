@@ -897,7 +897,7 @@
             drawChart();
         }
 
-        function updateOutputMetrics() {
+                function updateOutputMetrics() {
             const ageSlider = document.getElementById('age-slider');
             const targetAge = parseInt(ageSlider.value) || 65;
             document.getElementById('age-display').innerText = targetAge;
@@ -912,16 +912,20 @@
             else if (targetAge >= 85) phaseStr = "Closing5 (C5) [エンドロール期]";
             document.getElementById('current-phase-badge').innerText = phaseStr;
 
-            document.getElementById('ind-fortress').innerHTML = Math.round(simulationData.fortress[idx]).toLocaleString() + ' <span class="text-xs font-normal text-slate-400">万円</span>';
-            document.getElementById('ind-nisa').innerHTML = Math.round(simulationData.nisa[idx]).toLocaleString() + ' <span class="text-xs font-normal text-slate-400">万円</span>';
-            document.getElementById('ind-mochikabu').innerHTML = Math.round(simulationData.mochikabu[idx]).toLocaleString() + ' <span class="text-xs font-normal text-slate-400">万円</span>';
+            // 各種メーターへの数値流し込み（新規のDC資産高も網羅）
             document.getElementById('ind-total').innerHTML = Math.round(simulationData.total[idx]).toLocaleString() + ' <span class="text-xs font-normal text-slate-400">万円</span>';
             document.getElementById('ind-net').innerHTML = Math.round(simulationData.net[idx]).toLocaleString() + ' <span class="text-xs font-normal text-slate-400">万円</span>';
-            document.getElementById('ind-loan').innerHTML = Math.round(simulationData.loan[idx]).toLocaleString() + ' <span class="text-xs font-normal text-slate-400">万円</span>';
+            document.getElementById('ind-loan').innerText = Math.round(simulationData.loan[idx]).toLocaleString();
+            
+            document.getElementById('ind-fortress').innerHTML = Math.round(simulationData.fortress[idx]).toLocaleString() + ' <span class="text-xs font-normal text-slate-400">万円</span>';
+            document.getElementById('ind-dc').innerHTML = Math.round(simulationData.dc[idx]).toLocaleString() + ' <span class="text-xs font-normal text-slate-400">万円</span>';
+            document.getElementById('ind-nisa').innerHTML = Math.round(simulationData.nisa[idx]).toLocaleString() + ' <span class="text-xs font-normal text-slate-400">万円</span>';
+            document.getElementById('ind-mochikabu').innerHTML = Math.round(simulationData.mochikabu[idx]).toLocaleString() + ' <span class="text-xs font-normal text-slate-400">万円</span>';
             
             const currentLevPct = simulationData.levPct[idx];
-            document.getElementById('ind-leverage-pct').innerHTML = currentLevPct.toFixed(1) + ' <span class="text-xs font-normal text-slate-400">%</span>';
+            document.getElementById('ind-leverage-pct').innerText = currentLevPct.toFixed(1);
             
+            // 警告アラート判定ギミック
             const warningThreshold = parseFloat(document.getElementById('warning-threshold').value) || 35;
             const levBox = document.getElementById('leverage-box');
             const levStatusText = document.getElementById('leverage-status-text');
@@ -935,6 +939,25 @@
                 levStatusText.innerText = "ローン残高 ÷ 要塞担保高";
                 levStatusText.className = "text-[9px] text-slate-400 block mt-1";
             }
+
+            // 目標達成差分計算
+            const targetAsset = parseFloat(document.getElementById('target-asset').value) || 15000;
+            const diff = targetAsset - simulationData.total[idx];
+            if (diff > 0) {
+                document.getElementById('ind-target-diff').innerText = `目標まであと ${Math.round(diff).toLocaleString()} 万円`;
+                document.getElementById('ind-target-diff').className = "text-[9px] text-fortress-rose font-bold block mt-1";
+            } else {
+                document.getElementById('ind-target-diff').innerText = `👑 目標要塞突破！ (+${Math.round(Math.abs(diff)).toLocaleString()}万)`;
+                document.getElementById('ind-target-diff').className = "text-[9px] text-fortress-emerald font-bold block mt-1";
+            }
+
+            // コアファンド比率の更新
+            document.getElementById('ind-fund-mix').innerHTML = 
+                `<div class="flex justify-between"><span>S&P500:</span><span class="text-blue-500 font-bold">${simulationData.funds.sp500[idx].toFixed(1)}%</span></div>
+                 <div class="flex justify-between"><span>NASDAQ100:</span><span class="text-purple-500 font-bold">${simulationData.funds.nas100[idx].toFixed(1)}%</span></div>
+                 <div class="flex justify-between"><span>Selected Fund:</span><span class="text-amber-500 font-bold">${simulationData.funds.selected[idx].toFixed(1)}%</span></div>`;
+        }
+
 
             const targetAsset = parseFloat(document.getElementById('target-asset').value) || 15000;
             const diff = targetAsset - simulationData.total[idx];

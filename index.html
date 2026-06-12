@@ -179,7 +179,7 @@
                                     <span>NASDAQ100 (<span id="tokutei-p2-val">30%</span>)</span>
                                     <div class="flex items-center gap-1">年率<input type="number" id="tokutei-r2" value="9.0" step="0.1" class="w-14 bg-slate-50 dark:bg-slate-900 border text-right rounded px-1 py-0.5 font-bold">%</div>
                                 </div>
-                                <input type="range" id="tokutei-p2" min="0" max="100" value="30" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-thumb">
+                                <input type="range" id="tokutei-p2" min="0" max="100" value="30" class="w-full h-1 bg-slate-200 appearance-none cursor-pointer accent-blue-thumb">
                             </div>
                             <div class="space-y-2">
                                 <div class="flex justify-between items-center text-xs">
@@ -223,7 +223,7 @@
                                     <span>NASDAQ100 (<span id="dc-p2-val">40%</span>)</span>
                                     <div class="flex items-center gap-1">年率<input type="number" id="dc-r2" value="9.0" step="0.1" class="w-14 bg-slate-50 dark:bg-slate-900 border text-right rounded px-1 py-0.5 font-bold">%</div>
                                 </div>
-                                <input type="range" id="dc-p2" min="0" max="100" value="40" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-purple-thumb">
+                                <input type="range" id="dc-p2" min="0" max="100" value="40" class="w-full h-1 bg-slate-200 appearance-none cursor-pointer accent-purple-thumb">
                             </div>
                             <div class="space-y-2">
                                 <div class="flex justify-between items-center text-xs">
@@ -767,6 +767,8 @@
             document.getElementById('age-slider').addEventListener('input', () => {
                 updateOutputMetrics();
                 saveCurrentState();
+                // 年齢スライダーの変更をグラフ上のターゲットライン強調描画へ即座に伝えるため再描画
+                drawChart();
             });
             
             document.getElementById('btn-reset-zoom').addEventListener('click', () => { drawChart(); });
@@ -1115,6 +1117,9 @@
             const isDark = document.documentElement.classList.contains('dark');
             const axisFontColor = isDark ? '#E2E8F0' : '#1E293B';
             
+            // 現在の「総資産作戦目標（target-asset）」の入力値を取得
+            const targetAsset = parseFloat(document.getElementById('target-asset').value) || 15000;
+
             const traces = [
                 { x: simulationData.stringAges, y: simulationData.tokutei, name: '特定口座部隊(楽天)', type: 'bar', offsetgroup: 'fortress', marker: { color: isDark ? 'rgba(59, 130, 246, 0.75)' : 'rgba(59, 130, 246, 0.88)' } },
                 { x: simulationData.stringAges, y: simulationData.dc, name: '企業型DC/iDeCo部隊', type: 'bar', offsetgroup: 'fortress', marker: { color: isDark ? 'rgba(168, 85, 247, 0.75)' : 'rgba(168, 85, 247, 0.88)' } },
@@ -1123,6 +1128,32 @@
                 
                 { x: simulationData.stringAges, y: simulationData.net, name: '🛡️ 実質純資産高', type: 'scatter', mode: 'lines', line: { color: '#B59410', width: 4, shape: 'spline' } },
                 { x: simulationData.stringAges, y: simulationData.loan, name: '🚨 担保ローン残高', type: 'scatter', mode: 'lines', line: { color: '#F43F5E', width: 3.5, dash: 'dot', shape: 'spline' } }
+            ];
+
+            // 修正案B：グラフの背景装飾用 shapes 配列を作成
+            const chartShapes = [
+                // 各フェーズのグラデーション背景枠
+                { type: 'rect', xref: 'x', yref: 'paper', x0: -0.5, x1: 7, y0: 0, y1: 1, fillcolor: 'rgba(59, 130, 246, 0.06)', line: { width: 0 } },
+                { type: 'rect', xref: 'x', yref: 'paper', x0: 7, x1: 12, y0: 0, y1: 1, fillcolor: 'rgba(168, 85, 247, 0.06)', line: { width: 0 } },
+                { type: 'rect', xref: 'x', yref: 'paper', x0: 12, x1: 20, y0: 0, y1: 1, fillcolor: 'rgba(244, 63, 94, 0.06)', line: { width: 0 } },
+                { type: 'rect', xref: 'x', yref: 'paper', x0: 20, x1: 32, y0: 0, y1: 1, fillcolor: 'rgba(14, 165, 233, 0.06)', line: { width: 0 } },
+                { type: 'rect', xref: 'x', yref: 'paper', x0: 32, x1: 37.5, y0: 0, y1: 1, fillcolor: 'rgba(100, 116, 139, 0.06)', line: { width: 0 } },
+                
+                // 【修正案B コア実装】作戦目標ターゲットラインを水平線（横一線）として動的追加
+                {
+                    type: 'line',
+                    xref: 'paper', // グラフの左端から右端までカバー
+                    yref: 'y',
+                    x0: 0,
+                    x1: 1,
+                    y0: targetAsset,
+                    y1: targetAsset,
+                    line: {
+                        color: '#D4AF37', // 作戦目標を象徴するゴールド
+                        width: 2.5,
+                        dash: 'dash'      // 洗練された破線デザイン
+                    }
+                }
             ];
 
             const layout = {
@@ -1150,13 +1181,7 @@
                     linecolor: isDark ? '#475569' : '#CBD5E1' 
                 },
                 
-                shapes: [
-                    { type: 'rect', xref: 'x', yref: 'paper', x0: -0.5, x1: 7, y0: 0, y1: 1, fillcolor: 'rgba(59, 130, 246, 0.06)', line: { width: 0 } },
-                    { type: 'rect', xref: 'x', yref: 'paper', x0: 7, x1: 12, y0: 0, y1: 1, fillcolor: 'rgba(168, 85, 247, 0.06)', line: { width: 0 } },
-                    { type: 'rect', xref: 'x', yref: 'paper', x0: 12, x1: 20, y0: 0, y1: 1, fillcolor: 'rgba(244, 63, 94, 0.06)', line: { width: 0 } },
-                    { type: 'rect', xref: 'x', yref: 'paper', x0: 20, x1: 32, y0: 0, y1: 1, fillcolor: 'rgba(14, 165, 233, 0.06)', line: { width: 0 } },
-                    { type: 'rect', xref: 'x', yref: 'paper', x0: 32, x1: 37.5, y0: 0, y1: 1, fillcolor: 'rgba(100, 116, 139, 0.06)', line: { width: 0 } }
-                ]
+                shapes: chartShapes
             };
 
             Plotly.newPlot('asset-chart', traces, layout, { responsive: true, displayModeBar: false });

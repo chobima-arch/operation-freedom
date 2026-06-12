@@ -488,6 +488,7 @@
                         <span class="text-xs font-black text-slate-500 dark:text-slate-400 block mb-0.5 flex items-center gap-1.5"><i class="fa-solid fa-gift text-fortress-emerald text-xl"></i> 次世代への手残りMAX値</span>
                         <div class="text-base font-black tracking-tight text-fortress-emerald" id="ind-next-generation">0 <span class="text-xs font-normal text-slate-400">万円</span></div>
                     </div>
+                    <div id="ind-fund-mix" class="text-[10px] mt-2 pt-1 border-t border-slate-100 dark:border-slate-800 text-slate-500 dark:text-slate-400 space-y-0.5"></div>
                     <div class="text-[9px] text-slate-400 leading-tight mt-1 pt-1.5 border-t border-slate-100 dark:border-slate-800">
                         含み益譲渡税免除 ＆ ローン債務控除を静的計算。有事金利デトックス必要量: <span id="ind-detox-needed" class="font-bold text-slate-600 dark:text-slate-300">0万</span>
                     </div>
@@ -1073,7 +1074,7 @@
                 document.getElementById('ind-target-diff').className = "text-[9px] text-fortress-emerald font-bold block mt-1";
             }
 
-            // コアファンド比率
+            // コアファンド比率をHTML側に出力
             document.getElementById('ind-fund-mix').innerHTML = 
                 `<div class="flex justify-between"><span>S&P500:</span><span class="text-blue-500 font-bold">${simulationData.funds.sp500[idx].toFixed(1)}%</span></div>
                  <div class="flex justify-between"><span>NASDAQ100:</span><span class="text-purple-500 font-bold">${simulationData.funds.nas100[idx].toFixed(1)}%</span></div>

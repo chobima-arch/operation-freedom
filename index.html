@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Operation Freedom v7.12.2</title>
+    <title>Operation Freedom v8.0.0</title>
     <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist@2.24.1/plotly.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -101,9 +101,9 @@
                 </div>
                 <div>
                     <h1 class="text-xl md:text-2xl font-black tracking-wider flex items-center gap-2">
-                        Operation Freedom <span class="text-xs bg-slate-100 dark:bg-slate-800 text-fortress-gold px-2 py-0.5 rounded-full border border-slate-200 dark:border-slate-700 font-bold">v7.12.2</span>
+                        Operation Freedom <span class="text-xs bg-slate-100 dark:bg-slate-800 text-fortress-gold px-2 py-0.5 rounded-full border border-slate-200 dark:border-slate-700 font-bold">v8.0.0</span>
                     </h1>
-                    <p class="text-xs text-slate-500 dark:text-slate-400">(資産要塞シミュレーター)</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">(ハイブリッド要塞シミュレーター)</p>
                 </div>
             </div>
             <div class="flex items-center gap-4">
@@ -258,7 +258,7 @@
                             <input type="number" id="nisa-years" value="2" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-sm font-bold focus:outline-none focus:border-fortress-emerald">
                         </div>
                         <div class="pt-2 border-t border-slate-100 dark:border-slate-800 space-y-2">
-                            <span class="text-xs font-bold text-slate-400 block">ファンド配分比率 ＆ 想定年率 (Nasdaq100主軸)</span>
+                            <span class="text-xs font-bold text-slate-400 block">ファンド配分比率 ＆ 想定年率</span>
                             <div class="space-y-2">
                                 <div class="flex justify-between items-center text-xs">
                                     <span>S&P500 (<span id="nisa-p1-val">10%</span>)</span>
@@ -336,18 +336,25 @@
                 <div class="bg-white dark:bg-slate-950 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden">
                     <div class="absolute top-0 left-0 w-1.5 h-full bg-fortress-rose"></div>
                     <h2 class="text-sm font-black tracking-wide text-slate-400 dark:text-slate-500 uppercase mb-3 flex justify-between items-center">
-                        <span class="flex items-center gap-2.5"><i class="fa-solid fa-scale-balanced text-fortress-rose text-5xl"></i> 有価証券担保ローン設定</span>
-                        <span class="text-xs bg-rose-50 dark:bg-rose-950/40 text-fortress-rose px-2 py-0.5 rounded-md font-bold">備考欄登録済アセット</span>
+                        <span class="flex items-center gap-2.5"><i class="fa-solid fa-scale-balanced text-fortress-rose text-5xl"></i> 補給戦略＆ローン設定</span>
+                        <span class="text-xs bg-rose-50 dark:bg-rose-950/40 text-fortress-rose px-2 py-0.5 rounded-md font-bold">手動シミュレータ</span>
                     </h2>
                     
                     <div class="space-y-5 divide-y divide-slate-100 dark:divide-slate-800/60">
                         <div class="space-y-3 pt-2">
-                            <span class="text-xs font-black text-rose-500 block">打撃部隊 Active8 (A8: 65〜73歳) [年間720万 / 目標月60万]</span>
-                            <div class="space-y-2">
-                                <div class="text-sm flex justify-between items-center font-bold">
-                                    <span>毎月借入額: <span id="a8-val" class="font-black text-fortress-rose">60万円</span></span>
+                            <span class="text-xs font-black text-rose-500 block">打撃部隊 Active8 (A8: 65〜73歳)</span>
+                            <div class="space-y-1">
+                                <div class="text-xs flex justify-between font-bold">
+                                    <span>必要生活費 (月額):</span> <span id="a8-cost-display" class="font-black text-slate-700 dark:text-slate-300">60万円</span>
                                 </div>
-                                <input type="range" id="loan-a8" min="0" max="150" value="60" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-rose-thumb">
+                                <input type="range" id="cost-a8" min="0" max="150" value="60" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer">
+                            </div>
+                            <div class="bg-slate-50 dark:bg-slate-900 p-2 rounded-xl border border-slate-100 dark:border-slate-800 space-y-1.5">
+                                <div class="text-xs flex justify-between font-bold">
+                                    <span class="text-fortress-rose">ローン(借入)充当率: <span id="a8-ratio-val">100%</span></span>
+                                    <span class="text-fortress-emerald">NISA取崩率: <span id="a8-nisa-ratio-val">0%</span></span>
+                                </div>
+                                <input type="range" id="ratio-a8" min="0" max="100" value="100" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-rose-thumb">
                             </div>
                             <div class="grid grid-cols-2 gap-3 pt-1">
                                 <div class="space-y-1">
@@ -362,12 +369,19 @@
                         </div>
 
                         <div class="space-y-3 pt-4">
-                            <span class="text-xs font-black text-sky-500 block">潜行部隊 Slow12 (S12: 73〜85歳) [合法的ステルス生活期]</span>
-                            <div class="space-y-2">
-                                <div class="text-sm flex justify-between items-center font-bold">
-                                    <span>毎月借入額: <span id="s12-val" class="font-black text-fortress-rose">45万円</span></span>
+                            <span class="text-xs font-black text-sky-500 block">潜行部隊 Slow12 (S12: 73〜85歳) [合法的ステルス]</span>
+                            <div class="space-y-1">
+                                <div class="text-xs flex justify-between font-bold">
+                                    <span>必要生活費 (月額):</span> <span id="s12-cost-display" class="font-black text-slate-700 dark:text-slate-300">45万円</span>
                                 </div>
-                                <input type="range" id="loan-s12" min="0" max="150" value="45" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-rose-thumb">
+                                <input type="range" id="cost-s12" min="0" max="150" value="45" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer">
+                            </div>
+                            <div class="bg-slate-50 dark:bg-slate-900 p-2 rounded-xl border border-slate-100 dark:border-slate-800 space-y-1.5">
+                                <div class="text-xs flex justify-between font-bold">
+                                    <span class="text-fortress-rose">ローン(借入)充当率: <span id="s12-ratio-val">100%</span></span>
+                                    <span class="text-fortress-emerald">NISA取崩率: <span id="s12-nisa-ratio-val">0%</span></span>
+                                </div>
+                                <input type="range" id="ratio-s12" min="0" max="100" value="100" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-rose-thumb">
                             </div>
                             <div class="grid grid-cols-2 gap-3 pt-1">
                                 <div class="space-y-1">
@@ -383,11 +397,18 @@
 
                         <div class="space-y-3 pt-4">
                             <span class="text-xs font-black text-slate-400 block">撤退部隊 Closing5 (C5: 85〜90歳)</span>
-                            <div class="space-y-2">
-                                <div class="text-sm flex justify-between items-center font-bold">
-                                    <span>毎月借入額: <span id="c5-val" class="font-black text-fortress-rose">35万円</span></span>
+                            <div class="space-y-1">
+                                <div class="text-xs flex justify-between font-bold">
+                                    <span>必要生活費 (月額):</span> <span id="c5-cost-display" class="font-black text-slate-700 dark:text-slate-300">35万円</span>
                                 </div>
-                                <input type="range" id="loan-c5" min="0" max="150" value="35" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-rose-thumb">
+                                <input type="range" id="cost-c5" min="0" max="150" value="35" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer">
+                            </div>
+                            <div class="bg-slate-50 dark:bg-slate-900 p-2 rounded-xl border border-slate-100 dark:border-slate-800 space-y-1.5">
+                                <div class="text-xs flex justify-between font-bold">
+                                    <span class="text-fortress-rose">ローン(借入)充当率: <span id="c5-ratio-val">100%</span></span>
+                                    <span class="text-fortress-emerald">NISA取崩率: <span id="c5-nisa-ratio-val">0%</span></span>
+                                </div>
+                                <input type="range" id="ratio-c5" min="0" max="100" value="100" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-rose-thumb">
                             </div>
                             <div class="grid grid-cols-2 gap-3 pt-1">
                                 <div class="space-y-1">
@@ -410,14 +431,14 @@
             
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 shrink-0">
                 <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
-                    <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-chess-rook text-blue-500 text-3xl"></i> 要塞担保高(野村特定口座)</span>
+                    <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-chess-rook text-blue-500 text-3xl"></i> 要塞担保高(野村特定)</span>
                     <div class="text-base sm:text-lg font-black tracking-tight text-blue-500" id="ind-fortress">0 <span class="text-xs font-normal text-slate-400">万円</span></div>
                     <span class="text-[9px] text-slate-400 block mt-1">特定口座＋DC(65~合流)＋持株(60~)</span>
                 </div>
                 <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
                     <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-leaf text-fortress-emerald text-3xl"></i> NISA資産高</span>
                     <div class="text-base sm:text-lg font-black tracking-tight text-fortress-emerald" id="ind-nisa">0 <span class="text-xs font-normal text-slate-400">万円</span></div>
-                    <span class="text-[9px] text-slate-400 block mt-1">完全インデックス・非常時バッファ</span>
+                    <span class="text-[9px] text-slate-400 block mt-1">完全非課税・非常時/戦略バッファ</span>
                 </div>
                 <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
                     <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-building text-amber-500 text-3xl"></i> 持株会評価額</span>
@@ -441,19 +462,55 @@
                     <span class="text-[9px] text-slate-400 block mt-1">累積借入残高 (複利計算)</span>
                 </div>
                 
-                <div id="leverage-box" class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm transition-all duration-200">
-                    <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-percent text-purple-500 text-3xl"></i> 担保ローン割合</span>
-                    <div class="text-base sm:text-lg font-black tracking-tight text-purple-500" id="ind-leverage-pct">0.0 <span class="text-xs font-normal text-slate-400">%</span></div>
-                    <span class="text-[9px] text-slate-400 block mt-1" id="leverage-status-text">ローン残高 ÷ 要塞担保高</span>
+                <div id="leverage-box" class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm transition-all duration-200 flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs font-black text-slate-400 block mb-1 flex items-center justify-between">
+                            <span class="flex items-center gap-1"><i class="fa-solid fa-percent text-purple-500"></i> 現状ローン割合</span>
+                            <span id="ind-leverage-pct" class="text-sm font-black text-purple-500">0.0%</span>
+                        </span>
+                        <span class="text-[9px] text-slate-400 block" id="leverage-status-text">ローン残高 ÷ 要塞担保高</span>
+                    </div>
+                    
+                    <div class="mt-2 pt-2 border-t border-slate-100 dark:border-slate-800/60 space-y-1">
+                        <span class="text-[9px] font-bold text-slate-400 block"><i class="fa-solid fa-pen-to-square"></i> 現状の手動転記 (月1回更新用)</span>
+                        <div class="grid grid-cols-2 gap-1 text-[10px]">
+                            <input type="number" id="manual-fortress" placeholder="野村特定" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded px-1.5 py-0.5 font-bold text-center text-blue-500 focus:outline-none">
+                            <input type="number" id="manual-loan" placeholder="野村ローン" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded px-1.5 py-0.5 font-bold text-center text-fortress-rose focus:outline-none">
+                        </div>
+                        <div class="text-[9px] font-black text-center pt-0.5" id="manual-calc-status">
+                            リアルタイム補正：<span class="text-slate-400">未入力 (シミュレータ値表示中)</span>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
-                    <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-dna text-slate-500 text-3xl"></i> コアファンド比率</span>
-                    <div class="text-sm font-bold space-y-1 text-slate-600 dark:text-slate-300 mt-0.5" id="ind-fund-mix">
-                        <div>S&P500: --%</div>
-                        <div>NASDAQ100: --%</div>
-                        <div>Selected Fund: --%</div>
+                <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm bg-gradient-to-br from-transparent to-emerald-500/5 flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs font-black text-slate-500 dark:text-slate-400 block mb-0.5 flex items-center gap-1.5"><i class="fa-solid fa-gift text-fortress-emerald text-xl"></i> 次世代への手残りMAX値</span>
+                        <div class="text-base font-black tracking-tight text-fortress-emerald" id="ind-next-generation">0 <span class="text-xs font-normal text-slate-400">万円</span></div>
                     </div>
+                    <div class="text-[9px] text-slate-400 leading-tight mt-1 pt-1.5 border-t border-slate-100 dark:border-slate-800">
+                        含み益譲渡税免除 ＆ ローン債務控除を静的計算。有事金利デトックス必要量: <span id="ind-detox-needed" class="font-bold text-slate-600 dark:text-slate-300">0万</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-900 text-white p-4 rounded-2xl border border-slate-800 shadow-lg flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="bg-fortress-gold/20 text-fortress-gold p-2 rounded-xl border border-fortress-gold/30">
+                        <i class="fa-solid fa-shield-cat text-2xl"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs text-slate-400 font-bold flex items-center gap-1">出口戦略キーワード：<span class="text-fortress-gold font-black">合法的ステルス生活</span></div>
+                        <h4 class="text-base font-black tracking-wide mt-0.5 text-slate-100">
+                            基本シールド：年金 <span class="text-fortress-gold">月25万円</span> (年間300万円) 常時発動中
+                        </h4>
+                    </div>
+                </div>
+                <div class="bg-slate-800/60 border border-slate-700 p-2.5 rounded-xl text-xs md:text-right flex-1 md:max-w-md">
+                    <span class="font-bold text-slate-400 block"><i class="fa-solid fa-compass"></i> 指定年齢（今月）の最適補給指示ナビ</span>
+                    <p class="text-slate-200 font-black mt-1" id="nav-action-text">
+                        ---
+                    </p>
                 </div>
             </div>
 
@@ -506,23 +563,23 @@
                 <div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 grid grid-cols-1 md:grid-cols-5 gap-2 text-xs">
                     <div class="p-2.5 rounded-xl bg-blue-50/60 dark:bg-blue-950/20 border border-blue-100 dark:border-blue-900/40">
                         <span class="font-black text-blue-500 block">🛡️ F7 (53〜60歳)</span>
-                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">資産ベース創生期：特定口座と並行し、NISA温存バッファ枠5800万の運用体制を整える。</p>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">創生期：特定口座運用と並行。3年後までにNISA枠をnas100:sp500:gold=5:4:1の黄金比で完全完遂へ。</p>
                     </div>
                     <div class="p-2.5 rounded-xl bg-purple-50/60 dark:bg-purple-950/20 border border-purple-100 dark:border-purple-900/40">
                         <span class="font-black text-purple-500 block">🚀 B5 (60〜65歳)</span>
-                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">資産ブースト期：60歳で持株会を楽天特定口座へ集約。DCは運用を維持し、複利の力で大結集へ繋ぐ。</p>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">ブースト期：持株会退会分を楽天特定へ集約。DCはiDeCoへ洗濯開設。NISAは非課税温存し暴落バッファとする。</p>
                     </div>
                     <div class="p-2.5 rounded-xl bg-rose-50/60 dark:bg-rose-950/20 border border-rose-100 dark:border-rose-900/40">
                         <span class="font-black text-rose-500 block">🔥 A8 (65〜73歳)</span>
-                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">アクティブライフ期：65歳でiDeCo精算合流。有価証券担保ローン月60万のハイブリッドレバ実運用強化。</p>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">実運用期：iDeCoを一括精算し特定合流（退職控除適用）。有価証券担保ローンとNISA取り崩しの最適比率補給開始。</p>
                     </div>
                     <div class="p-2.5 rounded-xl bg-sky-50/60 dark:bg-sky-950/20 border border-sky-100 dark:border-sky-900/40">
                         <span class="font-black text-sky-500 block">💧 S12 (73〜85歳)</span>
-                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">スローライフ期：出口戦略「合法的ステルス生活」。高担保を背景にローン月45万で安定的に取り崩す潜行期。</p>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">潜行期：「合法的ステルス生活」。年金表収入を主軸とし、残る必要生活費を担保借入で補填、課税と社保を極小化。</p>
                     </div>
                     <div class="p-2.5 rounded-xl bg-slate-100/60 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700/40">
                         <span class="font-black text-slate-500 dark:text-slate-400 block">🏁 C5 (85〜90歳)</span>
-                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">エンドロール期：借入規模を縮小(月35万)。要塞資産を綺麗にソフトランディングさせ、相続税圧縮と終活を完了。</p>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">完遂期：終活ソフトランディング。ローン残高を相続税の債務控除へ、極限まで太らせたNISAは譲渡税完全消滅で引き継ぐ。</p>
                     </div>
                 </div>
             </div>
@@ -533,8 +590,8 @@
 
     <footer class="mt-8 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 py-5 transition-colors duration-200">
         <div class="max-w-[1600px] mx-auto px-4 text-center text-xs text-slate-400 dark:text-slate-500 space-y-1">
-            <p>Operation Freedom | Strategic Absolute Fortress Financial Model</p>
-            <p class="font-bold">Engine Optimized Ver 7.12.2 (Official Bar Stack Mode & Exact OffsetGroup Matching Applied)</p>
+            <p>Operation Freedom | Strategic Hybrid Absolute Fortress Model</p>
+            <p class="font-bold">Engine Optimized Ver 8.0.0 (Manual Transfer Linkage & Static Optimization Embedded)</p>
         </div>
     </footer>
 
@@ -542,6 +599,7 @@
         let simulationData = {};
         const startAge = 53; 
         const endAge = 90;
+        const pensionShield = 25; // 年金月額25万(固定シールド)
 
         const statefulInputIds = [
             'target-asset', 'warning-threshold', 'age-slider',
@@ -549,9 +607,10 @@
             'dc-init', 'dc-monthly', 'dc-r1', 'dc-r2', 'dc-r3', 'dc-p1', 'dc-p2', 'dc-p3',
             'nisa-init', 'nisa-monthly', 'nisa-years', 'nisa-r1', 'nisa-r2', 'nisa-r3', 'nisa-p1', 'nisa-p2', 'nisa-p3',
             'mochikabu-init', 'mochikabu-monthly', 'mochikabu-rate-early', 'mochikabu-r1', 'mochikabu-r2', 'mochikabu-r3', 'mochikabu-p1', 'mochikabu-p2', 'mochikabu-p3',
-            'loan-a8', 'rate-a8-b', 'rate-a8-e',
-            'loan-s12', 'rate-s12-b', 'rate-s12-e',
-            'loan-c5', 'rate-c5-b', 'rate-c5-e'
+            'cost-a8', 'ratio-a8', 'rate-a8-b', 'rate-a8-e',
+            'cost-s12', 'ratio-s12', 'rate-s12-b', 'rate-s12-e',
+            'cost-c5', 'ratio-c5', 'rate-c5-b', 'rate-c5-e',
+            'manual-fortress', 'manual-loan'
         ];
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -686,17 +745,23 @@
             handleRatioSliders('nisa-p1', 'nisa-p2', 'nisa-p3', 'nisa-p1-val', 'nisa-p2-val', 'nisa-p3-val');
             handleRatioSliders('mochikabu-p1', 'mochikabu-p2', 'mochikabu-p3', 'mochikabu-p1-val', 'mochikabu-p2-val', 'mochikabu-p3-val');
 
-            const loanInputs = ['loan-a8', 'rate-a8-b', 'rate-a8-e',
-                                'loan-s12', 'rate-s12-b', 'rate-s12-e',
-                                'loan-c5', 'rate-c5-b', 'rate-c5-e'];
+            const strategyInputs = [
+                'cost-a8', 'ratio-a8', 'rate-a8-b', 'rate-a8-e',
+                'cost-s12', 'ratio-s12', 'rate-s12-b', 'rate-s12-e',
+                'cost-c5', 'ratio-c5', 'rate-c5-b', 'rate-c5-e'
+            ];
             
-            loanInputs.forEach(id => {
+            strategyInputs.forEach(id => {
                 document.getElementById(id).addEventListener('input', () => {
-                    updateLoanLabels();
+                    updateStrategyLabels();
                     saveCurrentState();
                     runSimulation();
                 });
             });
+
+            // 手動転記フォームのリスナー
+            document.getElementById('manual-fortress').addEventListener('input', () => { saveCurrentState(); runSimulation(); });
+            document.getElementById('manual-loan').addEventListener('input', () => { saveCurrentState(); runSimulation(); });
 
             document.getElementById('age-slider').addEventListener('input', () => {
                 updateOutputMetrics();
@@ -707,7 +772,7 @@
 
             statefulInputIds.forEach(id => {
                 const el = document.getElementById(id);
-                if (el && !el.id.includes('-p') && id !== 'age-slider' && !loanInputs.includes(id)) {
+                if (el && !el.id.includes('-p') && id !== 'age-slider' && !strategyInputs.includes(id) && id !== 'manual-fortress' && id !== 'manual-loan') {
                     el.addEventListener('input', () => {
                         saveCurrentState();
                         runSimulation();
@@ -715,19 +780,25 @@
                 }
             });
             
-            updateLoanLabels();
+            updateStrategyLabels();
         }
 
-        function updateLoanLabels() {
-            document.getElementById('a8-val').innerText = document.getElementById('loan-a8').value + '万円';
+        function updateStrategyLabels() {
+            document.getElementById('a8-cost-display').innerText = document.getElementById('cost-a8').value + '万円';
+            document.getElementById('a8-ratio-val').innerText = document.getElementById('ratio-a8').value + '%';
+            document.getElementById('a8-nisa-ratio-val').innerText = (100 - document.getElementById('ratio-a8').value) + '%';
             document.getElementById('a8-r-b-val').innerText = document.getElementById('rate-a8-b').value + '%';
             document.getElementById('a8-r-e-val').innerText = document.getElementById('rate-a8-e').value + '%';
 
-            document.getElementById('s12-val').innerText = document.getElementById('loan-s12').value + '万円';
+            document.getElementById('s12-cost-display').innerText = document.getElementById('cost-s12').value + '万円';
+            document.getElementById('s12-ratio-val').innerText = document.getElementById('ratio-s12').value + '%';
+            document.getElementById('s12-nisa-ratio-val').innerText = (100 - document.getElementById('ratio-s12').value) + '%';
             document.getElementById('s12-r-b-val').innerText = document.getElementById('rate-s12-b').value + '%';
             document.getElementById('s12-r-e-val').innerText = document.getElementById('rate-s12-e').value + '%';
 
-            document.getElementById('c5-val').innerText = document.getElementById('loan-c5').value + '万円';
+            document.getElementById('c5-cost-display').innerText = document.getElementById('cost-c5').value + '万円';
+            document.getElementById('c5-ratio-val').innerText = document.getElementById('ratio-c5').value + '%';
+            document.getElementById('c5-nisa-ratio-val').innerText = (100 - document.getElementById('ratio-c5').value) + '%';
             document.getElementById('c5-r-b-val').innerText = document.getElementById('rate-c5-b').value + '%';
             document.getElementById('c5-r-e-val').innerText = document.getElementById('rate-c5-e').value + '%';
         }
@@ -761,15 +832,19 @@
             const mR2 = (parseFloat(document.getElementById('mochikabu-r2').value) || 0) / 100;
             const mR3 = (parseFloat(document.getElementById('mochikabu-r3').value) || 0) / 100;
 
-            const la8 = parseFloat(document.getElementById('loan-a8').value);
+            // 各フェーズの総生活費設定
+            const costA8 = parseFloat(document.getElementById('cost-a8').value) || 0;
+            const ratA8 = (parseFloat(document.getElementById('ratio-a8').value) || 0) / 100;
             const ra8_b = parseFloat(document.getElementById('rate-a8-b').value) / 100;
             const ra8_e = parseFloat(document.getElementById('rate-a8-e').value) / 100;
 
-            const ls12 = parseFloat(document.getElementById('loan-s12').value);
+            const costS12 = parseFloat(document.getElementById('cost-s12').value) || 0;
+            const ratS12 = (parseFloat(document.getElementById('ratio-s12').value) || 0) / 100;
             const rs12_b = parseFloat(document.getElementById('rate-s12-b').value) / 100;
             const rs12_e = parseFloat(document.getElementById('rate-s12-e').value) / 100;
 
-            const lc5 = parseFloat(document.getElementById('loan-c5').value);
+            const costC5 = parseFloat(document.getElementById('cost-c5').value) || 0;
+            const ratC5 = (parseFloat(document.getElementById('ratio-c5').value) || 0) / 100;
             const rc5_b = parseFloat(document.getElementById('rate-c5-b').value) / 100;
             const rc5_e = parseFloat(document.getElementById('rate-c5-e').value) / 100;
 
@@ -792,7 +867,8 @@
             simulationData = {
                 ages: [], stringAges: [], tokutei: [], dc: [], nisa: [], mochikabu: [],
                 fortress: [], total: [], loan: [], net: [], levPct: [],
-                funds: { sp500: [], nas100: [], selected: [] }
+                funds: { sp500: [], nas100: [], selected: [] },
+                detox: [], currentRates: []
             };
 
             let currentTokutei = tInit;
@@ -809,12 +885,17 @@
                 simulationData.ages.push(age);
                 simulationData.stringAges.push(age + "歳");
 
+                let annualDetoxAmount = 0;
+                let activeRateThisYear = 0;
+
                 for (let m = 0; m < 12; m++) {
+                    // 資産運用プラス成長
                     currentTokutei = currentTokutei * (1 + tWeightedRateMonth) + (tMonthly / 12);
 
                     if (age < 65) {
                         currentDc = currentDc * (1 + dcWeightedRateMonth) + (dcMonthly / 12);
                     } else if (age === 65 && m === 0) {
+                        // 65歳DCをiDeCo洗濯して一括精算特定口座合流
                         let tax = 0;
                         if (currentDc > 2200) { tax = (currentDc - 2200) * 0.5 * 0.20315; }
                         currentTokutei += (currentDc - tax);
@@ -836,25 +917,56 @@
                         currentMochikabu = 0;
                     }
 
+                    // 補給ロジック (年金25万シールド差引後の要塞ターゲット)
                     let mBorrow = 0;
+                    let mNisaWithdraw = 0;
                     let mRate = 0;
 
                     if (age >= 65 && age < 73) {
+                        let netNeed = Math.max(0, costA8 - pensionShield);
+                        mBorrow = netNeed * ratA8;
+                        mNisaWithdraw = netNeed * (1 - ratA8);
+                        
                         let ratio = ((age - 65) * 12 + m) / (8 * 12);
-                        mBorrow = la8;
-                        mRate = (ra8_b + (ra8_e - ra8_b) * ratio) / 12;
+                        mRate = ra8_b + (ra8_e - ra8_b) * ratio;
                     } else if (age >= 73 && age < 85) {
+                        let netNeed = Math.max(0, costS12 - pensionShield);
+                        mBorrow = netNeed * ratS12;
+                        mNisaWithdraw = netNeed * (1 - ratS12);
+                        
                         let ratio = ((age - 73) * 12 + m) / (12 * 12);
-                        mBorrow = ls12;
-                        mRate = (rs12_b + (rs12_e - rs12_b) * ratio) / 12;
+                        mRate = rs12_b + (rs12_e - rs12_b) * ratio;
                     } else if (age >= 85 && age <= 90) {
+                        let netNeed = Math.max(0, costC5 - pensionShield);
+                        mBorrow = netNeed * ratC5;
+                        mNisaWithdraw = netNeed * (1 - ratC5);
+                        
                         let ratio = ((age - 85) * 12 + m) / (5 * 12);
-                        mBorrow = lc5;
-                        mRate = (rc5_b + (rc5_e - rc5_b) * ratio) / 12;
+                        mRate = rc5_b + (rc5_e - rc5_b) * ratio;
                     }
 
+                    activeRateThisYear = mRate; // 年末の金利水準を記録
+                    
+                    // NISA取り崩し実行
+                    if (mNisaWithdraw > 0) {
+                        currentNisa = Math.max(0, currentNisa - mNisaWithdraw);
+                    }
+
+                    // ローン複利計算
                     if (mBorrow > 0 || currentLoan > 0) {
-                        currentLoan = currentLoan * (1 + mRate) + Number(mBorrow);
+                        currentLoan = currentLoan * (1 + (mRate / 12)) + Number(mBorrow);
+                    }
+                }
+
+                // 【静的有事デトックス判定】基準2%を超えた金利差分を年末にNISA超過リターンから相殺判定
+                if (activeRateThisYear > 0.02 && currentLoan > 0) {
+                    let overRate = activeRateThisYear - 0.02;
+                    annualDetoxAmount = currentLoan * overRate;
+                    if (currentNisa >= annualDetoxAmount) {
+                        currentNisa -= annualDetoxAmount;
+                    } else {
+                        annualDetoxAmount = currentNisa;
+                        currentNisa = 0;
                     }
                 }
 
@@ -872,14 +984,16 @@
                 simulationData.loan.push(currentLoan);
                 simulationData.net.push(netVal);
                 simulationData.levPct.push(pct);
+                simulationData.detox.push(annualDetoxAmount);
+                simulationData.currentRates.push(activeRateThisYear);
 
                 let sp500Amt = currentTokutei * tP1 + currentDc * dcP1 + currentNisa * nP1 + currentMochikabu * mP1;
                 let nas100Amt = currentTokutei * tP2 + currentDc * dcP2 + currentNisa * nP2 + currentMochikabu * mP2;
                 let selectedAmt = currentTokutei * tP3 + currentDc * dcP3 + currentNisa * nP3 + currentMochikabu * mP3;
 
-                simulationData.funds.sp500.push((sp500Amt / totalVal) * 100);
-                simulationData.funds.nas100.push((nas100Amt / totalVal) * 100);
-                simulationData.funds.selected.push((selectedAmt / totalVal) * 100);
+                simulationData.funds.sp500.push(totalVal > 0 ? (sp500Amt / totalVal) * 100 : 0);
+                simulationData.funds.nas100.push(totalVal > 0 ? (nas100Amt / totalVal) * 100 : 0);
+                simulationData.funds.selected.push(totalVal > 0 ? (selectedAmt / totalVal) * 100 : 0);
             }
 
             updateOutputMetrics();
@@ -894,6 +1008,7 @@
             const idx = targetAge - startAge;
             if (idx < 0 || idx >= simulationData.ages.length) return;
 
+            // 各フェーズ文字列決定
             let phaseStr = "Foundation7 (F7) [資産ベース創生期]";
             if (targetAge >= 60 && targetAge < 65) phaseStr = "Boost5 (B5) [資産ブースト期]";
             else if (targetAge >= 65 && targetAge < 73) phaseStr = "Active8 (A8) [アクティブライフ期]";
@@ -901,32 +1016,55 @@
             else if (targetAge >= 85) phaseStr = "Closing5 (C5) [エンドロール期]";
             document.getElementById('current-phase-badge').innerText = phaseStr;
 
-            document.getElementById('ind-fortress').innerHTML = Math.round(simulationData.fortress[idx]).toLocaleString() + ' <span class="text-xs font-normal text-slate-400">万円</span>';
-            document.getElementById('ind-nisa').innerHTML = Math.round(simulationData.nisa[idx]).toLocaleString() + ' <span class="text-xs font-normal text-slate-400">万円</span>';
+            // マニュアル手動転記の上書き判定
+            let mFortressInput = parseFloat(document.getElementById('manual-fortress').value);
+            let mLoanInput = parseFloat(document.getElementById('manual-loan').value);
+            
+            let displayFortress = simulationData.fortress[idx];
+            let displayLoan = simulationData.loan[idx];
+            let displayNisa = simulationData.nisa[idx];
+            
+            // 総司令官による手動入力がある場合、現在のスライダー指定年齢が「53歳(現在)」の時のみリアルタイム補正を適応
+            if (targetAge === startAge && (!isNaN(mFortressInput) || !isNaN(mLoanInput))) {
+                if (!isNaN(mFortressInput)) displayFortress = mFortressInput;
+                if (!isNaN(mLoanInput)) displayLoan = mLoanInput;
+                document.getElementById('manual-calc-status').innerHTML = "リアルタイム補正：<span class='text-fortress-emerald font-black'>手動データを結合中</span>";
+            } else {
+                document.getElementById('manual-calc-status').innerHTML = "リアルタイム補正：<span class='text-slate-400'>未入力 (シミュレータ値表示中)</span>";
+            }
+
+            let displayTotal = displayFortress + displayNisa;
+            let displayNet = displayTotal - displayLoan;
+            let currentLevPct = displayFortress > 0 ? (displayLoan / displayFortress) * 100 : 0;
+
+            // 基本インジケーター描画
+            document.getElementById('ind-fortress').innerHTML = Math.round(displayFortress).toLocaleString() + ' <span class="text-xs font-normal text-slate-400">万円</span>';
+            document.getElementById('ind-nisa').innerHTML = Math.round(displayNisa).toLocaleString() + ' <span class="text-xs font-normal text-slate-400">万円</span>';
             document.getElementById('ind-mochikabu').innerHTML = Math.round(simulationData.mochikabu[idx]).toLocaleString() + ' <span class="text-xs font-normal text-slate-400">万円</span>';
-            document.getElementById('ind-total').innerHTML = Math.round(simulationData.total[idx]).toLocaleString() + ' <span class="text-xs font-normal text-slate-400">万円</span>';
-            document.getElementById('ind-net').innerHTML = Math.round(simulationData.net[idx]).toLocaleString() + ' <span class="text-xs font-normal text-slate-400">万円</span>';
-            document.getElementById('ind-loan').innerHTML = Math.round(simulationData.loan[idx]).toLocaleString() + ' <span class="text-xs font-normal text-slate-400">万円</span>';
+            document.getElementById('ind-total').innerHTML = Math.round(displayTotal).toLocaleString() + ' <span class="text-xs font-normal text-slate-400">万円</span>';
+            document.getElementById('ind-net').innerHTML = Math.round(displayNet).toLocaleString() + ' <span class="text-xs font-normal text-slate-400">万円</span>';
+            document.getElementById('ind-loan').innerHTML = Math.round(displayLoan).toLocaleString() + ' <span class="text-xs font-normal text-slate-400">万円</span>';
             
-            const currentLevPct = simulationData.levPct[idx];
-            document.getElementById('ind-leverage-pct').innerHTML = currentLevPct.toFixed(1) + ' <span class="text-xs font-normal text-slate-400">%</span>';
+            document.getElementById('ind-leverage-pct').innerHTML = currentLevPct.toFixed(1) + '%';
             
+            // 警告ライン判定
             const warningThreshold = parseFloat(document.getElementById('warning-threshold').value) || 35;
             const levBox = document.getElementById('leverage-box');
             const levStatusText = document.getElementById('leverage-status-text');
             
             if (currentLevPct > warningThreshold) {
-                levBox.className = "bg-rose-100 dark:bg-rose-950/60 border-2 border-fortress-rose p-4 rounded-2xl shadow-md transition-all duration-200 animate-pulse";
+                levBox.className = "bg-rose-100 dark:bg-rose-950/60 border-2 border-fortress-rose p-4 rounded-2xl shadow-md transition-all duration-200 animate-pulse flex flex-col justify-between";
                 levStatusText.innerText = "⚠️ 警告：ローン許容閾値超過！";
                 levStatusText.className = "text-[9px] text-fortress-rose font-black block mt-1";
             } else {
-                levBox.className = "bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm transition-all duration-200";
+                levBox.className = "bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm transition-all duration-200 flex flex-col justify-between";
                 levStatusText.innerText = "ローン残高 ÷ 要塞担保高";
                 levStatusText.className = "text-[9px] text-slate-400 block mt-1";
             }
 
+            // 目標要塞差分
             const targetAsset = parseFloat(document.getElementById('target-asset').value) || 15000;
-            const diff = targetAsset - simulationData.total[idx];
+            const diff = targetAsset - displayTotal;
             if (diff > 0) {
                 document.getElementById('ind-target-diff').innerText = `目標まであと ${Math.round(diff).toLocaleString()} 万円`;
                 document.getElementById('ind-target-diff').className = "text-[9px] text-fortress-rose font-bold block mt-1";
@@ -935,10 +1073,41 @@
                 document.getElementById('ind-target-diff').className = "text-[9px] text-fortress-emerald font-bold block mt-1";
             }
 
+            // コアファンド比率
             document.getElementById('ind-fund-mix').innerHTML = 
                 `<div class="flex justify-between"><span>S&P500:</span><span class="text-blue-500 font-bold">${simulationData.funds.sp500[idx].toFixed(1)}%</span></div>
                  <div class="flex justify-between"><span>NASDAQ100:</span><span class="text-purple-500 font-bold">${simulationData.funds.nas100[idx].toFixed(1)}%</span></div>
                  <div class="flex justify-between"><span>Selected Fund:</span><span class="text-amber-500 font-bold">${simulationData.funds.selected[idx].toFixed(1)}%</span></div>`;
+
+            // 【新設ロジック】次世代への手残りMAX値 (出口戦略・静的シミュレーション)
+            // 課税口座の含み益に対する譲渡税約20%をローン債務控除(100%マイナス)とNISA非課税（譲渡税免除リセット）で相殺コントロール
+            let assumedGainRatio = 0.5; // 特定口座の50%が含み益と仮定
+            let normalTaxIfSold = (displayFortress * assumedGainRatio) * 0.20315; 
+            // 相続時：特定口座は含み益のまま引き継がれ相続税評価されるが、ローン残高が債務控除として100%マイナスされる
+            let debtDiscountEffect = displayLoan; 
+            let nextGenAsset = displayTotal - normalTaxIfSold + debtDiscountEffect;
+            
+            document.getElementById('ind-next-generation').innerHTML = Math.round(Math.max(displayNet, nextGenAsset)).toLocaleString() + ' <span class="text-xs font-normal text-slate-400">万円</span>';
+            document.getElementById('ind-detox-needed').innerText = Math.round(simulationData.detox[idx]) + "万円";
+
+            // 🎛️ 動的スライダー連動・静的ナビゲーション案内テキストの生成
+            let navText = "";
+            if (targetAge < 65) {
+                navText = `現在は資産拡大フェーズ（F7/B5）です。月25万の年金ベース発動に備え、特定口座・NISAのコア比率を維持してください。`;
+            } else {
+                let currentCost = 0;
+                let currentRatio = 0;
+                if (targetAge >= 65 && targetAge < 73) { currentCost = parseFloat(document.getElementById('cost-a8').value); currentRatio = parseFloat(document.getElementById('ratio-a8').value); }
+                else if (targetAge >= 73 && targetAge < 85) { currentCost = parseFloat(document.getElementById('cost-s12').value); currentRatio = parseFloat(document.getElementById('ratio-s12').value); }
+                else if (targetAge >= 85) { currentCost = parseFloat(document.getElementById('cost-c5').value); currentRatio = parseFloat(document.getElementById('ratio-c5').value); }
+                
+                let netNeed = Math.max(0, currentCost - pensionShield);
+                let bAmt = netNeed * (currentRatio / 100);
+                let nAmt = netNeed * (1 - (currentRatio / 100));
+                
+                navText = `${targetAge}歳時点：必要生活費 ${currentCost}万 － 年金 ${pensionShield}万 ＝ <span class='text-fortress-gold font-black'>残り ${netNeed}万</span> を補給せよ。 【指示】<span class='text-fortress-rose font-black'>野村ローン借入：${bAmt.toFixed(1)}万円</span> ／ <span class='text-fortress-emerald font-black'>SBI NISA取崩：${nAmt.toFixed(1)}万円</span>`;
+            }
+            document.getElementById('nav-action-text').innerHTML = navText;
         }
 
         function drawChart() {

@@ -14,7 +14,7 @@
         .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 4px; }
         .dark .custom-scrollbar::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
-        .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
         
         .phase-rail {
             position: relative;
@@ -255,30 +255,30 @@
                         </div>
                         <div>
                             <label class="block text-xs text-slate-500 dark:text-slate-400 mb-1">枠完了まで(年)</label>
-                            <input type="number" id="nisa-years" value="2" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-sm font-bold focus:outline-none focus:border-fortress-emerald">
+                            <input type="number" id="nisa-years" value="3" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-sm font-bold focus:outline-none focus:border-fortress-emerald">
                         </div>
                         <div class="pt-2 border-t border-slate-100 dark:border-slate-800 space-y-2">
                             <span class="text-xs font-bold text-slate-400 block">ファンド配分比率 ＆ 想定年率</span>
                             <div class="space-y-2">
                                 <div class="flex justify-between items-center text-xs">
-                                    <span>S&P500 (<span id="nisa-p1-val">10%</span>)</span>
+                                    <span>S&P500 (<span id="nisa-p1-val">40%</span>)</span>
                                     <div class="flex items-center gap-1">年率<input type="number" id="nisa-r1" value="7.0" step="0.1" class="w-14 bg-slate-50 dark:bg-slate-900 border text-right rounded px-1 py-0.5 font-bold">%</div>
                                 </div>
-                                <input type="range" id="nisa-p1" min="0" max="100" value="10" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-thumb">
+                                <input type="range" id="nisa-p1" min="0" max="100" value="40" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-thumb">
                             </div>
                             <div class="space-y-2">
                                 <div class="flex justify-between items-center text-xs">
-                                    <span>NASDAQ100 (<span id="nisa-p2-val">90%</span>)</span>
+                                    <span>NASDAQ100 (<span id="nisa-p2-val">50%</span>)</span>
                                     <div class="flex items-center gap-1">年率<input type="number" id="nisa-r2" value="9.5" step="0.1" class="w-14 bg-slate-50 dark:bg-slate-900 border text-right rounded px-1 py-0.5 font-bold">%</div>
                                 </div>
-                                <input type="range" id="nisa-p2" min="0" max="100" value="90" class="w-full h-1 bg-slate-200 appearance-none cursor-pointer accent-emerald-thumb">
+                                <input type="range" id="nisa-p2" min="0" max="100" value="50" class="w-full h-1 bg-slate-200 appearance-none cursor-pointer accent-emerald-thumb">
                             </div>
                             <div class="space-y-2">
                                 <div class="flex justify-between items-center text-xs">
-                                    <span>Selected Fund (<span id="nisa-p3-val">0%</span>)</span>
-                                    <div class="flex items-center gap-1">年率<input type="number" id="nisa-r3" value="10.0" step="0.1" class="w-14 bg-slate-50 dark:bg-slate-900 border text-right rounded px-1 py-0.5 font-bold">%</div>
+                                    <span>Selected Fund (Gold) (<span id="nisa-p3-val">10%</span>)</span>
+                                    <div class="flex items-center gap-1">年率<input type="number" id="nisa-r3" value="4.5" step="0.1" class="w-14 bg-slate-50 dark:bg-slate-900 border text-right rounded px-1 py-0.5 font-bold">%</div>
                                 </div>
-                                <input type="range" id="nisa-p3" min="0" max="100" value="0" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-thumb">
+                                <input type="range" id="nisa-p3" min="0" max="100" value="10" class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-thumb">
                             </div>
                         </div>
                     </div>
@@ -288,7 +288,7 @@
                     <div class="absolute top-0 left-0 w-1.5 h-full bg-amber-500"></div>
                     <h2 class="text-sm font-black tracking-wide text-slate-400 dark:text-slate-500 uppercase mb-4 flex justify-between items-center">
                         <span class="flex items-center gap-2.5"><i class="fa-solid fa-building text-amber-500 text-5xl"></i> 持株会部隊</span>
-                        <span class="text-xs bg-amber-50 dark:bg-amber-950/40 text-amber-500 px-2 py-0.5 rounded-md font-bold">60歳野村移管・65歳結集</span>
+                        <span class="text-xs bg-amber-50 dark:bg-amber-950/40 text-amber-500 px-2 py-0.5 rounded-md font-bold">60歳楽天移管・65歳結集</span>
                     </h2>
                     <div class="space-y-4">
                         <div class="grid grid-cols-2 gap-3">
@@ -320,7 +320,7 @@
                                     <span>NASDAQ100 (<span id="mochikabu-p2-val">30%</span>)</span>
                                     <div class="flex items-center gap-1">年率<input type="number" id="mochikabu-r2" value="9.0" step="0.1" class="w-14 bg-slate-50 dark:bg-slate-900 border text-right rounded px-1 py-0.5 font-bold">%</div>
                                 </div>
-                                <input type="range" id="mochikabu-p2" min="0" max="100" value="30" class="w-full h-1 bg-slate-200 appearance-none cursor-pointer accent-amber-thumb">
+                                <input type="range" id="mochikabu-p2" min="0" max="100" value="30" class="w-full h-1 bg-slate-200 appearance-pointer accent-amber-thumb">
                             </div>
                             <div class="space-y-2">
                                 <div class="flex justify-between items-center text-xs">
@@ -431,7 +431,7 @@
             
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 shrink-0">
                 <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
-                    <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-chess-rook text-blue-500 text-3xl"></i> 要塞担保高(野村特定)</span>
+                    <span class="text-sm font-black text-slate-500 dark:text-slate-400 block mb-1 flex items-center gap-2"><i class="fa-solid fa-chess-rook text-blue-500 text-3xl"></i> 要塞担保高(楽天特定)</span>
                     <div class="text-base sm:text-lg font-black tracking-tight text-blue-500" id="ind-fortress">0 <span class="text-xs font-normal text-slate-400">万円</span></div>
                     <span class="text-[9px] text-slate-400 block mt-1">特定口座＋DC(65~合流)＋持株(60~)</span>
                 </div>
@@ -474,8 +474,8 @@
                     <div class="mt-2 pt-2 border-t border-slate-100 dark:border-slate-800/60 space-y-1">
                         <span class="text-[9px] font-bold text-slate-400 block"><i class="fa-solid fa-pen-to-square"></i> 現状の手動転記 (月1回更新用)</span>
                         <div class="grid grid-cols-2 gap-1 text-[10px]">
-                            <input type="number" id="manual-fortress" placeholder="野村特定" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded px-1.5 py-0.5 font-bold text-center text-blue-500 focus:outline-none">
-                            <input type="number" id="manual-loan" placeholder="野村ローン" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded px-1.5 py-0.5 font-bold text-center text-fortress-rose focus:outline-none">
+                            <input type="number" id="manual-fortress" placeholder="楽天特定" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded px-1.5 py-0.5 font-bold text-center text-blue-500 focus:outline-none">
+                            <input type="number" id="manual-loan" placeholder="有価証券ローン" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded px-1.5 py-0.5 font-bold text-center text-fortress-rose focus:outline-none">
                         </div>
                         <div class="text-[9px] font-black text-center pt-0.5" id="manual-calc-status">
                             リアルタイム補正：<span class="text-slate-400">未入力 (シミュレータ値表示中)</span>
@@ -508,7 +508,7 @@
                             </h4>
                         </div>
                         <div class="relative w-32">
-                            <input type="number" id="pension-shield" value="20" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-1 font-black text-right text-base text-fortress-gold focus:outline-none focus:border-fortress-gold pr-8 shadow-inner">
+                            <input type="number" id="pension-shield" value="16" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-1 font-black text-right text-base text-fortress-gold focus:outline-none focus:border-fortress-gold pr-8 shadow-inner">
                             <span class="absolute right-2 top-1.5 text-xs text-slate-400 font-bold">万/月</span>
                         </div>
                     </div>
@@ -773,7 +773,6 @@
             document.getElementById('age-slider').addEventListener('input', () => {
                 updateOutputMetrics();
                 saveCurrentState();
-                // 年齢スライダーの変更をグラフ上のターゲットライン強調描画へ即座に伝えるため再描画
                 drawChart();
             });
             
@@ -842,7 +841,6 @@
             const mR2 = (parseFloat(document.getElementById('mochikabu-r2').value) || 0) / 100;
             const mR3 = (parseFloat(document.getElementById('mochikabu-r3').value) || 0) / 100;
 
-            // 各フェーズの総生活費設定
             const costA8 = parseFloat(document.getElementById('cost-a8').value) || 0;
             const ratA8 = (parseFloat(document.getElementById('ratio-a8').value) || 0) / 100;
             const ra8_b = parseFloat(document.getElementById('rate-a8-b').value) / 100;
@@ -899,13 +897,21 @@
                 let activeRateThisYear = 0;
 
                 for (let m = 0; m < 12; m++) {
-                    // 資産運用プラス成長
                     currentTokutei = currentTokutei * (1 + tWeightedRateMonth) + (tMonthly / 12);
 
-                    if (age < 65) {
+                    if (age < 60) {
                         currentDc = currentDc * (1 + dcWeightedRateMonth) + (dcMonthly / 12);
+                    } else if (age === 60 && m === 0) {
+                        // 60歳で持株会退会分を楽天特定口座へ集約、DCをiDeCoへ開設移行
+                        // ここではDCの運用自体は継続、65歳で一括精算する形をシミュレート
+                    }
+
+                    if (age < 65) {
+                        if (age >= 60) {
+                            currentDc = currentDc * (1 + dcWeightedRateMonth) + (dcMonthly / 12);
+                        }
                     } else if (age === 65 && m === 0) {
-                        // 65歳DCをiDeCo洗濯して一括精算特定口座合流
+                        // 65歳でiDeCoを一括精算して楽天特定口座へ合流（退職所得控除を適用）
                         let tax = 0;
                         if (currentDc > 2200) { tax = (currentDc - 2200) * 0.5 * 0.20315; }
                         currentTokutei += (currentDc - tax);
@@ -927,7 +933,6 @@
                         currentMochikabu = 0;
                     }
 
-                    // 補給ロジック (年金シールド差引後の要塞ターゲット)
                     let mBorrow = 0;
                     let mNisaWithdraw = 0;
                     let mRate = 0;
@@ -955,20 +960,17 @@
                         mRate = rc5_b + (rc5_e - rc5_b) * ratio;
                     }
 
-                    activeRateThisYear = mRate; // 年末の金利水準を記録
+                    activeRateThisYear = mRate; 
                     
-                    // NISA取り崩し実行
                     if (mNisaWithdraw > 0) {
                         currentNisa = Math.max(0, currentNisa - mNisaWithdraw);
                     }
 
-                    // ローン複利計算
                     if (mBorrow > 0 || currentLoan > 0) {
                         currentLoan = currentLoan * (1 + (mRate / 12)) + Number(mBorrow);
                     }
                 }
 
-                // 【静的有事デトックス判定】基準2%を超えた金利差分を年末にNISA超過リターンから相殺判定
                 if (activeRateThisYear > 0.02 && currentLoan > 0) {
                     let overRate = activeRateThisYear - 0.02;
                     annualDetoxAmount = currentLoan * overRate;
@@ -1019,7 +1021,6 @@
             const idx = targetAge - startAge;
             if (idx < 0 || idx >= simulationData.ages.length) return;
 
-            // 各フェーズ文字列決定
             let phaseStr = "Foundation7 (F7) [資産ベース創生期]";
             if (targetAge >= 60 && targetAge < 65) phaseStr = "Boost5 (B5) [資産ブースト期]";
             else if (targetAge >= 65 && targetAge < 73) phaseStr = "Active8 (A8) [アクティブライフ期]";
@@ -1027,7 +1028,6 @@
             else if (targetAge >= 85) phaseStr = "Closing5 (C5) [エンドロール期]";
             document.getElementById('current-phase-badge').innerText = phaseStr;
 
-            // マニュアル手動転記の上書き判定
             let mFortressInput = parseFloat(document.getElementById('manual-fortress').value);
             let mLoanInput = parseFloat(document.getElementById('manual-loan').value);
             
@@ -1035,7 +1035,6 @@
             let displayLoan = simulationData.loan[idx];
             let displayNisa = simulationData.nisa[idx];
             
-            // 総司令官による手動入力がある場合、現在のスライダー指定年齢が「53歳(現在)」の時のみリアルタイム補正を適応
             if (targetAge === startAge && (!isNaN(mFortressInput) || !isNaN(mLoanInput))) {
                 if (!isNaN(mFortressInput)) displayFortress = mFortressInput;
                 if (!isNaN(mLoanInput)) displayLoan = mLoanInput;
@@ -1048,7 +1047,6 @@
             let displayNet = displayTotal - displayLoan;
             let currentLevPct = displayFortress > 0 ? (displayLoan / displayFortress) * 100 : 0;
 
-            // 基本インジケーター描画
             document.getElementById('ind-fortress').innerHTML = Math.round(displayFortress).toLocaleString() + ' <span class="text-xs font-normal text-slate-400">万円</span>';
             document.getElementById('ind-nisa').innerHTML = Math.round(displayNisa).toLocaleString() + ' <span class="text-xs font-normal text-slate-400">万円</span>';
             document.getElementById('ind-mochikabu').innerHTML = Math.round(simulationData.mochikabu[idx]).toLocaleString() + ' <span class="text-xs font-normal text-slate-400">万円</span>';
@@ -1058,7 +1056,6 @@
             
             document.getElementById('ind-leverage-pct').innerHTML = currentLevPct.toFixed(1) + '%';
             
-            // 警告ライン判定
             const warningThreshold = parseFloat(document.getElementById('warning-threshold').value) || 35;
             const levBox = document.getElementById('leverage-box');
             const levStatusText = document.getElementById('leverage-status-text');
@@ -1073,7 +1070,6 @@
                 levStatusText.className = "text-[9px] text-slate-400 block mt-1";
             }
 
-            // 目標要塞差分
             const targetAsset = parseFloat(document.getElementById('target-asset').value) || 15000;
             const diff = targetAsset - displayTotal;
             if (diff > 0) {
@@ -1084,14 +1080,12 @@
                 document.getElementById('ind-target-diff').className = "text-[9px] text-fortress-emerald font-black block mt-1";
             }
 
-            // コアファンド比率をHTML側に出力
             document.getElementById('ind-fund-mix').innerHTML = 
                 `<div class="flex justify-between"><span>S&P500:</span><span class="text-blue-500 font-bold">${simulationData.funds.sp500[idx].toFixed(1)}%</span></div>
                  <div class="flex justify-between"><span>NASDAQ100:</span><span class="text-purple-500 font-bold">${simulationData.funds.nas100[idx].toFixed(1)}%</span></div>
                  <div class="flex justify-between"><span>Selected Fund:</span><span class="text-amber-500 font-bold">${simulationData.funds.selected[idx].toFixed(1)}%</span></div>`;
 
-            // 【新設ロジック】次世代への手残りMAX値 (出口戦略・静的シミュレーション)
-            let assumedGainRatio = 0.5; // 特定口座の50%が含み益と仮定
+            let assumedGainRatio = 0.5; 
             let normalTaxIfSold = (displayFortress * assumedGainRatio) * 0.20315; 
             let debtDiscountEffect = displayLoan; 
             let nextGenAsset = displayTotal - normalTaxIfSold + debtDiscountEffect;
@@ -1099,7 +1093,6 @@
             document.getElementById('ind-next-generation').innerHTML = Math.round(Math.max(displayNet, nextGenAsset)).toLocaleString() + ' <span class="text-xs font-normal text-slate-400">万円</span>';
             document.getElementById('ind-detox-needed').innerText = Math.round(simulationData.detox[idx]) + "万円";
 
-            // 🎛️ 動的スライダー連動・静的ナビゲーション案内テキストの生成
             let navText = "";
             if (targetAge < 65) {
                 navText = `現在は資産拡大フェーズ（F7/B5）です。月${currentPensionShield}万の年金ベース発動に備え、特定口座・NISAのコア比率を維持してください。`;
@@ -1114,7 +1107,7 @@
                 let bAmt = netNeed * (currentRatio / 100);
                 let nAmt = netNeed * (1 - (currentRatio / 100));
                 
-                navText = `${targetAge}歳時点：必要生活費 ${currentCost}万 － 年金 ${currentPensionShield}万 ＝ <span class='text-fortress-gold font-black'>残り ${netNeed}万</span> を補給せよ。 【指示】<span class='text-fortress-rose font-black'>野村ローン借入：${bAmt.toFixed(1)}万円</span> ／ <span class='text-fortress-emerald font-black'>SBI NISA取崩：${nAmt.toFixed(1)}万円</span>`;
+                navText = `${targetAge}歳時点：必要生活費 ${currentCost}万 － 年金 ${currentPensionShield}万 ＝ <span class='text-fortress-gold font-black'>残り ${netNeed}万</span> を補給せよ。 【指示】<span class='text-fortress-rose font-black'>有価証券担保ローン借入：${bAmt.toFixed(1)}万円</span> ／ <span class='text-fortress-emerald font-black'>SBI NISA取崩：${nAmt.toFixed(1)}万円</span>`;
             }
             document.getElementById('nav-action-text').innerHTML = navText;
         }
@@ -1123,7 +1116,6 @@
             const isDark = document.documentElement.classList.contains('dark');
             const axisFontColor = isDark ? '#E2E8F0' : '#1E293B';
             
-            // 現在の「総資産作戦目標（target-asset）」の入力値を取得
             const targetAsset = parseFloat(document.getElementById('target-asset').value) || 15000;
 
             const traces = [
@@ -1137,14 +1129,12 @@
             ];
 
             const chartShapes = [
-                // 各フェーズのグラデーション背景枠
                 { type: 'rect', xref: 'x', yref: 'paper', x0: -0.5, x1: 7, y0: 0, y1: 1, fillcolor: 'rgba(59, 130, 246, 0.06)', line: { width: 0 } },
                 { type: 'rect', xref: 'x', yref: 'paper', x0: 7, x1: 12, y0: 0, y1: 1, fillcolor: 'rgba(168, 85, 247, 0.06)', line: { width: 0 } },
                 { type: 'rect', xref: 'x', yref: 'paper', x0: 12, x1: 20, y0: 0, y1: 1, fillcolor: 'rgba(244, 63, 94, 0.06)', line: { width: 0 } },
                 { type: 'rect', xref: 'x', yref: 'paper', x0: 20, x1: 32, y0: 0, y1: 1, fillcolor: 'rgba(14, 165, 233, 0.06)', line: { width: 0 } },
                 { type: 'rect', xref: 'x', yref: 'paper', x0: 32, x1: 37.5, y0: 0, y1: 1, fillcolor: 'rgba(100, 116, 139, 0.06)', line: { width: 0 } },
                 
-                // 作戦目標ターゲットラインを水平線（横一線）として動的追加
                 {
                     type: 'line',
                     xref: 'paper', 
